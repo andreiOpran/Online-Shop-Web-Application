@@ -11,16 +11,16 @@
       "RelativeMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|solutionrelative:onlineshop\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|c:\\users\\andre\\desktop\\onlineshop\\onlineshop\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|solutionrelative:onlineshop\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|c:\\users\\andre\\desktop\\onlineshop\\onlineshop\\onlineshop.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|solutionrelative:onlineshop\\onlineshop.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|c:\\users\\andre\\desktop\\onlineshop\\onlineshop\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|solutionrelative:onlineshop\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|c:\\users\\andre\\desktop\\onlineshop\\onlineshop\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{1B1BA104-CCFD-4947-8E12-0F4A31A23288}|OnlineShop\\OnlineShop.csproj|solutionrelative:onlineshop\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,47 +30,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 13,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20241116110322_InitialMgr.cs",
-              "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
-              "RelativeDocumentMoniker": "OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
-              "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
-              "RelativeToolTip": "OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-16T11:03:23.178Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\appsettings.json",
-              "RelativeDocumentMoniker": "OnlineShop\\appsettings.json",
-              "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\appsettings.json",
-              "RelativeToolTip": "OnlineShop\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-11-16T10:59:42.381Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OnlineShop",
-              "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\OnlineShop.csproj",
-              "RelativeDocumentMoniker": "OnlineShop\\OnlineShop.csproj",
-              "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\OnlineShop.csproj",
-              "RelativeToolTip": "OnlineShop\\OnlineShop.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-16T10:40:19.714Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
@@ -116,8 +77,53 @@
               "Name": "ST:5:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:5:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20241116110322_InitialMgr.cs",
+              "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
+              "RelativeDocumentMoniker": "OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
+              "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
+              "RelativeToolTip": "OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T11:03:23.178Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\appsettings.json",
+              "RelativeDocumentMoniker": "OnlineShop\\appsettings.json",
+              "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\appsettings.json",
+              "RelativeToolTip": "OnlineShop\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-11-16T10:59:42.381Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OnlineShop.csproj",
+              "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\OnlineShop.csproj",
+              "RelativeDocumentMoniker": "OnlineShop\\OnlineShop.csproj",
+              "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\OnlineShop.csproj",
+              "RelativeToolTip": "OnlineShop\\OnlineShop.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-11-16T10:40:19.714Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Dockerfile",
               "RelativeDocumentMoniker": "OnlineShop\\Dockerfile",
@@ -125,8 +131,7 @@
               "RelativeToolTip": "OnlineShop\\Dockerfile",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-16T10:40:35.726Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T10:40:35.726Z"
             },
             {
               "$type": "Document",
@@ -136,10 +141,9 @@
               "RelativeDocumentMoniker": "OnlineShop\\Program.cs",
               "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Program.cs",
               "RelativeToolTip": "OnlineShop\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-16T10:39:51.54Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T10:39:51.54Z"
             }
           ]
         }

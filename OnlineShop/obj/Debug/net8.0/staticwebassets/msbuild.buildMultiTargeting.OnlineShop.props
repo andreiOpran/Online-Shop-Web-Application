@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="../build/OnlineShop.props" />
+  <Import Project="..\build\OnlineShop.props" />
 </Project>
