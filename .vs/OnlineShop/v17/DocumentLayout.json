@@ -96,7 +96,7 @@
               "RelativeDocumentMoniker": "OnlineShop\\Controllers\\HomeController.cs",
               "ToolTip": "C:\\Users\\andre\\Desktop\\OnlineShop\\OnlineShop\\Controllers\\HomeController.cs",
               "RelativeToolTip": "OnlineShop\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAiwCAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-01T22:06:04.078Z",
               "EditorCaption": ""
@@ -111,8 +111,7 @@
               "RelativeToolTip": "OnlineShop\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-16T10:39:51.54Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T10:39:51.54Z"
             },
             {
               "$type": "Document",
@@ -124,8 +123,7 @@
               "RelativeToolTip": "OnlineShop\\Migrations\\20241116110322_InitialMgr.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAAACUAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-16T11:03:23.178Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T11:03:23.178Z"
             },
             {
               "$type": "Document",
@@ -137,8 +135,7 @@
               "RelativeToolTip": "OnlineShop\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-11-16T10:59:42.381Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T10:59:42.381Z"
             },
             {
               "$type": "Document",
@@ -150,8 +147,7 @@
               "RelativeToolTip": "OnlineShop\\OnlineShop.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-16T10:40:19.714Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T10:40:19.714Z"
             },
             {
               "$type": "Document",
@@ -163,8 +159,7 @@
               "RelativeToolTip": "OnlineShop\\Dockerfile",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-11-16T10:40:35.726Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-16T10:40:35.726Z"
             }
           ]
         }
