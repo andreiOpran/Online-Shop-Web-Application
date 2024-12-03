@@ -576,3 +576,25 @@ $tf/
 *.suo
 *.VC.db
 .vs/OnlineShop/v17/.suo
+
+
+
+
+
+
+# adaugat de copilot iarasi
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build output directories
+bin/
+obj/
+
+# Ignore Copilot indices
+.vs/OnlineShop/CopilotIndices/
+.vs/OnlineShop/DesignTimeBuild/
+.vs/OnlineShop/FileContentIndex/
