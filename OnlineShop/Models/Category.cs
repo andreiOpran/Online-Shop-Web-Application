@@ -13,6 +13,7 @@ namespace OnlineShop.Models
         // dintr-o categorie fac parte mai multe produse
         public virtual ICollection<Product>? Products { get; set; }
 
+
         // TODO
         // validare pe serviciu (IValidatableObject)
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
