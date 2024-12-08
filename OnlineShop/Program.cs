@@ -11,11 +11,26 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
  options.UseMySql(connectionString, ServerVersion.Parse("8.0.31")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+
+
+//Pasul 2: Adaugarea Identity in aplicatie
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+//
+
+
 var app = builder.Build();
+
+//Pasul 5: Apelarea metodei Initialize din SeedData in Program.cs 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
