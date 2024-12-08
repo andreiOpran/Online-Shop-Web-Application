@@ -598,3 +598,7 @@ obj/
 .vs/OnlineShop/CopilotIndices/
 .vs/OnlineShop/DesignTimeBuild/
 .vs/OnlineShop/FileContentIndex/
+
+/OnlineShop/bin/Debug/net8.0
+/OnlineShop/obj/Debug/net8.0
+/OnlineShop/obj
