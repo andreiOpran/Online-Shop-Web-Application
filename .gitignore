@@ -598,3 +598,23 @@ obj/
 .vs/OnlineShop/CopilotIndices/
 .vs/OnlineShop/DesignTimeBuild/
 .vs/OnlineShop/FileContentIndex/
+
+
+#Exclude bin and obj directories
+/bin/
+/obj/
+
+#Ignore build artifacts
+*.dll
+*.pdb
+*.exe
+*.cache
+*.runtimeconfig.json
+
+#Ignore configuration and NuGet-related files
+*.editorconfig
+*.csproj.nuget.*
+*.nuget.cache
+
+
+
