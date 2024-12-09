@@ -50,6 +50,7 @@ namespace OnlineShop.Models
         // foreign key
         public string? UserId { get; set; }
         // BLOCKED
+
         public virtual ApplicationUser? User { get; set; }
 
         // un produs are review-uri; review-ul nu este un camp obligatoriu
