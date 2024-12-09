@@ -42,7 +42,7 @@ namespace OnlineShop.Models
         [Required(ErrorMessage = "Category is required. Please select a category.")]
         public int? CategoryId { get; set; }
         // BLOCKED
-        public virtual Category? category { get; set; }
+        public virtual Category? Category { get; set; }
         [NotMapped]
         public IEnumerable<SelectListItem>? Categories { get; set; }
 
