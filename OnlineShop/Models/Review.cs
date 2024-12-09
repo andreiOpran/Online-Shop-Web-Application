@@ -19,12 +19,12 @@ namespace OnlineShop.Models
         // foreign key
         public int? ProductId { get; set; }
         // BLOCKED
-        // public virtual Product? Product { get; set; }
+         public virtual Product? Product { get; set; }
 
         // foreign key
         public string? UserId { get; set; }
         // BLOCKED
-        // public virtual ApplicationUser? User { get; set; }
+         public virtual ApplicationUser? User { get; set; }
 
 
         // TODO
