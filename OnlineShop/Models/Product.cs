@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
+using static OnlineShop.Models.CartProducts;
 
 namespace OnlineShop.Models
 {
@@ -29,11 +30,11 @@ namespace OnlineShop.Models
 
         [Required(ErrorMessage = "Price is required. Please enter a price.")]
         public decimal? Price { get; set; }
-        
+
         public int? Stock { get; set; }
-        
+
         public DateTime? CreatedDate { get; set; }
-        
+
         public decimal? SalePercentage { get; set; }
 
         // un produs are o categorie
@@ -49,16 +50,18 @@ namespace OnlineShop.Models
         // foreign key
         public string? UserId { get; set; }
         // BLOCKED
-        public virtual ApplicationUser? User { get; set; }  
+        public virtual ApplicationUser? User { get; set; }
 
         // un produs are review-uri; review-ul nu este un camp obligatoriu
         // BLOCKED
-         public virtual ICollection<Review>? Reviews { get; set; } 
+        public virtual ICollection<Review>? Reviews { get; set; }
 
+
+        public virtual ICollection<CartProduct>? CartProducts { get; set; }
 
         // TODO
         // validare pe serviciu (IValidatableObject)
-        
+
         /*
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
