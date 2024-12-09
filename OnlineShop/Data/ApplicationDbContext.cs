@@ -7,7 +7,7 @@ using OnlineShop.Models;
 //Pasul 3: Adaugam ApplicationDbContext.cs in folderul Data
 namespace OnlineShop.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
