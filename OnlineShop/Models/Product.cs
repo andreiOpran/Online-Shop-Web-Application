@@ -53,7 +53,7 @@ namespace OnlineShop.Models
 
         // un produs are review-uri; review-ul nu este un camp obligatoriu
         // BLOCKED
-        // public virtual ICollection<Review>? Reviews { get; set; } 
+         public virtual ICollection<Review>? Reviews { get; set; } 
 
 
         // TODO
