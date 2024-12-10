@@ -90,3 +90,10 @@ namespace OnlineShop.Models
 
     }
 }
+
+
+/*
+
+INSERT INTO Products (Title, Description, Image, ImageContentType, Price, Stock, CreatedDate, SalePercentage, CategoryId, UserId) VALUES  ('Telefon mobil Apple iPhone 16 Pro Max, 256GB', 'iPhone 16 Pro prezinta un design din titan de grad 5 cu un nou finisaj rafinat.', NULL, NULL, 9599.99, 10, NOW(), NULL, 1, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c1'), ('Telefon mobil Samsung Galaxy S24 Ultra, 512 GB', 'Bun venit in noua era AI. Cu Galaxy S24 Ultra poti descoperi o noua lume a creativitatii si productivitatii.', NULL, NULL, 8499.99, 20, NOW(), NULL, 1, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c1'), ('Telefon mobil Apple iPhone 15, 128GB', 'Dynamic Island afiseaza alerte si Activitati live, ca sa nu ratezi nimic in timp ce te ocupi de altceva.', NULL, NULL, 3999.99, 30, NOW(), NULL, 1, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c1');
+
+*/

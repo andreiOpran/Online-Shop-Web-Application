@@ -31,3 +31,9 @@ namespace OnlineShop.Models
         }
     }
 }
+
+/*
+
+INSERT INTO Categories (CategoryName) VALUES ('Telefoane mobile');
+
+*/
