@@ -1,0 +1,117 @@
+﻿@model OnlineShop.Models.Product
+
+<h2 class="text-center mt-5">New Product</h2>
+
+<br />
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-3">
+
+            <form method="post" asp-action="New" asp-controller="Products">
+
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="from-group">
+
+                    <label asp-for="Title" class="form-label">Product Name</label>
+                    <br />
+                    <input asp-for="Title" class="form-control" />
+
+                    @* TODO - need reviewing *@
+                    @* <span asp-validation-for="Title" class="text-danger"></span> *@
+
+                    <br />
+                    <br />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="Description" class="form-label">Product Description</label>
+                    <br />
+                    <textarea asp-for="Description" class="form-control"></textarea>
+
+                    @* TODO - need reviewing *@
+                    @* <span asp-validation-for="Description" class="text-danger"></span> *@
+
+                    <br />
+                    <br />
+
+                </div>
+
+                @* TODO - needs reviewing *@
+                @* <div class="form-group">
+                    <label asp-for="Image" class="form-label">Product Image</label>
+                    <br />
+                    <input type="file" class="form-control" name="Image" />
+                    <br />
+                    <br />
+                </div> *@
+
+                <div class="form-group">
+
+                    <label asp-for="Price" class="form-label">Product Price</label>
+                    <br />
+                    <input asp-for="Price" class="form-control" />
+
+                    @* TODO - need reviewing *@
+                    @* <span asp-validation-for="Price" class="text-danger"></span> *@
+
+                    <br />
+                    <br />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="Stock" class="form-label">Product Stock</label>
+                    <br />
+                    <input asp-for="Stock" class="form-control" />
+
+                    @* TODO - need reviewing *@
+                    @* <span asp-validation-for="Stock" class="text-danger"></span> *@
+
+                    <br />
+                    <br />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="SalePercentage" class="form-label">Product Sale Percentage</label>
+                    <br />
+                    <input asp-for="SalePercentage" class="form-control" />
+
+                    @* TODO - need reviewing *@
+                    @* <span asp-validation-for="SalePercentage" class="text-danger"></span> *@
+
+                    <br />
+                    <br />
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="CategoryId" class="form-label">Select Category</label>
+                    <br />
+                    <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
+                        <option value="">Select Category</option>
+                    </select>
+
+                    @* TODO - need reviewing *@
+                    @* <span asp-validation-for="CategoryId" class="text-danger"></span> *@
+
+                    <br />
+                    <br />
+
+                </div>
+
+                <button class="btn btn-sm btn-success" type="submit">Modify Product</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>

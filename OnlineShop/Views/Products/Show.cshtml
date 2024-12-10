@@ -1,0 +1,169 @@
+﻿@model OnlineShop.Models.Product
+
+@* afisare produs impreuna cu review-urile sale *@
+
+
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
+}
+
+<br />
+
+<div class="card">
+
+    <partial name="_ProductPartial" model="Model"></partial>
+
+    @* TODO *@
+    @* @if( verificare permisiuni ) *@
+
+    <div class="d-flex flex-row justify-content-between">
+
+        <a class="btn btn-success" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId">Edit Product</a>
+
+        <form method="post" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.ProductId">
+
+            <button class="btn btn-danger" type="submit">Delete Product</button>
+
+        </form>
+
+    </div>
+
+    @* TODO - needs reviewing *@
+
+    @* formular de adaugare produs intr-o categorie *@
+    @* <form method="post" asp-controller="Products" asp-action="AddCategory">
+        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+            <div>
+                <select name="CategoryId" class="form-control">
+                    <option selected>Add product to Category</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-success alert-success" value="+" />
+            </div>
+        </div>
+    </form> *@
+
+
+</div>
+
+
+<br />
+<br />
+
+@* afisare review-uri impreuna cu butoanele de editare si stergere *@
+
+@foreach(var review in Model.Reviews)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+
+                <div>
+
+                    <p>@review.Content</p>
+                    <small>@review.CreatedDate</small>
+                    <strong><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></strong>
+
+                </div>
+                <br />
+
+                @* TODO - needs reviewing *@
+                @* @if(review.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin == true) *@
+
+                <div class="d-flex">
+
+                    <div>
+                    
+                        <a class="btn btn-outline-primary" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.ReviewId">
+                            <i class="bi bi-pencil-square"></i> Edit Review
+                        </a>
+                    
+                    </div>
+
+                    <div>
+
+                        <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.ReviewId">
+                            <button class="btn btn-outline-danger" type="submit">
+                                <i class="bi bi-trash"></i> Delete Review
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <br />
+
+
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+    
+    </div>
+}
+
+
+@* afisare formular review *@
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-2"></div>
+
+        <div class="col-md-8">
+
+            <div class="card">
+
+                <form method="post" asp-controller="Products" asp-action="Show"></form>
+
+                <div class="card-body">
+
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                    <label>Rating</label>
+                    <br />
+
+                    <select name="Rating" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+
+                    <br />
+
+                    <label>Review description</label>
+                    <br />
+
+                    <textarea name="Content" class="form-control"></textarea>
+
+                    @* TODO - validare *@
+
+                    <br />
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

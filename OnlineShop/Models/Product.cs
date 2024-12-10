@@ -41,22 +41,19 @@ namespace OnlineShop.Models
         // foreign key
         [Required(ErrorMessage = "Category is required. Please select a category.")]
         public int? CategoryId { get; set; }
-        // BLOCKED
-        public virtual Category? category { get; set; }
+        public virtual Category? Category { get; set; }
         [NotMapped]
         public IEnumerable<SelectListItem>? Categories { get; set; }
 
         // un produs este publicat de catre un utilizator (utilizator colaborator)
         // foreign key
         public string? UserId { get; set; }
-        // BLOCKED
         public virtual ApplicationUser? User { get; set; }
 
         // un produs are review-uri; review-ul nu este un camp obligatoriu
-        // BLOCKED
         public virtual ICollection<Review>? Reviews { get; set; }
 
-
+        // pentru relatia de many-to-many
         public virtual ICollection<CartProduct>? CartProducts { get; set; }
 
         // TODO
