@@ -72,11 +72,43 @@ namespace OnlineShop.Controllers
                                       .Include("Category");
             }
 
-            ViewBag.Products = products;
             ViewBag.SearchString = search;
 
-            // TODO
             // afisare paginata
+
+            int perPage = 2;
+            int totalItems = products.Count();
+
+            // /Products/Index?page=valoare
+
+            var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
+
+            // pagina 1 -> offset = 0, pagina 2 -> offset = 2, pagina 3 -> offset = 4 ...
+            var offset = 0;
+            if(!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * perPage;
+            }
+
+            // preluam produsele pentru pagina curenta
+            var paginatedProducts = products.Skip(offset).Take(perPage);
+
+            // numarul ultimei pagini
+            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)perPage);
+
+            // trimitem produsele catre view
+            ViewBag.Products = paginatedProducts;
+
+            // verificare search
+
+            if(search != "")
+            {
+                ViewBag.PaginationBaseUrl = "/Products/Index?search=" + search + "&page";
+            }
+            else
+            {
+                ViewBag.PaginationBaseUrl = "/Products/Index/?page";
+            }
 
             return View();
                    
