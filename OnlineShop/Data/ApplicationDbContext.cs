@@ -24,6 +24,8 @@ namespace OnlineShop.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //definirea relatiei many-to-many intre Cart si Product
