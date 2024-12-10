@@ -17,7 +17,7 @@ namespace OnlineShop.Models
         public DateTime? CreatedDate { get; set; }
 
         // foreign key
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         // BLOCKED
          public virtual Product? Product { get; set; }
 
