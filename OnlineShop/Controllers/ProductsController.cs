@@ -74,9 +74,10 @@ namespace OnlineShop.Controllers
 
             ViewBag.SearchString = search;
 
+
             // afisare paginata
 
-            int perPage = 2;
+            int perPage = 5;
             int totalItems = products.Count();
 
             // /Products/Index?page=valoare
@@ -99,8 +100,7 @@ namespace OnlineShop.Controllers
             // trimitem produsele catre view
             ViewBag.Products = paginatedProducts;
 
-            // verificare search
-
+            // search-ul ramane in url chiar daca schimbam pagina
             if(search != "")
             {
                 ViewBag.PaginationBaseUrl = "/Products/Index?search=" + search + "&page";
@@ -115,25 +115,34 @@ namespace OnlineShop.Controllers
         }
 
 
-        // TODO
         // afisare un singur produs in functie de id imprepuna cu categoria
         // se preiau si review-urile produsului
-        //public IActionResult Show(int id)
-        //{
-        //    Product product = db.Products.Include("Category")
-        //                                 .Include("Reviews")
-        //                                 .Include("Reviews.User")
-        //                                 .Where(p => p.ProductId == id)
-        //                                 .First();
+        //[Authorize(Roles = "Admin")]
+        public IActionResult Show(int id)
+        {
+            Product product = db.Products.Include("Category")
+                                         .Include("Reviews")
+                                         .Include("Reviews.User")
+                                         .Where(p => p.ProductId == id)
+                                         .First();
 
-        //    if (TempData.ContainsKey("message"))
-        //    {
-        //        ViewBag.Message = TempData["message"];
-        //        ViewBag.Alert = TempData["messageType"];
-        //    }
+            if (product == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(product);
-        //}
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+                ViewBag.Alert = TempData["messageType"];
+            }
+
+            // TODO - implementarea functiei SetAcessRights() 
+            // SetAccessRights();
+
+            return View(product);
+        }
 
     }
 }
