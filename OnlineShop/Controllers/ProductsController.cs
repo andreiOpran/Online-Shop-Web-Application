@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
@@ -194,6 +195,80 @@ namespace OnlineShop.Controllers
         }
 
 
+        // edit articol impreuna cu categoria sa (categoria se selecteaza din dropdown)
+        // datele existente ale produsului se incarca in fromular
+        // [HttpGet] implicit
+        // TODO
+        // [Authorize(Roles = "")]
+        public IActionResult Edit(int id)
+        {
+            Product product = db.Products.Include("Category")
+                                         .Where(p => p.ProductId == id)
+                                         .First();
+
+            product.Categories = GetAllCategories();
+
+            // TODO
+            //if( /*User-ul are drepturi de editare*/)
+            //{
+                return View(product);
+            //}
+            //else
+            //{
+            //    TempData["message"] = "You do not have the rights to edit this product.";
+            //    TempData["messageType"] = "alert-danger";
+            //    return RedirectToAction("Index");
+            //}                       
+        }
+
+        // salvare produs modificat in baza de date
+        [HttpPost]
+        // TODO
+        // [Authorize(Roles = "")]
+        public IActionResult Edit(int id, Product requestProduct)
+        {
+            var sanitizer = new HtmlSanitizer();
+
+            Product product = db.Products.Find(id);
+
+            if(ModelState.IsValid)
+            {
+                //if( /*User-ul are drepturi de editare*/ )
+                //{
+                    product.Title = requestProduct.Title;
+                    
+                    requestProduct.Description = sanitizer.Sanitize(requestProduct.Description);
+                    product.Description = requestProduct.Description;
+
+                    product.Price = requestProduct.Price;
+
+                    product.Stock = requestProduct.Stock;
+
+                    product.CategoryId = requestProduct.CategoryId;
+                    // product.Category = requestProduct.Category; // TODO - de verificat
+
+                    product.SalePercentage = requestProduct.SalePercentage;
+
+                    db.SaveChanges();
+
+                    TempData["message"] = "The product has been modified succesfully.";
+                    TempData["messageType"] = "alert-success";
+                    return RedirectToAction("Index");
+                //}
+                //else
+                //{
+                //    TempData["message"] = "You do not have the rights to edit this product.";
+                //    TempData["messageType"] = "alert-danger";
+                //    return RedirectToAction("Index");
+                //}
+
+            }
+            else
+            {
+                requestProduct.Categories = GetAllCategories();
+                return View(requestProduct);
+            }
+        }
 
 
         [NonAction]
