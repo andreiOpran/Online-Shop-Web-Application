@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Ganss.Xss;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using System.Xml.Schema;
 
 namespace OnlineShop.Controllers
 {
@@ -20,7 +23,7 @@ namespace OnlineShop.Controllers
             _roleManager = roleManager;
         }
 
-        
+
         // se afiseaza lista de produse impreuna cu categoria
         // [HttpGet] implicit
         // TODO
@@ -86,7 +89,7 @@ namespace OnlineShop.Controllers
 
             // pagina 1 -> offset = 0, pagina 2 -> offset = 2, pagina 3 -> offset = 4 ...
             var offset = 0;
-            if(!currentPage.Equals(0))
+            if (!currentPage.Equals(0))
             {
                 offset = (currentPage - 1) * perPage;
             }
@@ -101,7 +104,7 @@ namespace OnlineShop.Controllers
             ViewBag.Products = paginatedProducts;
 
             // search-ul ramane in url chiar daca schimbam pagina
-            if(search != "")
+            if (search != "")
             {
                 ViewBag.PaginationBaseUrl = "/Products/Index?search=" + search + "&page";
             }
@@ -111,7 +114,7 @@ namespace OnlineShop.Controllers
             }
 
             return View();
-                   
+
         }
 
 
@@ -144,5 +147,76 @@ namespace OnlineShop.Controllers
             return View(product);
         }
 
+
+        // formular pentru adaugare produs + selectare categorie
+        // [HttpGet] implicit
+        // TODO
+        // [Authorize(Roles = "")]
+        public IActionResult New()
+        {
+            Product product = new Product();
+
+            product.Categories = GetAllCategories();
+
+            return View(product);
+
+        }
+
+        // salvare produs in baza de date
+        // TODO
+        // [Authorize(Roles = "")]
+        [HttpPost]
+        public IActionResult New(Product product)
+        {
+            var sanitizer = new HtmlSanitizer();
+
+            product.CreatedDate = DateTime.Now;
+            
+            // preluare user id care posteaza
+            product.UserId = _userManager.GetUserId(User);
+
+            if(ModelState.IsValid)
+            {
+                product.Description = sanitizer.Sanitize(product.Description);
+
+                db.Products.Add(product);
+                db.SaveChanges();
+                TempData["message"] = "The product has been added succesfully.";
+                TempData["messageType"] = "alert-success";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                product.Categories = GetAllCategories();
+                return View(product);
+            }
+
+        }
+
+
+
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllCategories()
+        {
+            // populare dropdown
+            var selectList = new List<SelectListItem>();
+
+            var categories = from category in db.Categories select category;
+
+            foreach (var category in categories)
+            {
+                var listItem = new SelectListItem();
+                listItem.Value = category.CategoryId.ToString();
+                listItem.Text = category.CategoryName;
+
+                // push_back
+                selectList.Add(listItem);
+            }
+
+            return selectList;
+        }
+
     }
+
 }

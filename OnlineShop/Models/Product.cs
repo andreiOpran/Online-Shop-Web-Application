@@ -15,7 +15,7 @@ namespace OnlineShop.Models
         [MinLength(3, ErrorMessage = "Title must be at least 3 characters long.")]
         [StringLength(50, ErrorMessage = "Title must be at most 50 characters long.")]
         [Required(ErrorMessage = "Title is required. Please enter a title.")]
-        public required string Title { get; set; }
+        public string Title { get; set; }
 
         // TODO
         // validare custom folosind atribute personalizate 
