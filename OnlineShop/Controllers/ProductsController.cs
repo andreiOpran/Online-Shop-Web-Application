@@ -270,6 +270,43 @@ namespace OnlineShop.Controllers
             }
         }
 
+        // stergere produs        
+        [HttpPost]
+        // TODO
+        // [Authorize(Roles = "")]
+        public ActionResult Delete(int id)
+        {
+            Product product = db.Products.Include("Reviews")
+                                         .Where(p => p.ProductId == id)
+                                         .First();
+
+            // TODO
+            //if( /*User-ul are drepturi de stergere*/ )
+            //{
+                db.Products.Remove(product);
+                db.SaveChanges();
+                TempData["message"] = "The product has been deleted succesfully.";
+                TempData["messageType"] = "alert-success";
+                return RedirectToAction("Index");
+            //}
+            //else
+            //{
+            //    TempData["message"] = "You do not have the rights to delete this product.";
+            //    TempData["messageType"] = "alert-danger";
+            //    return RedirectToAction("Index");
+            //}
+
+
+
+        }
+
+        // TODO
+        // Conditiile de afisare pentru butoanele de editare si stergere
+        //private void SetAccessRights()
+        //{
+
+        //}
+
 
         [NonAction]
         public IEnumerable<SelectListItem> GetAllCategories()
