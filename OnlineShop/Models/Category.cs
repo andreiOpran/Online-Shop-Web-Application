@@ -34,6 +34,16 @@ namespace OnlineShop.Models
 
 /*
 
+V1
 INSERT INTO Categories (CategoryName) VALUES ('Telefoane mobile');
+
+
+V2
+INSERT INTO Categories (CategoryName) VALUES ('Telefoane mobile');
+INSERT INTO Categories (CategoryName) VALUES ('Laptopuri');
+INSERT INTO Categories (CategoryName) VALUES ('Tablete');
+INSERT INTO Categories (CategoryName) VALUES ('Televizoare');
+INSERT INTO Categories (CategoryName) VALUES ('Electrocasnice');
+
 
 */
