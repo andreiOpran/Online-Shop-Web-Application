@@ -39,11 +39,10 @@ INSERT INTO Categories (CategoryName) VALUES ('Telefoane mobile');
 
 
 V2
-INSERT INTO Categories (CategoryName) VALUES ('Telefoane mobile');
-INSERT INTO Categories (CategoryName) VALUES ('Laptopuri');
-INSERT INTO Categories (CategoryName) VALUES ('Tablete');
-INSERT INTO Categories (CategoryName) VALUES ('Televizoare');
-INSERT INTO Categories (CategoryName) VALUES ('Electrocasnice');
-
+INSERT INTO Categories (CategoryName) VALUES ('Mobile Phones');
+INSERT INTO Categories (CategoryName) VALUES ('Laptops');
+INSERT INTO Categories (CategoryName) VALUES ('Tablets');
+INSERT INTO Categories (CategoryName) VALUES ('Televisions');
+INSERT INTO Categories (CategoryName) VALUES ('Home Appliances');
 
 */
