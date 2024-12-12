@@ -17,7 +17,7 @@ namespace OnlineShop.Models
         public DateTime? CreatedDate { get; set; }
 
         // foreign key
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         // BLOCKED
          public virtual Product? Product { get; set; }
 
@@ -51,3 +51,10 @@ namespace OnlineShop.Models
         */
     }
 }
+
+
+/*
+
+INSERT INTO Reviews (Rating, Content, CreatedDate, ProductId, UserId) VALUES (5, 'Great product!', NOW(), 4, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c0'), (4, 'Good value for money.', NOW(), 4, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c0'), (3, 'Average quality.', NOW(), 4, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c0'), (NULL, 'How do I select a rating?', NOW(), 4, 'e50b44eb-1fe1-4194-ae7c-9066a6c829c0');
+
+*/

@@ -24,7 +24,7 @@
 
         <a class="btn btn-success" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId">Edit Product</a>
 
-        <form method="post" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.ProductId">
+        <form method="post" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.ProductId">
 
             <button class="btn btn-danger" type="submit">Delete Product</button>
 
@@ -62,60 +62,56 @@
 
 @* afisare review-uri impreuna cu butoanele de editare si stergere *@
 
-@foreach(var review in Model.Reviews)
+@foreach (var review in Model.Reviews)
 {
     <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
-
+        <div class="row d-flex justify-content-center">
             <div class="col-md-8">
 
-                <div>
-
-                    <p>@review.Content</p>
-                    <small>@review.CreatedDate</small>
-                    <strong><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></strong>
-
+                <div class="card mx-auto" style="width: 18rem;">
+                    <div class="card-body">
+                        @if (@review.Rating.HasValue)
+                        {
+                            <h5 class="card-title">Rating: @review.Rating/5</h5>
+                        }
+                        else
+                        {
+                            <h5 class="card-title">No Rating</h5>
+                        }
+                        <h6 class="card-subtitle mb-2 text-muted">@review.CreatedDate</h6>
+                        <p class="card-text">@review.Content</p>
+                        <strong><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></strong>
+                    </div>
                 </div>
                 <br />
 
                 @* TODO - needs reviewing *@
                 @* @if(review.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin == true) *@
 
-                <div class="d-flex">
+                <div class="d-flex justify-content-center">
 
-                    <div>
-                    
+                    <div class="mx-2">
                         <a class="btn btn-outline-primary" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.ReviewId">
                             <i class="bi bi-pencil-square"></i> Edit Review
                         </a>
-                    
                     </div>
 
-                    <div>
-
+                    <div class="mx-2">
                         <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.ReviewId">
                             <button class="btn btn-outline-danger" type="submit">
                                 <i class="bi bi-trash"></i> Delete Review
                             </button>
                         </form>
-
                     </div>
 
                 </div>
 
                 <br />
 
-
             </div>
-
-            <div class="col-md-2"></div>
-
         </div>
-    
     </div>
 }
-
 
 @* afisare formular review *@
 
@@ -134,11 +130,14 @@
                 <div class="card-body">
 
                     <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    
 
-                    <label>Rating</label>
+                    <label>Rating from 1 to 5</label>
+                    
                     <br />
 
                     <select name="Rating" class="form-control">
+                        <option value="">None</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -148,10 +147,16 @@
 
                     <br />
 
+
                     <label>Review description</label>
+                    
                     <br />
 
                     <textarea name="Content" class="form-control"></textarea>
+
+                    <br />
+
+                    <button class="btn btn-success" type="submit">Post review</button>
 
                     @* TODO - validare *@
 
