@@ -13,7 +13,7 @@
 
         <br />
 
-        <select name="Rating" class="form-control">
+        <select asp-for="Rating" class="form-control">
             <option value="">None</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -28,20 +28,18 @@
 
         <br />
 
-        <textarea name="Content" class="form-control"></textarea>
+        <textarea asp-for="Content" class="form-control"></textarea>
 
         <br />
 
-        <button class="btn btn-success" type="submit">Post review</button>
+       <button class="btn btn-primary" type="submit">Submit changes</button>
 
         @* TODO - validare *@
 
-        <br />
+
 
     </div>
 
-    <br /><br />
-
-    <button class="btn btn-primary" type="submit">Submit changes</button>
-
+    <br />
+   
 </form>
