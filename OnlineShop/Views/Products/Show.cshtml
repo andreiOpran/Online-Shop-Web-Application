@@ -125,44 +125,46 @@
 
             <div class="card">
 
-                <form method="post" asp-controller="Products" asp-action="Show"></form>
+                <form method="post" asp-controller="Products" asp-action="Show">
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
                     
 
-                    <label>Rating from 1 to 5</label>
+                        <label>Rating from 1 to 5</label>
                     
-                    <br />
+                        <br />
 
-                    <select name="Rating" class="form-control">
-                        <option value="">None</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                        <select name="Rating" class="form-control">
+                            <option value="">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
 
-                    <br />
+                        <br />
 
 
-                    <label>Review description</label>
+                        <label>Review description</label>
                     
-                    <br />
+                        <br />
 
-                    <textarea name="Content" class="form-control"></textarea>
+                        <textarea name="Content" class="form-control"></textarea>
 
-                    <br />
+                        <br />
 
-                    <button class="btn btn-success" type="submit">Post review</button>
+                        <button class="btn btn-success" type="submit">Post review</button>
 
-                    @* TODO - validare *@
+                        @* TODO - validare *@
 
-                    <br />
+                        <br />
 
-                </div>
+                    </div>
+
+                </form>
 
             </div>
 
