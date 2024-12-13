@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Categories Index";
+}
+
+<br />
+<h2>@ViewBag.Title</h2>
+<br />
+
+@if (TempData.ContainsKey("message"))
+{
+    <h1>@ViewBag.message</h1>
+}
+
+<br />
+
+@foreach (OnlineShop.Models.Category category in ViewBag.Categories)
+{
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body d-flex align-items-center">
+            <h3 class="card-title">
+                <a asp-controller="Categories" asp-action="Show" asp-route-id="@category.CategoryId" style="text-decoration: none; color: inherit;">
+                    @category.CategoryName
+                </a>
+            </h3>
+            <div class="ms-auto">
+                <div class="mx-2">
+                    <a class="btn btn-outline-primary" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.CategoryId">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<br />
+<a class="btn btn-success" asp-controller="Categories" asp-action="New"> <i class="bi bi-plus-circle me-2"></i>Add a category</a>
+<br />
