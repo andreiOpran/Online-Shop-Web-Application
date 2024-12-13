@@ -31,5 +31,26 @@ namespace OnlineShop.Controllers
             ViewBag.Categories = categories;
             return View();
         }
+
+        public ActionResult New()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult New(Category category)
+        {
+            if(ModelState.IsValid)
+            {
+                db.Categories.Add(category);
+                db.SaveChanges();
+                TempData["message"] = "The category has been added successfully.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(category);
+            }
+        }
     }
 }

@@ -8,7 +8,9 @@
 
 @if (TempData.ContainsKey("message"))
 {
-    <h1>@ViewBag.message</h1>
+    <div class="alert-success p-3 rounded-3 text-center mb-5 @ViewBag.Alert">
+        @ViewBag.Message
+    </div>
 }
 
 <br />
@@ -34,4 +36,5 @@
 }
 <br />
 <a class="btn btn-success" asp-controller="Categories" asp-action="New"> <i class="bi bi-plus-circle me-2"></i>Add a category</a>
+<br />
 <br />
