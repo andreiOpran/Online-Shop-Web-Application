@@ -20,14 +20,14 @@
     @* TODO *@
     @* @if( verificare permisiuni ) *@
 
-    <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row justify-content-between mb-3 mx-3">
 
-        <a class="btn btn-success" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId">Edit Product</a>
+        <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId"> <i class="bi bi-pencil-square"></i> Edit Product</a>
 
         <form method="post" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.ProductId">
-
-            <button class="btn btn-danger" type="submit">Delete Product</button>
-
+            <button class="btn btn-outline-danger" type="submit">
+                <i class="bi bi-trash"></i> Delete Product
+            </button>
         </form>
 
     </div>
