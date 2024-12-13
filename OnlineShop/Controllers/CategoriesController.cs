@@ -52,5 +52,30 @@ namespace OnlineShop.Controllers
                 return View(category);
             }
         }
+
+        public ActionResult Edit(int id)
+        {
+            Category category = db.Categories.Find(id);
+            return View(category);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, Category requestCategory)
+        {
+            Category category = db.Categories.Find(id);
+
+            if (ModelState.IsValid)
+            {
+
+                category.CategoryName = requestCategory.CategoryName;
+                db.SaveChanges();
+                TempData["message"] = "The category has been edited successfully.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(requestCategory);
+            }
+        }
     }
 }
