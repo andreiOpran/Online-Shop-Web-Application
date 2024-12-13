@@ -24,17 +24,79 @@
                     @category.CategoryName
                 </a>
             </h3>
-            <div class="ms-auto">
+            <div class="ms-auto d-flex">
                 <div class="mx-2">
                     <a class="btn btn-outline-primary" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.CategoryId">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                 </div>
+                <div class="mx-2">
+                    <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-category-id="@category.CategoryId">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 }
+
 <br />
 <a class="btn btn-success" asp-controller="Categories" asp-action="New"> <i class="bi bi-plus-circle me-2"></i>Add a category</a>
 <br />
 <br />
+
+<!-- bootstrap modal pentru confirmare stergere -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           
+            </div>
+           
+
+            <div class="modal-body">
+                Are you sure you want to delete the category?            
+            </div>
+            
+
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Cancel
+                </button>
+                
+                <form id="deleteForm" method="post" asp-controller="Categories" asp-action="Delete">
+                    
+                    <input type="hidden" name="id" id="categoryId" />
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-1"></i> Delete
+                    </button>
+                
+                </form>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts 
+{
+
+    <script type="text/javascript">
+        
+        var confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        confirmDeleteModal.addEventListener('show.bs.modal', function (event) 
+        {
+            var button = event.relatedTarget;
+            var categoryId = button.getAttribute('data-category-id');
+            var categoryIdInput = document.getElementById('categoryId');
+            categoryIdInput.value = categoryId;
+        });
+
+    </script>
+}

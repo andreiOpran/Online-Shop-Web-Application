@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
 
@@ -76,6 +77,21 @@ namespace OnlineShop.Controllers
             {
                 return View(requestCategory);
             }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {            
+            Category category = db.Categories.Include("Products")
+                                             .Include("Products.Reviews")
+                                             .Where(c => c.CategoryId == id)
+                                             .First();
+
+            db.Categories.Remove(category);
+
+            TempData["message"] = "The category has been deleted successfully.";
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
