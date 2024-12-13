@@ -20,14 +20,14 @@
     @* TODO *@
     @* @if( verificare permisiuni ) *@
 
-    <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row justify-content-between mb-3 mx-3">
 
-        <a class="btn btn-success" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId">Edit Product</a>
+        <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId"> <i class="bi bi-pencil-square"></i> Edit Product</a>
 
         <form method="post" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.ProductId">
-
-            <button class="btn btn-danger" type="submit">Delete Product</button>
-
+            <button class="btn btn-outline-danger" type="submit">
+                <i class="bi bi-trash"></i> Delete Product
+            </button>
         </form>
 
     </div>
@@ -66,9 +66,10 @@
 {
     <div class="container">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
 
-                <div class="card mx-auto" style="width: 18rem;">
+                <div class="card mx-auto" style="width: 100%;">
+                    
                     <div class="card-body">
                         @if (@review.Rating.HasValue)
                         {
@@ -79,8 +80,11 @@
                             <h5 class="card-title">No Rating</h5>
                         }
                         <h6 class="card-subtitle mb-2 text-muted">@review.CreatedDate</h6>
-                        <p class="card-text">@review.Content</p>
                         <strong><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></strong>
+                        <br />
+                        <br /> 
+                        <p class="card-text">@review.Content</p>
+                        
                     </div>
                 </div>
                 <br />
@@ -113,6 +117,7 @@
     </div>
 }
 
+
 @* afisare formular review *@
 
 <div class="container">
@@ -125,44 +130,46 @@
 
             <div class="card">
 
-                <form method="post" asp-controller="Products" asp-action="Show"></form>
+                <form method="post" asp-controller="Products" asp-action="Show">
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
                     
 
-                    <label>Rating from 1 to 5</label>
+                        <label>Rating from 1 to 5</label>
                     
-                    <br />
+                        <br />
 
-                    <select name="Rating" class="form-control">
-                        <option value="">None</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                        <select name="Rating" class="form-control">
+                            <option value="">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
 
-                    <br />
+                        <br />
 
 
-                    <label>Review description</label>
+                        <label>Review description</label>
                     
-                    <br />
+                        <br />
 
-                    <textarea name="Content" class="form-control"></textarea>
+                        <textarea name="Content" class="form-control"></textarea>
 
-                    <br />
+                        <br />
 
-                    <button class="btn btn-success" type="submit">Post review</button>
+                        <button class="btn btn-success" type="submit">Post review</button>
 
-                    @* TODO - validare *@
+                        @* TODO - validare *@
 
-                    <br />
+                        <br />
 
-                </div>
+                    </div>
+
+                </form>
 
             </div>
 

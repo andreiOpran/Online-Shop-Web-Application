@@ -1,0 +1,45 @@
+﻿@model OnlineShop.Models.Review
+
+
+<h2>Edit Review</h2>
+<br />
+
+
+<form asp-action="Edit" asp-controller="Reviews" asp-route-id="@Model.ReviewId" method="post">
+
+    <div class="form-group">
+
+        <label>Rating from 1 to 5</label>
+
+        <br />
+
+        <select asp-for="Rating" class="form-control">
+            <option value="">None</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <br />
+
+        <label>Review description</label>
+
+        <br />
+
+        <textarea asp-for="Content" class="form-control"></textarea>
+
+        <br />
+
+       <button class="btn btn-primary" type="submit">Submit changes</button>
+
+        @* TODO - validare *@
+
+
+
+    </div>
+
+    <br />
+   
+</form>
