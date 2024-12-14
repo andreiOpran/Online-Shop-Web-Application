@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
 using System.Xml.Schema;
+using static OnlineShop.Models.CartProducts;
 
 namespace OnlineShop.Controllers
 {
@@ -179,6 +180,7 @@ namespace OnlineShop.Controllers
                 return View(product);
             }
         }
+
 
         // formular pentru adaugare produs + selectare categorie
         // [HttpGet] implicit
@@ -359,6 +361,82 @@ namespace OnlineShop.Controllers
 
             return selectList;
         }
+
+
+        [HttpPost]
+        public IActionResult AddToCart(int productId)
+        {
+            // Preluam utilizatorul curent
+            var userId = _userManager.GetUserId(User);
+
+            // Verificam dacă utilizatorul are un cos activ
+            var cart = db.Carts.FirstOrDefault(c => c.UserId == userId && c.IsActive);
+
+            // Daca nu exista un cos activ, cream unul nou
+            if (cart == null)
+            {
+                cart = new Cart
+                {
+                    UserId = userId,
+                    IsActive = true
+                };
+                db.Carts.Add(cart);
+                db.SaveChanges(); // Salvam pentru a obtine ID-ul cosului
+            }
+
+            // Verificam daca produsul exista
+            var product = db.Products.FirstOrDefault(p => p.ProductId == productId);
+
+            if (product == null)
+            {
+                TempData["message"] = "The product does not exist."; // Produsul nu exista
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
+
+            // Verificam dacă produsul are stoc suficient
+            var cartProduct = db.CartProducts.FirstOrDefault(cp => cp.CartId == cart.CartId && cp.ProductId == productId);
+
+            // Daca produsul nu este deja in cos, presupunem ca dorim sa adaugam 1
+            int newQuantity = cartProduct == null ? 1 : cartProduct.Quantity + 1;
+
+            if (product.Stock < newQuantity)
+            {
+                TempData["message"] = "Not enough stock available for this product."; // Stoc insuficient
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
+
+            // Adaugam produsul in cos sau actualizam cantitatea
+            if (cartProduct == null)
+            {
+                // Daca produsul nu exista in cos, il adaugam
+                cartProduct = new CartProduct
+                {
+                    CartId = cart.CartId,
+                    ProductId = productId,
+                    Quantity = 1 // Cantitatea initiala este 1
+                };
+                db.CartProducts.Add(cartProduct);
+            }
+            else
+            {
+                // Daca produsul exista deja, incrementam cantitatea
+                cartProduct.Quantity++;
+            }
+
+            // Salvam modificarile în baza de date (fara să scadem din stoc aici)
+            db.SaveChanges();
+
+            TempData["message"] = "The product has been added to your cart."; // Produsul a fost adaugat in cos
+            TempData["messageType"] = "alert-success";
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
 
     }
 

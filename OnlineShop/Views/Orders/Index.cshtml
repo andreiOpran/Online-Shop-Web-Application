@@ -1,0 +1,86 @@
+﻿@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
+}
+
+<br />
+
+<a asp-controller="Orders" asp-action="New" class="btn rounded-pill mb-5"
+   style="background: linear-gradient(90deg, #4b0082, #ff0066); color: white; border: none;">
+    <i class="bi bi-plus"></i> Add Order
+</a>
+
+<div class="mb-4">
+    <h5>Total Orders: @ViewBag.TotalOrders</h5>
+    <h5>Products in Carts: @ViewBag.TotalProducts</h5>
+</div>
+
+<div>
+    <div class="row">
+        @foreach (var order in ViewBag.orders)
+        {
+            <div class="col-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Order ID: @order.OrderId</h3>
+                        <p><i class="bi bi-calendar"></i> Order Date: @order.OrderDate</p>
+                        <p style="color: @(order.Status == "Pending" || order.Status == "Processing" || order.Status == "Shipped" ? "orange" : order.Status == "Canceled" ? "red" : "green");">
+                            Order Status: @order.Status
+                        </p>
+                        <p><i class="bi bi-wallet2"></i> Payment Method: @order.PaymentMethod</p>
+                        <p><i class="bi bi-house"></i> Shipping Address: @order.ShippingAddress</p>
+
+                        <p>Cart Number: @order.CartId</p>
+                        @if (order.Cart != null && order.Cart.User != null)
+                        {
+                            <p><i class="bi bi-person"></i> Username: @order.Cart.User.UserName</p>
+                            <p><i class="bi bi-key"></i> ID: @order.Cart.User.Id</p>
+                        }
+                        else
+                        {
+                            <p>User: Not available</p>
+                        }
+
+                        @if (order.Cart != null && order.Cart.CartProducts != null)
+                        {
+                            <div class="d-flex flex-column gap-2">
+                                @foreach (var cartProduct in order.Cart.CartProducts)
+                                {
+                                    <div>
+                                        <p class="mb-1">Product ID: @cartProduct.ProductId</p>
+                                        <div class="d-flex flex-column gap-1">
+                                            <a asp-controller="Products" asp-action="Show" asp-route-id="@cartProduct.ProductId"
+                                               class="btn btn-sm"
+                                               style="background-color: #5ba4ff; color: white; border: none; width: 100%;">
+                                                <i class="bi bi-eye"></i> View Product Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <!-- Buton pentru editarea coșului -->
+                        <div class="mt-3">
+                            <a asp-controller="Carts" asp-action="Edit" asp-route-id="@order.CartId"
+                               class="btn btn-sm w-100"
+                               style="background-color: #28a745; color: white; border: none;">
+                                <i class="bi bi-pencil"></i> Edit Cart
+                            </a>
+                        </div>
+
+                        <div class="mt-3">
+                            <a asp-controller="Orders" asp-action="Show" asp-route-id="@order.OrderId"
+                               class="btn btn-sm w-100"
+                               style="background-color: #A74DBA; color: white; border: none;">
+                                <i class="bi bi-box"></i> View Order Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
