@@ -33,16 +33,26 @@ namespace OnlineShop.Controllers
             return View();
         }
 
-
-        public ActionResult Show(int id)
+        // afisare paginata
+        [HttpGet("/Categories/Show/{id:int}/{page:int?}")] // route constraint
+        public ActionResult Show(int id, int page = 1)
         {
-            Category category = db.Categories.Include("Products")
-                                             .Where(c => c.CategoryId == id)
-                                             .First();
+            int perPage = 3;
+            var category = db.Categories.Include(c => c.Products)
+                                        .FirstOrDefault(c => c.CategoryId == id);
+
+            var totalItems = category.Products.Count();
+            var paginatedProducts = category.Products.Skip((page - 1) * perPage).Take(perPage).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / perPage);
+            ViewBag.Category = category;
+            ViewBag.Products = paginatedProducts;
+
+            ViewBag.PaginationBaseUrl = $"/Categories/Show/{id}?page=";
 
             return View(category);
         }
-
 
 
         public ActionResult New()

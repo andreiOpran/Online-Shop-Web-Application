@@ -3,18 +3,13 @@
     ViewBag.Title = Model.CategoryName;
 }
 
-@* Motorul de cautare *@
-<form method="GET" asp-controller="Products" asp-action="Index">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search"
-               value="@ViewBag.SearchString">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </div>
-</form>
+
 
 <br />
 <h2 class="text-center"> @Model.CategoryName</h2>
 <br />
+
+
 
 @if (TempData["message"] != null)
 {
@@ -25,10 +20,17 @@
 
 <br />
 
-
+@* Motorul de cautare *@
+<form method="GET" asp-controller="Products" asp-action="Index">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var product in Model.Products)
+    @foreach (var product in ViewBag.Products)
     {
         <div class="col-12 mb-3">
             <div class="card h-100">
@@ -50,8 +52,38 @@
     }
 </div>
 
+
+@* butoane de navigare intre pagini *@
+
 <br />
-<div class="text-center">
-    <a class="btn btn-outline-success" asp-controller="Categories" asp-action="Index">Back to Categories</a>
+<div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@ViewBag.PaginationBaseUrl@(ViewBag.CurrentPage - 1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only"></span>
+                </a>
+            </li>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@ViewBag.PaginationBaseUrl@i">@(i)</a>
+                </li>
+            }
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@ViewBag.PaginationBaseUrl@(ViewBag.CurrentPage + 1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
-<br />
+
+@* TODO de adaugat in navbar *@
+@* <br /> *@
+@* <div class="text-center"> *@
+@*     <a class="btn btn-outline-success" asp-controller="Categories" asp-action="Index">Back to Categories</a> *@
+@* </div> *@
+@* <br /> *@
