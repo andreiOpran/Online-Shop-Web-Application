@@ -150,6 +150,38 @@ namespace OnlineShop.Controllers
         }
 
 
+        // adaugare review in DB
+        [HttpPost]
+        // TODO
+        // [Authorize(Roles = "")]
+        public IActionResult Show([FromForm] Review review)
+        {
+            review.CreatedDate = DateTime.Now;
+
+            review.UserId = _userManager.GetUserId(User);
+
+            if (ModelState.IsValid)
+            {
+                db.Reviews.Add(review);
+                db.SaveChanges();
+                return Redirect("/Products/Show/" + review.ProductId);
+            }
+            else
+            {
+                Product product = db.Products.Include("Category")
+                                             .Include("Reviews")
+                                             .Include("Reviews.User")
+                                             .Where(p => p.ProductId == review.ProductId)
+                                             .First();
+
+                // TODO - implementarea functiei SetAcessRights()
+                // SetAccessRights();
+
+                return View(product);
+            }
+        }
+
+
         // formular pentru adaugare produs + selectare categorie
         // [HttpGet] implicit
         // TODO
