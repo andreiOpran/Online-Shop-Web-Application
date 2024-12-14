@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using System.Security.Claims;
 using System.Xml.Schema;
 using static OnlineShop.Models.CartProducts;
 
@@ -130,6 +131,7 @@ namespace OnlineShop.Controllers
         public IActionResult Show(int id)
         {
             Product product = db.Products.Include("Category")
+                                         .Include("User")
                                          .Include("Reviews")
                                          .Include("Reviews.User")
                                          .Where(p => p.ProductId == id)
@@ -437,8 +439,6 @@ namespace OnlineShop.Controllers
 
             return RedirectToAction("Index");
         }
-
-
 
 
 
