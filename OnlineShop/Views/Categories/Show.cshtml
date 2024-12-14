@@ -1,0 +1,57 @@
+﻿@model OnlineShop.Models.Category
+@{
+    ViewBag.Title = Model.CategoryName;
+}
+
+@* Motorul de cautare *@
+<form method="GET" asp-controller="Products" asp-action="Index">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </div>
+</form>
+
+<br />
+<h2 class="text-center"> @Model.CategoryName</h2>
+<br />
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
+        @ViewBag.Message
+    </div>
+}
+
+<br />
+
+
+
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        <div class="col-12 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title alert-success py-3 px-3 rounded-2">
+                        <a asp-controller="Products" asp-action="Show" asp-route-id="@product.ProductId" style="text-decoration: none; color: inherit;">
+                            @product.Title
+                        </a>
+                    </h3>
+                    <div class="card-text">@product.Description</div>
+                    <div class="d-flex justify-content-between flex-row mt-5">
+                        <div><i class="bi bi-globe"></i> Category: @product.Category?.CategoryName</div>
+                        <div><i class="bi bi-globe"></i> Price: @product.Price?.ToString("F2")</div>
+                        <div><i class="bi bi-calendar"></i> @product.CreatedDate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+<div class="text-center">
+    <a class="btn btn-outline-success" asp-controller="Categories" asp-action="Index">Back to Categories</a>
+</div>
+<br />

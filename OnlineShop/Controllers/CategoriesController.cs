@@ -33,6 +33,18 @@ namespace OnlineShop.Controllers
             return View();
         }
 
+
+        public ActionResult Show(int id)
+        {
+            Category category = db.Categories.Include("Products")
+                                             .Where(c => c.CategoryId == id)
+                                             .First();
+
+            return View(category);
+        }
+
+
+
         public ActionResult New()
         {
             return View();
