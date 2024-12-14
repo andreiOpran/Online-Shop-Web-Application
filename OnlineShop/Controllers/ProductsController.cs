@@ -101,7 +101,9 @@ namespace OnlineShop.Controllers
 
             // numarul ultimei pagini
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)perPage);
-
+            
+            ViewBag.CurrentPage = currentPage == 0 ? 1 : currentPage;
+            
             // trimitem produsele catre view
             ViewBag.Products = paginatedProducts;
 
