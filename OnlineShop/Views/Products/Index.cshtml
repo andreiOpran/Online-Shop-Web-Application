@@ -73,27 +73,28 @@
 }
 
 
-@* Afisare paginata a produselor *@
+@* butoane de navigare intre pagini *@
 
 <div>
-
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="@ViewBag.PaginationBaseUrl=1" aria-label="Previous">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@ViewBag.PaginationBaseUrl=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             @for (int i = 1; i <= ViewBag.lastPage; i++)
             {
-                <li class="page-item"> <a class="page-link" href="@ViewBag.PaginationBaseUrl=@i">@(i)</a> </li>
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@ViewBag.PaginationBaseUrl=@i">@(i)</a>
+                </li>
             }
-            <li class="page-item">
-                <a class="page-link" href="@ViewBag.PaginationBaseUrl=@(ViewBag.lastPage)" aria-label="Next">
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.lastPage ? "disabled" : "")">
+                <a class="page-link" href="@ViewBag.PaginationBaseUrl=@(ViewBag.CurrentPage + 1)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
     </nav>
-
 </div>
+
