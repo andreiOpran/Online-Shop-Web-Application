@@ -59,8 +59,8 @@ namespace OnlineShop.Controllers
 
             if (cart == null)
             {
-                TempData["message"] = "Your cart is empty. Add products to you cart in order to access it.";
-                TempData["messageType"] = "alert-warning";
+                TempData["message"] = "No active cart found for the current user.";
+                TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Index", "Products");
             }
 
