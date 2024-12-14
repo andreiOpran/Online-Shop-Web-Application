@@ -37,9 +37,11 @@ namespace OnlineShop.Controllers
         [HttpGet("/Categories/Show/{id:int}/{page:int?}")] // route constraint
         public ActionResult Show(int id, int page = 1)
         {
-            int perPage = 3;
+            int perPage = 6;
             var category = db.Categories.Include(c => c.Products)
-                                        .FirstOrDefault(c => c.CategoryId == id);
+                            .ThenInclude(p => p.User)
+                            .FirstOrDefault(c => c.CategoryId == id);
+
 
             var totalItems = category.Products.Count();
             var paginatedProducts = category.Products.Skip((page - 1) * perPage).Take(perPage).ToList();

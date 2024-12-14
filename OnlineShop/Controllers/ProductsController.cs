@@ -33,7 +33,8 @@ namespace OnlineShop.Controllers
         public IActionResult Index()
         {
 
-            var products = db.Products.Include("Category");
+            var products = db.Products.Include("Category")
+                                      .Include("User");
 
             if (TempData.ContainsKey("message"))
             {
@@ -74,7 +75,8 @@ namespace OnlineShop.Controllers
 
                 // filtrare
                 products = db.Products.Where(product => searchIds.Contains(product.ProductId))
-                                      .Include("Category");
+                                      .Include("Category")
+                                      .Include("User");
             }
 
             ViewBag.SearchString = search;
@@ -82,7 +84,7 @@ namespace OnlineShop.Controllers
 
             // afisare paginata
 
-            int perPage = 5;
+            int perPage = 12;
             int totalItems = products.Count();
 
             // /Products/Index?page=valoare

@@ -1,6 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Permanent+Marker&family=Roboto&display=swap');
-
-html {
+﻿html {
     font-size: 14px;
 }
 
@@ -20,92 +18,58 @@ html {
 }
 
 body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    padding-bottom: 80px; /* Creăm spațiu suficient pentru footer */
-}
-
-.navbar {
-    background: linear-gradient(to right, #ff4500, #8a2be2, #4682b4) !important;
-    border: none !important;
-    box-shadow: 0 3px 12px #636e72 !important;
-}
-
-a.nav-link {
-    color: #ffffff !important;
-}
-
-    a.nav-link:hover {
-        color: #9370DB !important;
-    }
-
-.logoutbtn {
-    color: #ffffff !important;
-}
-
-    .logoutbtn:hover {
-        color: #00ffcc !important;
-    }
-
-.note-editor .dropdown-toggle::after {
-    display: none;
-}
-
-.font-montserrat {
-    font-family: 'Montserrat', sans-serif;
-}
-
-.font-roboto {
-    font-family: 'Roboto', sans-serif;
-}
-
-.font-logo {
-    font-size: 24px;
-    color: white !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-    .font-logo:hover {
-        color: #9370DB !important;
-    }
-
-.truncate {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    margin-bottom: 60px;
 }
 
 .footer {
-    position: fixed;
-    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    position: absolute;
     bottom: 0;
     width: 100%;
-    background: linear-gradient(to right, #8a2be2, #4682b4, #ff4500);
-    color: white;
-    text-align: center;
-    padding: 20px 0; /* Crește padding-ul pentru mai mult spațiu */
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    z-index: 10;
+    background-color: #f2f2f2;
+    box-shadow: 0 3px 8px #636e72 !important;
 }
 
-    .footer a {
-        color: #00ffcc;
-        text-decoration: none;
-        font-weight: bold;
-    }
 
-        .footer a:hover {
-            color: #ffffff;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-        }
+.navbar {
+    background-color: #f2f2f2 !important;
+    background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9)) !important;
+    border: none !important;
+    box-shadow: 0 3px 8px #636e72 !important;
+}
 
-    .footer p {
-        margin: 0;
-        font-size: 14px;
-        line-height: 1.8; /* Crește spațierea între linii */
-    }
+.navbar .nav-link,
+.navbar .navbar-brand {
+    color: white !important;
+    transition: color 0.2s ease-in-out;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.navbar .nav-link:hover,
+.navbar .navbar-brand:hover {
+    color: black !important;
+}
+
+.darker-white {
+    background-color: #f2f2f2; 
+    color: #343a40; 
+}
+
+.btn-primary {
+    background-color: rgba(37, 117, 252, 0.9) !important; 
+    border-color: rgba(37, 117, 252, 0.9) !important; 
+    color: white !important; 
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: rgba(106, 17, 203, 0.9) !important; 
+    border-color: rgba(106, 17, 203, 0.9) !important;
+}
+
