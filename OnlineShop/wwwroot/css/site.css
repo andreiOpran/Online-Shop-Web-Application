@@ -73,3 +73,6 @@ body {
     border-color: rgba(106, 17, 203, 0.9) !important;
 }
 
+.last-review {
+    margin-bottom: 0 !important;
+}

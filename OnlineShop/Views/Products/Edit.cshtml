@@ -8,110 +8,76 @@
     <div class="row">
         <div class="col-md-6 offset-3">
 
-            <form method="post" asp-action="Edit" asp-controller="Products" asp-route-id="@Model.ProductId">
-
+            <form method="post" asp-action="Edit" asp-controller="Products" asp-route-id="@Model.ProductId" enctype="multipart/form-data">
 
                 <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="from-group">
-
                     <label asp-for="Title" class="form-label">Product Name</label>
                     <br />
                     <input asp-for="Title" class="form-control" />
-
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Title" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
                     <label asp-for="Description" class="form-label">Product Description</label>
                     <br />
                     <textarea asp-for="Description" class="form-control"></textarea>
-
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Description" class="text-danger"></span> *@
-
                     <br />
                     <br />
-                        
-                </div>
-
-                @* TODO - needs reviewing *@
-                @* <div class="form-group">
-                    <label asp-for="Image" class="form-label">Product Image</label>
-                    <br />
-                    <input type="file" class="form-control" name="Image" />
-                    <br />
-                    <br />
-                </div> *@
-
-                <div class="form-group">
-                        
-                        <label asp-for="Price" class="form-label">Product Price</label>
-                        <br />
-                        <input asp-for="Price" class="form-control" />
-
-                        @* TODO - need reviewing *@
-                        @* <span asp-validation-for="Price" class="text-danger"></span> *@
-
-                        <br />
-                        <br />
-
                 </div>
 
                 <div class="form-group">
+                    <label for="Image" class="control-label mb-2">Change Image (<strong>No file chosen</strong> means you are choosing not to edit the image)</label>
+                    <input type="file" name="Image" class="form-control" />
+                    <input type="hidden" asp-for="ImagePath" />
+                    <br />
+                    <br />
+                </div>
 
+                <div class="form-group">
+                    <label asp-for="Price" class="form-label">Product Price</label>
+                    <br />
+                    <input asp-for="Price" class="form-control" />
+                    <br />
+                    <br />
+                </div>
+
+                <div class="form-group">
                     <label asp-for="Stock" class="form-label">Product Stock</label>
                     <br />
                     <input asp-for="Stock" class="form-control" />
-
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Stock" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
                     <label asp-for="SalePercentage" class="form-label">Product Sale Percentage</label>
                     <br />
                     <input asp-for="SalePercentage" class="form-control" />
-
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="SalePercentage" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
                     <label asp-for="CategoryId" class="form-label">Select Category</label>
                     <br />
                     <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
                         <option value="">Select Category</option>
                     </select>
-                    
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="CategoryId" class="text-danger"></span> *@
-                    
                     <br />
                     <br />
-
                 </div>
 
-                <button class="btn btn-sm btn-success" type="submit">Edit Product</button>
+                <button class="btn btn-sm btn-primary" type="submit">Edit Product</button>
+                
 
             </form>
+
+            <br />
         
         </div>
     </div>
 </div>
+

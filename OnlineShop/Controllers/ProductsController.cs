@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
@@ -104,9 +103,9 @@ namespace OnlineShop.Controllers
 
             // numarul ultimei pagini
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)perPage);
-            
+
             ViewBag.CurrentPage = currentPage == 0 ? 1 : currentPage;
-            
+
             // trimitem produsele catre view
             ViewBag.Products = paginatedProducts;
 
@@ -206,22 +205,32 @@ namespace OnlineShop.Controllers
         // TODO
         // [Authorize(Roles = "")]
         [HttpPost]
-        public IActionResult New(Product product)
+        public async Task<IActionResult> New(Product product, IFormFile Image)
         {
             var sanitizer = new HtmlSanitizer();
-
             product.CreatedDate = DateTime.Now;
-            
-            // preluare user id care posteaza
             product.UserId = _userManager.GetUserId(User);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 product.Description = sanitizer.Sanitize(product.Description);
 
+                if (Image != null && Image.Length > 0)
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+
+                    product.ImagePath = "/images/" + fileName;
+                }
+
                 db.Products.Add(product);
-                db.SaveChanges();
-                TempData["message"] = "The product has been added succesfully.";
+                await db.SaveChangesAsync();
+                TempData["message"] = "The product has been added successfully.";
                 TempData["messageType"] = "alert-success";
                 return RedirectToAction("Index");
             }
@@ -230,7 +239,6 @@ namespace OnlineShop.Controllers
                 product.Categories = GetAllCategories();
                 return View(product);
             }
-
         }
 
 
@@ -250,7 +258,7 @@ namespace OnlineShop.Controllers
             // TODO
             //if( /*User-ul are drepturi de editare*/)
             //{
-                return View(product);
+            return View(product);
             //}
             //else
             //{
@@ -264,35 +272,48 @@ namespace OnlineShop.Controllers
         [HttpPost]
         // TODO
         // [Authorize(Roles = "")]
-        public IActionResult Edit(int id, Product requestProduct)
+        public async Task<IActionResult> Edit(int id, Product requestProduct, IFormFile? Image)
         {
             var sanitizer = new HtmlSanitizer();
 
             Product product = db.Products.Find(id);
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //if( /*User-ul are drepturi de editare*/ )
                 //{
-                    product.Title = requestProduct.Title;
-                    
-                    requestProduct.Description = sanitizer.Sanitize(requestProduct.Description);
-                    product.Description = requestProduct.Description;
+                product.Title = requestProduct.Title;
 
-                    product.Price = requestProduct.Price;
+                requestProduct.Description = sanitizer.Sanitize(requestProduct.Description);
+                product.Description = requestProduct.Description;
 
-                    product.Stock = requestProduct.Stock;
+                product.Price = requestProduct.Price;
 
-                    product.CategoryId = requestProduct.CategoryId;
-                    // product.Category = requestProduct.Category; // TODO - de verificat
+                product.Stock = requestProduct.Stock;
 
-                    product.SalePercentage = requestProduct.SalePercentage;
+                product.CategoryId = requestProduct.CategoryId;
+                // product.Category = requestProduct.Category; // TODO - de verificat
 
-                    db.SaveChanges();
+                product.SalePercentage = requestProduct.SalePercentage;
 
-                    TempData["message"] = "The product has been modified succesfully.";
-                    TempData["messageType"] = "alert-success";
-                    return RedirectToAction("Index");
+                if (Image != null && Image.Length > 0)
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+
+                    product.ImagePath = "/images/" + fileName;
+                }               
+
+                db.SaveChanges();
+
+                TempData["message"] = "The product has been modified successfully.";
+                TempData["messageType"] = "alert-success";
+                return RedirectToAction("Index");
                 //}
                 //else
                 //{
@@ -322,11 +343,11 @@ namespace OnlineShop.Controllers
             // TODO
             //if( /*User-ul are drepturi de stergere*/ )
             //{
-                db.Products.Remove(product);
-                db.SaveChanges();
-                TempData["message"] = "The product has been deleted succesfully.";
-                TempData["messageType"] = "alert-success";
-                return RedirectToAction("Index");
+            db.Products.Remove(product);
+            db.SaveChanges();
+            TempData["message"] = "The product has been deleted successfully.";
+            TempData["messageType"] = "alert-success";
+            return RedirectToAction("Index");
             //}
             //else
             //{
@@ -445,3 +466,4 @@ namespace OnlineShop.Controllers
     }
 
 }
+
