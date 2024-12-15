@@ -50,7 +50,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Products}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Urls.Add("http://0.0.0.0:80");

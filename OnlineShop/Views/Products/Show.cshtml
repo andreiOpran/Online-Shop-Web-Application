@@ -1,9 +1,5 @@
 ﻿@model OnlineShop.Models.Product
 
-@* afisare produs impreuna cu review-urile sale *@
-
-
-
 @if (TempData["message"] != null)
 {
     <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
@@ -13,169 +9,177 @@
 
 <br />
 
-<div class="card">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-8">
+        <div class="card h-100 d-flex flex-column card border-primary mb-3">
+            <div class="card-body d-flex flex-column">
 
-    <partial name="_ProductPartial" model="Model"></partial>
+                @* Add image above the title *@
+                @* @if (!string.IsNullOrEmpty(Model.ImageUrl)) *@
+                @* { *@
+                @*     <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" /> *@
+                @* } *@
 
-    @* TODO *@
-    @* @if( verificare permisiuni ) *@
+                <h3 class="card-header darker-white py-3 px-3 rounded-2">
+                    @Model.Title
+                </h3>
 
-    <div class="d-flex flex-row justify-content-between mb-3 mx-3">
-
-        <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId"> <i class="bi bi-pencil-square"></i> Edit Product</a>
-
-        <form method="post" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.ProductId">
-            <button class="btn btn-outline-danger" type="submit">
-                <i class="bi bi-trash"></i> Delete Product
-            </button>
-        </form>
-
-    </div>
-
-    @* TODO - needs reviewing *@
-
-    @* formular de adaugare produs intr-o categorie *@
-    @* <form method="post" asp-controller="Products" asp-action="AddCategory">
-        <input type="hidden" name="ProductId" value="@Model.ProductId" />
-        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
-            <div>
-                <select name="CategoryId" class="form-control">
-                    <option selected>Add product to Category</option>
-                    @foreach (var category in ViewBag.Categories)
-                    {
-                        <option value="@category.CategoryId">@category.CategoryName</option>
-                    }
-                </select>
-            </div>
-            <div>
-                <input type="submit" class="btn btn-success alert-success" value="+" />
-            </div>
-        </div>
-    </form> *@
-
-
-</div>
-
-
-<br />
-<br />
-
-@* afisare review-uri impreuna cu butoanele de editare si stergere *@
-
-@foreach (var review in Model.Reviews)
-{
-    <div class="container">
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-10">
-
-                <div class="card mx-auto" style="width: 100%;">
-                    
-                    <div class="card-body">
-                        @if (@review.Rating.HasValue)
-                        {
-                            <h5 class="card-title">Rating: @review.Rating/5</h5>
-                        }
-                        else
-                        {
-                            <h5 class="card-title">No Rating</h5>
-                        }
-                        <h6 class="card-subtitle mb-2 text-muted">@review.CreatedDate</h6>
-                        <strong><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></strong>
-                        <br />
-                        <br /> 
-                        <p class="card-text">@review.Content</p>
-                        
-                    </div>
-                </div>
-                <br />
-
-                @* TODO - needs reviewing *@
-                @* @if(review.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin == true) *@
-
-                <div class="d-flex justify-content-center">
-
-                    <div class="mx-2">
-                        <a class="btn btn-outline-primary" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.ReviewId">
-                            <i class="bi bi-pencil-square"></i> Edit Review
+                <div class="d-flex justify-content-between flex-row mt-4">
+                    <div>
+                        <a asp-controller="Categories" asp-action="Show" asp-route-id="@Model.Category?.CategoryId" style="text-decoration: none; color: inherit;">
+                            <i class="bi bi-globe"></i> Category: @Model.Category?.CategoryName
                         </a>
                     </div>
-
-                    <div class="mx-2">
-                        <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.ReviewId">
-                            <button class="btn btn-outline-danger" type="submit">
-                                <i class="bi bi-trash"></i> Delete Review
-                            </button>
-                        </form>
-                    </div>
-
                 </div>
 
                 <br />
 
+                <div class="card-text">@Html.Raw(Model.Description)</div>
+
+                <div class="mt-auto">
+                    <div class="card-header mt-3">
+                        <div class="d-flex justify-content-between flex-row mt-3">
+                            <div><i class="bi bi-calendar"></i> Date: @Model.CreatedDate</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between flex-row mt-3">
+                            <div><i class="bi bi-person"></i> User: @Model.User.UserName</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
 
+    <div class="col-md-4">
+        <div class="card h-100 d-flex flex-column card border-primary mb-3">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex flex-column mt-1">
+                    <div>
+                        <h4><i class="bi bi-piggy-bank"></i> Price: €@Model.Price?.ToString("F2") </h4>
+                    </div>
+                    <div class="mt-3">
+                        <h4><div><i class="bi bi-star-fill"></i> Rating: 0.0 @* @Model.Rating *@ </div></h4>
+                    </div>
+                    <div class="mt-2">
+                        <a href="#addReview" class="btn btn-secondary">
+                            <i class="bi bi-pencil"></i> Add a Review
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-auto">
+                    <form asp-controller="Products" asp-action="AddToCart" method="post" class="mt-4">
+                        <input type="hidden" name="productId" value="@Model.ProductId" />
+                        <button type="submit" class="btn btn-primary w-100" @(Model.Stock > 0 ? "" : "disabled")>
+                            <i class="bi bi-cart"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-@* afisare formular review *@
+<br />
+<br />
 
-<div class="container">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-10">
+        <div class="card h-100 d-flex flex-column card border-primary mb-3">
+            <div class="card-body d-flex flex-column">
 
-    <div class="row">
+                <h3 class="card-header darker-white py-3 px-3 rounded-2 mt-2">
+                    Reviews
+                </h3>
+                <br />
+                <br />
 
-        <div class="col-md-2"></div>
+                @if (!Model.Reviews.Any())
+                {
+                    <h3 class="text-center">This product has no reviews.</h3>
+                }
+                else
+                {
+                    @* afisare review-uri impreuna cu butoanele de editare si stergere *@
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div class="card mx-auto  mb-2" style="width: 100%;">
+                            <div class="card-body">
+                                @if (@review.Rating.HasValue)
+                                {
+                                    <h5 class="card-title">Rating: @review.Rating/5</h5>
+                                }
+                                else
+                                {
+                                    <h5 class="card-title">No Rating</h5>
+                                }
+                                <h6 class="card-subtitle mb-2 text-muted"> @review.CreatedDate</h6>
+                                <p><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></p>
+                                <br />
+                                <br />
+                                <p class="card-text">@review.Content</p>
+                            </div>
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="mx-2">
+                                    <a class="btn btn-outline-primary" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.ReviewId">
+                                        <i class="bi bi-pencil-square"></i> Edit Review
+                                    </a>
+                                </div>
+                                <div class="mx-2">
+                                    <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.ReviewId">
+                                        <button class="btn btn-outline-danger" type="submit">
+                                            <i class="bi bi-trash"></i> Delete Review
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
 
-        <div class="col-md-8">
+            </div>
+        </div>
+    </div>
+</div>
 
-            <div class="card">
+<br />
+
+<div class="row d-flex justify-content-center">
+    <div class="col-md-10">
+        <div id="addReview" class="card h-100 d-flex flex-column mb-3" style="border: 1px solid rgba(106, 17, 203, 0.9);">
+            <div class="card-body d-flex flex-column">
+
+                <h3 class="card-header darker-white py-3 px-3 rounded-2 mt-2">
+                    Add a Review
+                </h3>
+                <br />
+                <br />
 
                 <form method="post" asp-controller="Products" asp-action="Show">
-
-                    <div class="card-body">
-
-                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
-                    
-
-                        <label>Rating from 1 to 5</label>
-                    
-                        <br />
-
-                        <select name="Rating" class="form-control">
-                            <option value="">None</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-
-                        <br />
-
-
-                        <label>Review description</label>
-                    
-                        <br />
-
-                        <textarea name="Content" class="form-control"></textarea>
-
-                        <br />
-
-                        <button class="btn btn-success" type="submit">Post review</button>
-
-                        @* TODO - validare *@
-
-                        <br />
-
-                    </div>
-
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    <label>Rating from 1 to 5</label>
+                    <br />
+                    <select name="Rating" class="form-control">
+                        <option value="">None</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <br />
+                    <label>Review description</label>
+                    <br />
+                    <textarea name="Content" class="form-control"></textarea>
+                    <br />
+                    <button class="btn btn-primary" type="submit">Post review</button>
+                    @* TODO - validare *@
+                    <br />
                 </form>
 
             </div>
-
         </div>
-
     </div>
-
 </div>
 
+<br />

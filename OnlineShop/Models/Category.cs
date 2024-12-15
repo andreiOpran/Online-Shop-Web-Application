@@ -34,11 +34,7 @@ namespace OnlineShop.Models
 
 /*
 
-V1
-INSERT INTO Categories (CategoryName) VALUES ('Telefoane mobile');
 
-
-V2
 INSERT INTO Categories (CategoryName) VALUES ('Mobile Phones');
 INSERT INTO Categories (CategoryName) VALUES ('Laptops');
 INSERT INTO Categories (CategoryName) VALUES ('Tablets');

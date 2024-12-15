@@ -3,13 +3,9 @@
     ViewBag.Title = Model.CategoryName;
 }
 
-
-
 <br />
 <h2 class="text-center"> @Model.CategoryName</h2>
 <br />
-
-
 
 @if (TempData["message"] != null)
 {
@@ -25,26 +21,62 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search"
                value="@ViewBag.SearchString">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-primary" type="submit">Search</button>
     </div>
 </form>
 
-<div class="row">
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var product in ViewBag.Products)
     {
-        <div class="col-12 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h3 class="card-title alert-success py-3 px-3 rounded-2">
-                        <a asp-controller="Products" asp-action="Show" asp-route-id="@product.ProductId" style="text-decoration: none; color: inherit;">
+        <div class="col">
+            <div class="card h-100 d-flex flex-column card border-primary mb-3">
+                <div class="card-body d-flex flex-column">
+
+                    <a asp-controller="Products" asp-action="Show" asp-route-id="@product.ProductId" style="text-decoration: none; color: inherit;">
+                        <h3 class="card-header darker-white py-3 px-3 rounded-2">
                             @product.Title
-                        </a>
-                    </h3>
-                    <div class="card-text">@product.Description</div>
-                    <div class="d-flex justify-content-between flex-row mt-5">
-                        <div><i class="bi bi-globe"></i> Category: @product.Category?.CategoryName</div>
-                        <div><i class="bi bi-globe"></i> Price: @product.Price?.ToString("F2")</div>
-                        <div><i class="bi bi-calendar"></i> @product.CreatedDate</div>
+                        </h3>
+                    </a>
+                    <br />
+
+                    <div class="card-text">@Html.Raw(product.Description)</div>
+
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between flex-row mt-4">
+                            <div><i class="bi bi-globe"></i> Price: €@product.Price?.ToString("F2") </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between flex-row mt-4">
+                            <div><i class="bi bi-globe"></i> Category: @product.Category?.CategoryName</div>
+                        </div>
+
+                        <br />
+
+                        <div class="d-flex justify-content-between flex-row mt-3">
+                            <div><i class="bi bi-star-fill"></i> Rating: 0.0 @* @product.Rating *@ </div>
+                        </div>
+
+                        <div class="card-header mt-3">
+
+                            <div class="d-flex justify-content-between flex-row mt-3">
+                                <div><i class="bi bi-calendar"></i> Date: @product.CreatedDate</div>
+                            </div>
+
+                            <div class="d-flex justify-content-between flex-row mt-3">
+                                <div><i class="bi bi-person"></i> User: @product.User.UserName</div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-3">
+                            <form asp-controller="Products" asp-action="AddToCart" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="btn btn-primary w-100" @(product.Stock > 0 ? "" : "disabled")>
+                                    <i class="bi bi-cart"></i> Add to Cart
+                                </button>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -52,10 +84,10 @@
     }
 </div>
 
+<br />
 
 @* butoane de navigare intre pagini *@
 
-<br />
 <div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -80,10 +112,3 @@
         </ul>
     </nav>
 </div>
-
-@* TODO de adaugat in navbar *@
-@* <br /> *@
-@* <div class="text-center"> *@
-@*     <a class="btn btn-outline-success" asp-controller="Categories" asp-action="Index">Back to Categories</a> *@
-@* </div> *@
-@* <br /> *@
