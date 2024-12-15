@@ -76,3 +76,24 @@ body {
 .last-review {
     margin-bottom: 0 !important;
 }
+
+.card-hover {
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card-hover:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.footer a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer a:hover {
+    color: rgba(37, 117, 252, 0.9);
+    text-decoration: none;
+}
+
+
+

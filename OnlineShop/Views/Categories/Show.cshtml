@@ -29,7 +29,7 @@
     @foreach (var product in ViewBag.Products)
     {
         <div class="col">
-            <div class="card h-100 d-flex flex-column card border-primary mb-3">
+            <div class="card h-100 d-flex flex-column card border-primary mb-3 card-hover">
                 <div class="card-body d-flex flex-column">
 
                     @if (!string.IsNullOrEmpty(product.ImagePath))
@@ -58,7 +58,7 @@
                         <br />
 
                         <div class="d-flex justify-content-between flex-row mt-3">
-                            <div style="font-size: 1.15rem;"><i class="bi bi-star-fill"></i> Rating: 0.0 @* @product.Rating *@ </div>
+                            <div style="font-size: 1.15rem;"><i class="bi bi-star-fill" style="color: #FDCC0D;"></i> Rating: Rating: @product.Rating.ToString("F2") (@(product.Reviews?.Count ?? 0) reviews) </div>
                         </div>
 
                         <div class="card-header mt-3">

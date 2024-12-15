@@ -34,7 +34,8 @@ namespace OnlineShop.Controllers
         {
 
             var products = db.Products.Include("Category")
-                                      .Include("User");
+                                      .Include("User")
+                                      .Include("Reviews");
 
             if (TempData.ContainsKey("message"))
             {
@@ -148,6 +149,18 @@ namespace OnlineShop.Controllers
                 ViewBag.Alert = TempData["messageType"];
             }
 
+            if (product.Reviews.Count() > 0)
+            {
+                product.Rating = Math.Round((decimal)product.Reviews.Average(r => r.Rating), 2);
+            }
+            else
+            {
+                product.Rating = 0;
+            }
+            db.SaveChanges();
+
+            ViewBag.ReviewsCount = product.Reviews.Count();
+
             // TODO - implementarea functiei SetAcessRights() 
             // SetAccessRights();
 
@@ -169,6 +182,15 @@ namespace OnlineShop.Controllers
             {
                 db.Reviews.Add(review);
                 db.SaveChanges();
+
+                // update rating 
+                var product = db.Products.Include("Reviews").FirstOrDefault(p => p.ProductId == review.ProductId);
+                if (product != null)
+                {
+                    product.Rating = Math.Round((decimal)product.Reviews.Average(r => r.Rating), 2);
+                    db.SaveChanges();
+                }
+
                 return Redirect("/Products/Show/" + review.ProductId);
             }
             else
