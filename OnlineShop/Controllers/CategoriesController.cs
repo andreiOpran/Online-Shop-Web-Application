@@ -38,9 +38,11 @@ namespace OnlineShop.Controllers
         public ActionResult Show(int id, int page = 1)
         {
             int perPage = 6;
-            var category = db.Categories.Include(c => c.Products)
-                            .ThenInclude(p => p.User)
-                            .FirstOrDefault(c => c.CategoryId == id);
+                var category = db.Categories.Include(c => c.Products)
+                                            .ThenInclude(p => p.User)
+                                            .Include(c => c.Products)
+                                            .ThenInclude(p => p.Reviews)
+                                            .FirstOrDefault(c => c.CategoryId == id);
 
 
             var totalItems = category.Products.Count();

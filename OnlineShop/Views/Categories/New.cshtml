@@ -5,15 +5,16 @@
     ViewBag.Title = "Add a Category";
 }
 
-
+<br />
 <h2>Add a Category</h2>
+<br />
 
 <form asp-action="New" asp-controller="Categories" method="post">
 
     <div class="form-group">
         <label asp-for="CategoryName" class="form-label">Category name</label>
         <br />
-        <input asp-for="CategoryName" class="form-control" />
+        <input asp-for="CategoryName" class="form-control" placeholder="Enter a category name" />
         @* <span asp-validation-for="CategoryName" class="text-danger"></span> *@
     </div>
 

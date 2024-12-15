@@ -2,43 +2,32 @@
 
 <h2 class="text-center mt-5">New Product</h2>
 
-<br />
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-3">
 
-            <form method="post" asp-action="New" asp-controller="Products">
-
+            <form method="post" asp-action="New" asp-controller="Products" enctype="multipart/form-data">
 
                 <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="from-group">
-
-                    <label asp-for="Title" class="form-label">Product Name</label>
+                    <label asp-for="Title" class="form-label">Title</label>
                     <br />
-                    <input asp-for="Title" class="form-control" />
-
+                    <input asp-for="Title" class="form-control" placeholder="Enter product title" />
                     @* TODO - need reviewing *@
                     @* <span asp-validation-for="Title" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
-                    <label asp-for="Description" class="form-label">Product Description</label>
+                    <label asp-for="Description" class="form-label">Description</label>
                     <br />
-                    <textarea asp-for="Description" class="form-control summernote"></textarea>
-                    
+                    <textarea asp-for="Description" class="form-control summernote" placeholder="Enter product description"></textarea>
                     @* TODO - need reviewing *@
                     @* <span asp-validation-for="Description" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 @* TODO - needs reviewing *@
@@ -51,67 +40,58 @@
                 </div> *@
 
                 <div class="form-group">
-
-                    <label asp-for="Price" class="form-label">Product Price</label>
+                    <label asp-for="Price" class="form-label">Price</label>
                     <br />
-                    <input asp-for="Price" class="form-control" />
-
+                    <input asp-for="Price" class="form-control" placeholder="Enter product price" />
                     @* TODO - need reviewing *@
                     @* <span asp-validation-for="Price" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
-                    <label asp-for="Stock" class="form-label">Product Stock</label>
+                    <label asp-for="Stock" class="form-label">Stock</label>
                     <br />
-                    <input asp-for="Stock" class="form-control" />
-
+                    <input asp-for="Stock" class="form-control" placeholder="Enter product stock quantity" />
                     @* TODO - need reviewing *@
                     @* <span asp-validation-for="Stock" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
-                    <label asp-for="SalePercentage" class="form-label">Product Sale Percentage</label>
+                    <label asp-for="SalePercentage" class="form-label">Sale Percentage</label>
                     <br />
-                    <input asp-for="SalePercentage" class="form-control" />
-
+                    <input asp-for="SalePercentage" class="form-control" placeholder="Enter sale percentage (0 for no sale percentage)" />
                     @* TODO - need reviewing *@
                     @* <span asp-validation-for="SalePercentage" class="text-danger"></span> *@
-
                     <br />
                     <br />
-
                 </div>
 
                 <div class="form-group">
-
-                    <label asp-for="CategoryId" class="form-label">Select Category</label>
+                    <label asp-for="CategoryId" class="form-label">Category</label>
                     <br />
                     <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
                         <option value="">Select Category</option>
                     </select>
-
                     @* TODO - need reviewing *@
                     @* <span asp-validation-for="CategoryId" class="text-danger"></span> *@
-
                     <br />
                     <br />
+                </div>
 
+                <div class="form-group">
+                    <label for="Image" class="control-label mb-2">Image</label>
+                    <input type="file" name="Image" class="form-control" />
+                    <input type="hidden" asp-for="ImagePath" />
+                    <br />
+                    <br />
                 </div>
 
                 <div class="text-center">
                     <button class="btn btn-sm btn-primary" type="submit">Add Product</button>
                 </div>
-
 
             </form>
 
@@ -120,3 +100,5 @@
         </div>
     </div>
 </div>
+
+
