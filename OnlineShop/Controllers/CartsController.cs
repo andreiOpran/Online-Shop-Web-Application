@@ -358,10 +358,9 @@ namespace OnlineShop.Controllers
         }
 
         [HttpPost]
-        [Route("Carts/PlaceOrder/{cartId}")]
-        public IActionResult PlaceOrder(int cartId, string paymentMethod, string shippingAddress)
+        [Route("Carts/CheckStockAndRedirectById/{cartId}")]
+        public IActionResult CheckStockAndRedirectById(int cartId)
         {
-            // Gasim cosul activ prin ID
             var cart = db.Carts
                          .Include(c => c.CartProducts)
                              .ThenInclude(cp => cp.Product)
@@ -374,7 +373,6 @@ namespace OnlineShop.Controllers
                 return RedirectToAction("ShowById", new { cartId });
             }
 
-            // Verificam stocul produselor din cos
             foreach (var cartProduct in cart.CartProducts)
             {
                 if (cartProduct.Quantity > cartProduct.Product.Stock)
@@ -385,36 +383,42 @@ namespace OnlineShop.Controllers
                 }
             }
 
-            // Cream comanda
-            var newOrder = new Order
-            {
-                CartId = cart.CartId,
-                OrderDate = DateTime.Now,
-                PaymentMethod = paymentMethod,
-                ShippingAddress = shippingAddress,
-                Status = "Pending"
-            };
+            // Totul este OK, redirectionam către metoda `New` din `OrdersController`
+            return RedirectToAction("New", "Orders", new { cartId });
+        }
 
-            db.Orders.Add(newOrder);
+        [HttpPost]
+        public IActionResult CheckStockAndRedirectByUser()
+        {
+            var userId = _userManager.GetUserId(User);
 
-            // Reducem stocul produselor
-            foreach (var cartProduct in cart.CartProducts)
+            var cart = db.Carts
+                         .Include(c => c.CartProducts)
+                             .ThenInclude(cp => cp.Product)
+                         .FirstOrDefault(c => c.UserId == userId && c.IsActive);
+
+            if (cart == null || !cart.CartProducts.Any())
             {
-                cartProduct.Product.Stock -= cartProduct.Quantity;
+                TempData["message"] = "No active cart found.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("ShowByUser");
             }
 
-            // Setam cosul ca inactiv dupa plasarea comenzii
-            cart.IsActive = false;
+            foreach (var cartProduct in cart.CartProducts)
+            {
+                if (cartProduct.Quantity > cartProduct.Product.Stock)
+                {
+                    TempData["message"] = $"Not enough stock for product {cartProduct.Product.Title}. Available: {cartProduct.Product.Stock}.";
+                    TempData["messageType"] = "alert-danger";
+                    return RedirectToAction("ShowByUser");
+                }
+            }
 
-            // Salvam modificarile in baza de date
-            db.SaveChanges();
-
-            TempData["message"] = "Order placed successfully.";
-            TempData["messageType"] = "alert-success";
-
-            // Redirectionam catre o pagina de succes sau index
-            return RedirectToAction("Index", "Products");
+            // Totul este OK, redirectionam către metoda `New` din `OrdersController`
+            return RedirectToAction("New", "Orders", new { cartId = cart.CartId });
         }
+
+
 
 
 

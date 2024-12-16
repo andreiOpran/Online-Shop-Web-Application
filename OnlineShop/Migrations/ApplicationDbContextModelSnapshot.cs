@@ -236,6 +236,9 @@ namespace OnlineShop.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CartId"));
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
 
@@ -258,6 +261,9 @@ namespace OnlineShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id", "ProductId", "CartId");
@@ -284,6 +290,36 @@ namespace OnlineShop.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("OnlineShop.Models.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("OrderId"));
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ShippingAddress")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("OnlineShop.Models.Product", b =>
@@ -352,7 +388,7 @@ namespace OnlineShop.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Rating")
@@ -449,9 +485,18 @@ namespace OnlineShop.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("OnlineShop.Models.Order", b =>
+                {
+                    b.HasOne("OnlineShop.Models.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId");
+
+                    b.Navigation("Cart");
+                });
+
             modelBuilder.Entity("OnlineShop.Models.Product", b =>
                 {
-                    b.HasOne("OnlineShop.Models.Category", "category")
+                    b.HasOne("OnlineShop.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -461,16 +506,18 @@ namespace OnlineShop.Migrations
                         .WithMany("Products")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("User");
+                    b.Navigation("Category");
 
-                    b.Navigation("category");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineShop.Models.Review", b =>
                 {
                     b.HasOne("OnlineShop.Models.Product", "Product")
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OnlineShop.Models.ApplicationUser", "User")
                         .WithMany("Reviews")

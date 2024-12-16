@@ -1,0 +1,84 @@
+@model IEnumerable<OnlineShop.Models.Order>
+
+    @if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
+    </div>
+}
+
+    <h2 class="text-center mb-4" style="color: #5ba4ff;">Order History</h2>
+
+    <div class="container">
+        @foreach (var order in Model)
+    {
+        var statusColor = order.Status switch
+        {
+            "Pending" => "orange",
+            "Shipped" => "blue",
+            "Delivered" => "green",
+            "Canceled" => "red",
+            _ => "gray"
+        };
+
+        <div class="card mb-4 shadow-sm" style="max-width: 700px; margin: auto;">
+            <div class="card-header" style="background-color: #5ba4ff; color: white; text-align: center;">
+                <h4>Order ID: @order.OrderId</h4>
+            </div>
+            <div class="card-body">
+                <p><i class="bi bi-calendar"></i> <strong>Order Date:</strong> @order.OrderDate</p>
+                <p>
+                    <i class="bi bi-info-circle"></i> <strong>Status:</strong>
+                    <span style="color: @statusColor; font-weight: bold;">@order.Status</span>
+                </p>
+                <p><i class="bi bi-wallet2"></i> <strong>Payment Method:</strong> @order.PaymentMethod</p>
+                <p><i class="bi bi-house"></i> <strong>Shipping Address:</strong> @order.ShippingAddress</p>
+
+                
+                @if (order.Cart?.User != null)
+                {
+                <p><i class="bi bi-person"></i> <strong>Created by:</strong> @order.Cart.User.UserName</p>
+                <p><i class="bi bi-key"></i> <strong>User ID:</strong> @order.Cart.UserId</p>
+                }
+                else
+                {
+                <p><i class="bi bi-person-x"></i> User information not available</p>
+                }
+
+                <hr />
+                <h6>Products in Order:</h6>
+                @if (order.Cart != null && order.Cart.CartProducts != null)
+                {
+                <ul class="list-group mb-3">
+                    @foreach (var cartProduct in order.Cart.CartProducts)
+                        {
+                    <li class="list-group-item">
+                        <div>
+                            <p class="mb-1"><strong>Product:</strong> @cartProduct.Product.Title</p>
+                            <p class="mb-1">
+                                <strong>Price:</strong> $@cartProduct.Product.Price?.ToString("F2")
+                            </p>
+                            <p class="mb-1"><strong>Quantity:</strong> @cartProduct.Quantity</p>
+                        </div>
+                    </li>
+                        }
+                </ul>
+                }
+                else
+                {
+                <p>No products found in this order.</p>
+                }
+
+                <hr />
+                <h5 class="text-center">
+                    Total Price:
+                    <strong>
+                        $@(order.Cart.CartProducts
+                    .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity)
+                    .ToString("F2"))
+                    </strong>
+                </h5>
+            </div>
+        </div>
+    }
+    </div>

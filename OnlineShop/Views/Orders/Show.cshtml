@@ -1,57 +1,80 @@
 ﻿@if (TempData["message"] != null)
 {
-    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
-        @ViewBag.Message
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
     </div>
 }
 <br />
 
-<div class="card" style="max-width: 600px; margin: auto;">
+<div class="card" style="max-width: 700px; margin: auto;">
+    <div class="card-header" style="background-color: #5ba4ff; color: white; text-align: center;">
+        <h4>Order Details</h4>
+    </div>
     <div class="card-body">
-        <h3 class="card-title">Order ID: @Model.OrderId</h3>
-        <p><i class="bi bi-calendar"></i> Order Date: @Model.OrderDate</p>
-        <p style="color: @(Model.Status == "Pending" || Model.Status == "Processing" || Model.Status == "Shipped" ? "orange" : Model.Status == "Canceled" ? "red" : "green");">
-            Order Status: @Model.Status
+        <h5 class="card-title">Order ID: @Model.OrderId</h5>
+        <p><i class="bi bi-calendar"></i> <strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
+        <p>
+            <i class="bi bi-info-circle"></i> <strong>Status:</strong>
+            <span style="color: @(Model.Status == "Pending" || Model.Status == "Processing" || Model.Status == "Shipped" ? "orange" : Model.Status == "Canceled" ? "red" : "green");">
+                @Model.Status
+            </span>
         </p>
-        <p><i class="bi bi-wallet2"></i>Payment Method: @Model.PaymentMethod</p>
-        <p><i class="bi bi-house"></i>Shipping Address: @Model.ShippingAddress</p>
-        <p>Cart Number: @Model.CartId</p>
+        <p><i class="bi bi-wallet2"></i> <strong>Payment Method:</strong> @Model.PaymentMethod</p>
+        <p><i class="bi bi-house"></i> <strong>Shipping Address:</strong> @Model.ShippingAddress</p>
+        <p><i class="bi bi-cart-fill"></i> <strong>Cart ID:</strong> @Model.CartId</p>
+
         @if (Model.Cart != null && Model.Cart.User != null)
         {
-            <p>Username: @Model.Cart.User.UserName</p>
-            <p>ID: @Model.Cart.User.Id</p>
+            <p><i class="bi bi-person"></i> <strong>User:</strong> @Model.Cart.User.UserName</p>
+            <p><i class="bi bi-key"></i> <strong>User ID:</strong> @Model.Cart.User.Id</p>
         }
         else
         {
-            <p>User: Not available</p>
+            <p><i class="bi bi-person-x"></i> <strong>User:</strong> Not available</p>
         }
 
+        <hr />
+        <h6>Products in Order:</h6>
+        @if (Model.Cart.CartProducts != null)
+        {
+            <ul class="list-group mb-3">
+                @foreach (var cartProduct in Model.Cart.CartProducts)
+                {
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="mb-1"><strong>Product Name:</strong> @cartProduct.Product.Title</p>
+                                <p class="mb-1"><strong>Price:</strong> @cartProduct.Product.Price?.ToString("F2")</p>
+                                <p class="mb-1"><strong>Quantity:</strong> @cartProduct.Quantity</p>
+                            </div>
+                            <a asp-controller="Products" asp-action="Show" asp-route-id="@cartProduct.ProductId"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye"></i> View Details
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No products found in this order.</p>
+        }
 
-        <div class="d-flex flex-column align-items-start gap-2">
-            <a class="btn btn-success btn-sm text-center" style="background-color:#A74DBA; color: white; border: none; width: 150px;" asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.OrderId">
-                Edit Order
+        <hr />
+        <h5 class="text-center">Total Order Price: <strong>$@ViewBag.TotalPrice</strong></h5>
+        <div class="d-flex gap-2 justify-content-center mt-3">
+            <a asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.OrderId"
+               class="btn btn-outline-primary btn-sm"
+               style="min-width: 100px">
+                <i class="bi bi-pencil"></i> Edit Order
             </a>
-            <form method="post" asp-controller="Orders" asp-action="Delete" asp-route-id="@Model.OrderId">
-                <button class="btn btn-danger btn-sm text-center" style="background-color: #A74DBA; color: white; border: none; width: 150px;" type="submit">
-                    Delete Order
+            <form method="post" asp-controller="Orders" asp-action="Delete" asp-route-id="@Model.OrderId" style="margin: 0;">
+                <button class="btn btn-outline-danger btn-sm"
+                        style="min-width: 100px" type="submit">
+                    <i class="bi bi-x-circle"></i> Delete Order
                 </button>
             </form>
         </div>
-
-    <div class="d-flex flex-column gap-2 mt-3">
-        @foreach (var cartProduct in Model.Cart.CartProducts)
-        {
-            <div>
-                <p class="mb-1">Product ID: @cartProduct.ProductId</p>
-                <div class="d-flex gap-1 flex-wrap">
-                    <a asp-controller="Products" asp-action="Show" asp-route-id="@cartProduct.ProductId"
-                       class="btn btn-sm"
-                       style="background-color: #5ba4ff; color: white; border: none; width: 150px;">
-                            <i class="bi bi-eye"></i> View Product Details
-                    </a>
-                </div>
-            </div>
-        }
-    </div>
     </div>
 </div>
