@@ -2,16 +2,16 @@
 
 <div class="card shadow mt-4" style="max-width: 600px; margin: auto;">
     <div class="card-body">
-        <h3 class="card-title text-center">Place Order</h3>
+        <h3 class="card-title text-center">Edit Order</h3>
         <hr />
 
-        <form asp-controller="Orders" asp-action="PlaceOrder" method="post">
-            <input type="hidden" asp-for="CartId" />
+        <form asp-controller="Orders" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="OrderId" />
 
             <!-- Payment Method -->
             <div class="form-group mt-3">
-                <label style="font-weight: bold">Payment Method</label>
-                <select class="form-control" name="PaymentMethod">
+                <label asp-for="PaymentMethod" style="font-weight: bold">Payment Method</label>
+                <select class="form-control" asp-for="PaymentMethod">
                     <option value="" disabled selected>Select payment method</option>
                     <option value="Cash">Cash</option>
                     <option value="Card">Card</option>
@@ -20,15 +20,15 @@
 
             <!-- Shipping Address -->
             <div class="form-group mt-3">
-                <label style="font-weight: bold">Shipping Address</label>
-                <textarea class="form-control" name="ShippingAddress"
-                          placeholder="Enter your shipping address"></textarea>
+                <label asp-for="ShippingAddress" style="font-weight: bold">Shipping Address</label>
+                <textarea class="form-control" asp-for="ShippingAddress"
+                          placeholder="Enter your shipping address">@Model.ShippingAddress</textarea>
             </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn w-100 mt-4"
                     style="background-color: #5ba4ff; color: white; border: none;">
-                <i class="bi bi-box-arrow-in-right"></i> Place Order
+                <i class="bi bi-pencil-square"></i> Save Changes
             </button>
         </form>
     </div>

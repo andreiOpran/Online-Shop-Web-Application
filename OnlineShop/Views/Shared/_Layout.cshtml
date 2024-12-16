@@ -28,9 +28,9 @@
                         @*     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
                         @* </li> *@
                         @*
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </li>
                         *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
@@ -48,11 +48,20 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
                         </li>
                     </ul>
+
+                    <div class="d-flex justify-content-end align-items-center">
+                        <a asp-controller="Orders" asp-action="ShowOrderHistory" class="btn btn-outline-light me-2">
+                            <i class="bi bi-clock-history"></i> Order History
+                        </a>
+                    </div>
+
+
                     <div class="d-flex justify-content-end align-items-center">
                         <a asp-controller="Carts" asp-action="ShowByUser" class="btn btn-outline-light me-2 d-flex align-items-center">
                             <i class="bi bi-cart-fill me-1"></i> Cart
                         </a>
                     </div>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>
