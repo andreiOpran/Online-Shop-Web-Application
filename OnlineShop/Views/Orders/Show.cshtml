@@ -15,7 +15,11 @@
         <p><i class="bi bi-calendar"></i> <strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
         <p>
             <i class="bi bi-info-circle"></i> <strong>Status:</strong>
-            <span style="color: @(Model.Status == "Pending" || Model.Status == "Processing" || Model.Status == "Shipped" ? "orange" : Model.Status == "Canceled" ? "red" : "green");">
+            <span style="color: @(Model.Status == "Pending" ? "orange"
+                 : Model.Status == "Canceled" ? "red"
+                 : Model.Status == "Delivered" ? "green"
+                 : Model.Status == "Shipped" ? "blue"
+                 : "black");">
                 @Model.Status
             </span>
         </p>
