@@ -51,10 +51,16 @@ body {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+.navbar .nav-link,
+.navbar .navbar-brand {
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
 .navbar .nav-link:hover,
 .navbar .navbar-brand:hover {
-    color: black !important;
+    transform: scale(1.05); 
 }
+
 
 .darker-white {
     background-color: #f2f2f2; 
@@ -94,6 +100,7 @@ body {
     color: rgba(37, 117, 252, 0.9);
     text-decoration: none;
 }
+
 
 
 

@@ -17,7 +17,17 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand font-logo" asp-area="" asp-controller="Products" asp-action="Index">Online Shop</a>
+              
+
+                <a class="navbar-brand text-white fw-bold"
+                   style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-size: 24px;
+          letter-spacing: 1px;
+          transition: color 0.3s ease-in-out;"
+                   asp-area="" asp-controller="Products" asp-action="Index">
+                    OnlineShop
+                </a>
+
                 <button class="navbar-toggler font-logo" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,36 +42,90 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         *@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="New">New Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Carts" asp-action="Index">Carts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Products" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-box"></i> Products
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Products" asp-action="New" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-plus-square"></i> New Product
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Categories" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-tags"></i> Categories
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Carts" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-cart"></i> Carts
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Orders" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-receipt"></i> Orders
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Users" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-person-circle"></i>Users
+                                </a>
+                            </div>
+                        }
+                        else if (User.IsInRole("Editor"))
+                        {
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Products" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-box"></i> Products
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Products" asp-action="New" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-plus-square"></i> New Product
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Categories" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-tags"></i> Categories
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Products" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-box"></i> Products
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Categories" asp-action="Index" class="btn btn-outline-light me-2">
+                                    <i class="bi bi-tags"></i> Categories
+                                </a>
+                            </div>
+                        }
+                        
+
+
                     </ul>
 
+                    @if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("User"))
+                    {
                     <div class="d-flex justify-content-end align-items-center">
                         <a asp-controller="Orders" asp-action="ShowOrderHistory" class="btn btn-outline-light me-2">
                             <i class="bi bi-clock-history"></i> Order History
                         </a>
                     </div>
 
-
                     <div class="d-flex justify-content-end align-items-center">
                         <a asp-controller="Carts" asp-action="ShowByUser" class="btn btn-outline-light me-2 d-flex align-items-center">
-                            <i class="bi bi-cart-fill me-1"></i> Cart
+                            <i class="bi bi-cart"></i> Cart
                         </a>
-                    </div>
 
+                    </div>
+                    }
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -82,6 +146,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

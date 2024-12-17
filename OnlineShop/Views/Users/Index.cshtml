@@ -1,0 +1,64 @@
+﻿<br />
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
+    </div>
+}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var user in ViewBag.UsersList)
+    {
+        <div class="col">
+            <div class="card h-100 d-flex flex-column border-primary mb-3">
+                <div class="card-body d-flex flex-column">
+                    <!-- Card Header -->
+                    <h3 class="card-header mt-2">
+                        <i class="bi bi-person-circle"></i> Username: @user.UserName
+                    </h3>
+
+                    <br />
+
+                    <!-- User Details -->
+                    <p><i class="bi bi-envelope"></i> Email: @user.Email</p>
+
+                    @if (user.FirstName != null)
+                    {
+                        <p><i class="bi bi-person"></i> First Name: @user.FirstName</p>
+                    }
+
+                    @if (user.LastName != null)
+                    {
+                        <p><i class="bi bi-person"></i> Last Name: @user.LastName</p>
+                    }
+
+                    @if (user.PhoneNumber != null)
+                    {
+                        <p><i class="bi bi-phone"></i> Phone Number: @user.PhoneNumber</p>
+                    }
+
+                    <!-- Buttons Section -->
+                    <div class="mt-3">
+                        <div class="d-flex flex-column gap-2">
+                            <!-- Edit User Button -->
+                            <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
+                               class="btn btn-sm w-100"
+                               style="background-color: rgba(37, 117, 252, 0.9); color: white; border: none;">
+                                <i class="bi bi-pencil"></i> Edit User
+                            </a>
+
+                            <!-- View User Button -->
+                            <a asp-controller="Users" asp-action="Show" asp-route-id="@user.Id"
+                               class="btn btn-sm w-100"
+                               style="background-color: rgba(106, 17, 203, 0.9); color: white; border: none;">
+                                <i class="bi bi-eye"></i> View User
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />

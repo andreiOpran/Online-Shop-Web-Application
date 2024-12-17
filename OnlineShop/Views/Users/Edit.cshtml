@@ -1,0 +1,82 @@
+﻿@model OnlineShop.Models.ApplicationUser
+
+<div class="card border-primary shadow-sm mt-4" style="max-width: 600px; margin: auto;">
+    <!-- Card Header -->
+    <div class="card-header bg-primary text-white text-center">
+        <h4 class="mb-0">Edit User</h4>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body">
+        <form asp-controller="Users" asp-action="Edit" method="post" asp-route-id="@Model.Id">
+
+            <!-- Username -->
+            <div class="form-group mt-3">
+                <label asp-for="UserName" class="fw-bold">
+                    <i class="bi bi-person"></i> Username
+                </label>
+                <input asp-for="UserName" class="form-control" placeholder="Enter username" />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mt-3">
+                <label asp-for="Email" class="fw-bold">
+                    <i class="bi bi-envelope"></i> Email
+                </label>
+                <input asp-for="Email" class="form-control" placeholder="Enter email" />
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group mt-3">
+                <label asp-for="PhoneNumber" class="fw-bold">
+                    <i class="bi bi-phone"></i> Phone Number
+                </label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" />
+            </div>
+
+            <!-- First Name -->
+            <div class="form-group mt-3">
+                <label asp-for="FirstName" class="fw-bold">
+                    <i class="bi bi-person"></i> First Name
+                </label>
+                <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group mt-3">
+                <label asp-for="LastName" class="fw-bold">
+                    <i class="bi bi-person"></i> Last Name
+                </label>
+                <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+            </div>
+
+            <!-- Select Role -->
+            <div class="form-group mt-3">
+                <label class="fw-bold">
+                    <i class="bi bi-card-list"></i> Select Role
+                </label>
+                <select name="newRole" class="form-select">
+                    <option selected>Select role</option>
+                    @foreach (var role in ViewBag.AllRoles)
+                    {
+                        if (ViewBag.UserRole == role.Value)
+                        {
+                            <option selected="selected" value="@role.Value">@role.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@role.Value">@role.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

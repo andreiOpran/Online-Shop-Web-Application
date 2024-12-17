@@ -1,35 +1,45 @@
 ﻿@model OnlineShop.Models.Order
 
-<div class="card shadow mt-4" style="max-width: 600px; margin: auto;">
-    <div class="card-body">
-        <h3 class="card-title text-center">Edit Order</h3>
-        <hr />
+<div class="card border-primary shadow-sm mt-4" style="max-width: 600px; margin: auto;">
+    <!-- Card Header -->
+    <div class="card-header bg-primary text-white text-center">
+        <h4 class="mb-0">Edit Order</h4>
+    </div>
 
+    <!-- Card Body -->
+    <div class="card-body">
         <form asp-controller="Orders" asp-action="Edit" method="post">
             <input type="hidden" asp-for="OrderId" />
 
             <!-- Payment Method -->
             <div class="form-group mt-3">
-                <label asp-for="PaymentMethod" style="font-weight: bold">Payment Method</label>
-                <select class="form-control" asp-for="PaymentMethod">
-                    <option value="" disabled selected>Select payment method</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Card">Card</option>
+                <label asp-for="PaymentMethod" class="fw-bold">
+                    <i class="bi bi-wallet2"></i> Payment Method
+                </label>
+                <select asp-for="PaymentMethod" class="form-select">
+                    <option value="" disabled>Select payment method</option>
+                    <option value="Cash" selected="@(Model.PaymentMethod == "Cash")">Cash</option>
+                    <option value="Card" selected="@(Model.PaymentMethod == "Card")">Card</option>
                 </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
 
             <!-- Shipping Address -->
             <div class="form-group mt-3">
-                <label asp-for="ShippingAddress" style="font-weight: bold">Shipping Address</label>
-                <textarea class="form-control" asp-for="ShippingAddress"
+                <label asp-for="ShippingAddress" class="fw-bold">
+                    <i class="bi bi-house"></i> Shipping Address
+                </label>
+                <textarea asp-for="ShippingAddress" class="form-control"
                           placeholder="Enter your shipping address">@Model.ShippingAddress</textarea>
+                <span asp-validation-for="ShippingAddress" class="text-danger"></span>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn w-100 mt-4"
-                    style="background-color: #5ba4ff; color: white; border: none;">
-                <i class="bi bi-pencil-square"></i> Save Changes
-            </button>
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Save Changes
+                </button>
+            </div>
         </form>
     </div>
 </div>
