@@ -1,11 +1,12 @@
 ﻿@if (TempData["message"] != null)
 {
-    <div class="alert @ViewBag.Alert p-3 rounded-3 text-center mb-5">
-        @ViewBag.Message
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
     </div>
 }
 
 <br />
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var cart in ViewBag.Carts)
@@ -16,8 +17,16 @@
                     <h3 class="card-header mt-2">Cart ID: @cart.CartId</h3>
                     <br />
 
-                    <p><i class="bi bi-person"></i> Created by: @cart.User.UserName</p>
+                    <p><i class="bi bi-person-circle"></i> User: @cart.User.UserName</p>
                     <p><i class="bi bi-key"></i> User ID: @cart.UserId</p>
+
+                    <!-- Cart Status -->
+                    <p>
+                        <i class="bi bi-check-circle"></i> Cart Status:
+                        <span style="color: @(cart.IsActive ? "green" : "red");">
+                            @(cart.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </p>
 
                     <br />
                     <h4>Products in Cart:</h4>
@@ -30,7 +39,7 @@
                                     <div class="card-body">
                                         <p class="mb-1">Product ID: @cartProduct.ProductId</p>
                                         <p class="mb-1">Quantity: @cartProduct.Quantity</p>
-                                        <div class="d-flex flex-column gap-1">                                            
+                                        <div class="d-flex flex-column gap-1">
                                             <a asp-controller="Products" asp-action="Show" asp-route-id="@cartProduct.ProductId"
                                                class="btn btn-sm btn-primary w-100" style="background-color:rgba(37, 117, 252, 0.9);">
                                                 <i class="bi bi-eye"></i> View Product Details

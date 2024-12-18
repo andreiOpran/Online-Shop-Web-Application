@@ -12,7 +12,7 @@ using static OnlineShop.Models.CartProducts;
 
 namespace OnlineShop.Controllers
 {
-    [Authorize]
+    
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext db;
@@ -415,10 +415,18 @@ namespace OnlineShop.Controllers
         [HttpPost]
         public IActionResult AddToCart(int productId)
         {
+            // Verificam daca utilizatorul este logat
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["message"] = "You need to log in or register to add products to the cart.";
+                TempData["messageType"] = "alert-warning";
+                return Redirect("/Identity/Account/Register"); // Redirectionam catre pagina de inregistrare
+            }
+
             // Preluam utilizatorul curent
             var userId = _userManager.GetUserId(User);
 
-            // Verificam dacă utilizatorul are un cos activ
+            // Verificam daca utilizatorul are un cos activ
             var cart = db.Carts.FirstOrDefault(c => c.UserId == userId && c.IsActive);
 
             // Daca nu exista un cos activ, cream unul nou
@@ -443,7 +451,7 @@ namespace OnlineShop.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Verificam dacă produsul are stoc suficient
+            // Verificam daca produsul are stoc suficient
             var cartProduct = db.CartProducts.FirstOrDefault(cp => cp.CartId == cart.CartId && cp.ProductId == productId);
 
             // Daca produsul nu este deja in cos, presupunem ca dorim sa adaugam 1
@@ -474,7 +482,7 @@ namespace OnlineShop.Controllers
                 cartProduct.Quantity++;
             }
 
-            // Salvam modificarile în baza de date (fara să scadem din stoc aici)
+            // Salvam modificarile in baza de date
             db.SaveChanges();
 
             TempData["message"] = "The product has been added to your cart."; // Produsul a fost adaugat in cos
@@ -482,6 +490,7 @@ namespace OnlineShop.Controllers
 
             return RedirectToAction("Index");
         }
+
 
 
 
