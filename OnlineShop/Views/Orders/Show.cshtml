@@ -8,11 +8,11 @@
 <br />
 
 <div class="card border-primary mb-5" style="max-width: 700px; margin: auto;">
-    <div class="card-header bg-primary text-white text-center">
+    <div class="card-header text-white text-center" style="background-color: rgba(37, 117, 252, 0.9);">
         <h4 class="mb-0">Order Details</h4>
     </div>
     <div class="card-body">
-        <!-- User Information -->
+
         @if (Model.Cart?.User != null)
         {
             <p><i class="bi bi-person-circle"></i> <strong>User:</strong> @Model.Cart.User.UserName</p>
@@ -24,7 +24,7 @@
         }
 
         <hr />
-        <!-- Order Details -->
+
         <h5 class="card-title mb-3">Order ID: @Model.OrderId</h5>
         <p><i class="bi bi-calendar"></i> <strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
         <p>
@@ -34,7 +34,7 @@
                  : Model.Status == "Delivered" ? "green"
                  : Model.Status == "Shipped" ? "blue"
                  : "black");">
-                @Model.Status
+                <strong>@Model.Status</strong>
             </span>
         </p>
         <p><i class="bi bi-wallet2"></i> <strong>Payment Method:</strong> @Model.PaymentMethod</p>
@@ -42,7 +42,7 @@
         <p><i class="bi bi-cart-fill"></i> <strong>Cart ID:</strong> @Model.CartId</p>
 
         <hr />
-        <!-- Products in Order -->
+
         <h6 class="fw-bold mb-3">Products in Order:</h6>
         @if (Model.Cart?.CartProducts != null)
         {
@@ -51,12 +51,13 @@
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
+                            <p class="mb-1"><strong>Product ID: </strong>@cartProduct.ProductId</p>
                             <p class="mb-1"><strong>Product Name:</strong> @cartProduct.Product.Title</p>
                             <p class="mb-1"><strong>Price:</strong> $@cartProduct.Product.Price?.ToString("F2")</p>
                             <p class="mb-1"><strong>Quantity:</strong> @cartProduct.Quantity</p>
                         </div>
                         <a asp-controller="Products" asp-action="Show" asp-route-id="@cartProduct.ProductId"
-                           class="btn btn-sm btn-primary" style="background-color:rgba(37, 117, 252, 0.9);">
+                           class="btn btn-sm btn-primary" style="background-color:rgba(37, 117, 252, 0.9); border:none;">
                             <i class="bi bi-eye"></i> View Details
                         </a>
                     </li>
@@ -73,11 +74,11 @@
         <h5 class="text-center mb-4">Total Order Price: <strong>$@ViewBag.TotalPrice</strong></h5>
 
         <div class="d-flex justify-content-center gap-3 mb-4">
-            <a asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.OrderId"
+            <a asp-controller="Orders" asp-action="Edit" asp-route-orderId="@Model.OrderId"
                class="btn btn-sm btn-outline-primary" style="min-width: 120px;">
                 <i class="bi bi-pencil"></i> Edit Order
             </a>
-            <form method="post" asp-controller="Orders" asp-action="Delete" asp-route-id="@Model.OrderId" style="margin: 0;">
+            <form method="post" asp-controller="Orders" asp-action="Delete" asp-route-orderId="@Model.OrderId" style="margin: 0;">
                 <button class="btn btn-sm btn-outline-danger" style="min-width: 120px;" type="submit">
                     <i class="bi bi-x-circle"></i> Delete Order
                 </button>

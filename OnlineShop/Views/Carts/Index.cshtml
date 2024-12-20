@@ -17,14 +17,14 @@
                     <h3 class="card-header mt-2">Cart ID: @cart.CartId</h3>
                     <br />
 
-                    <p><i class="bi bi-person-circle"></i> User: @cart.User.UserName</p>
-                    <p><i class="bi bi-key"></i> User ID: @cart.UserId</p>
+                    <p><i class="bi bi-person-circle"></i> <strong>User:</strong> @cart.User</p>
+                    <p><i class="bi bi-key"></i> <strong>User ID: </strong> @cart.UserId</p>
 
                     <!-- Cart Status -->
                     <p>
-                        <i class="bi bi-check-circle"></i> Cart Status:
+                        <i class="bi bi-check-circle"></i> <strong>Cart Status: </strong>
                         <span style="color: @(cart.IsActive ? "green" : "red");">
-                            @(cart.IsActive ? "Active" : "Inactive")
+                            <strong>@(cart.IsActive ? "Active" : "Inactive")</strong>
                         </span>
                     </p>
 

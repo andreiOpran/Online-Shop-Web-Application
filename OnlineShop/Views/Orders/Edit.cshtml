@@ -1,14 +1,66 @@
 ﻿@model OnlineShop.Models.Order
 
-<div class="card border-primary shadow-sm mt-4" style="max-width: 600px; margin: auto;">
+<style>
+    .btn-save-changes {
+        background-color: rgba(37, 117, 252, 0.9);
+        color: white;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-save-changes:hover {
+            background-color: rgba(106, 17, 203, 0.9);
+        }
+
+    .btn-add-product {
+        background-color: rgba(37, 117, 252, 0.9);
+        color: white;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+     
+    .card-header-edit-order {
+        background-color: rgba(37, 117, 252, 0.9);
+        color: white;
+    }
+
+    .section-title {
+        color: balck !important;
+    }
+
+    .input-group-text-custom {
+        background-color: rgba(37, 117, 252, 0.2);
+    }
+
+
+    .same-size-inputs .input-group-text,
+    .same-size-inputs .form-control,
+    .same-size-inputs .btn {
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"] p-3 rounded-3 text-center mb-5">
+        @TempData["message"]
+    </div>
+}
+
+<div class="card border-primary shadow-sm mt-4" style="max-width: 800px; margin: auto;">
     <!-- Card Header -->
-    <div class="card-header bg-primary text-white text-center">
-        <h4 class="mb-0">Edit Order</h4>
+    <div class="card-header card-header-edit-order text-center">
+        <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Edit Order</h4>
     </div>
 
     <!-- Card Body -->
-    <div class="card-body">
-        <form asp-controller="Orders" asp-action="Edit" method="post">
+    <div class="card-body" style="background-color: #f9f9f9;">
+        <!-- Form pentru PaymentMethod, ShippingAddress si Status -->
+        <form id="EditOrderForm" asp-controller="Orders" asp-action="Edit" method="post" class="mb-5">
             <input type="hidden" asp-for="OrderId" />
 
             <!-- Payment Method -->
@@ -18,8 +70,8 @@
                 </label>
                 <select asp-for="PaymentMethod" class="form-select">
                     <option value="" disabled>Select payment method</option>
-                    <option value="Cash" selected="@(Model.PaymentMethod == "Cash")">Cash</option>
-                    <option value="Card" selected="@(Model.PaymentMethod == "Card")">Card</option>
+                    <option value="Cash" selected="@(Model.PaymentMethod == "Cash" ? "selected" : null)">Cash</option>
+                    <option value="Card" selected="@(Model.PaymentMethod == "Card" ? "selected" : null)">Card</option>
                 </select>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
@@ -29,17 +81,113 @@
                 <label asp-for="ShippingAddress" class="fw-bold">
                     <i class="bi bi-house"></i> Shipping Address
                 </label>
-                <textarea asp-for="ShippingAddress" class="form-control"
-                          placeholder="Enter your shipping address">@Model.ShippingAddress</textarea>
+                <textarea asp-for="ShippingAddress" class="form-control" placeholder="Enter your shipping address">@Model.ShippingAddress</textarea>
                 <span asp-validation-for="ShippingAddress" class="text-danger"></span>
             </div>
 
-            <!-- Submit Button -->
-            <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-pencil-square"></i> Save Changes
-                </button>
+            <!-- Status -->
+            <div class="form-group mt-3">
+                <p class="bi bi-check-circle" style="font-weight: bold;">
+                    Status:
+                    <span style="color:
+                       @(Model.Status == "Pending" ? "orange" :
+                         Model.Status == "Shipped" ? "blue" :
+                         Model.Status == "Delivered" ? "green" :
+                         Model.Status == "Canceled" ? "red" : "black");">
+                        @Model.Status
+                    </span>
+                </p>
+                <select asp-for="Status" class="form-select">
+                    <option value="Pending" selected="@(Model.Status == "Pending" ? "selected" : null)">Pending</option>
+                    <option value="Shipped" selected="@(Model.Status == "Shipped" ? "selected" : null)">Shipped</option>
+                    <option value="Delivered" selected="@(Model.Status == "Delivered" ? "selected" : null)">Delivered</option>
+                    <option value="Canceled" selected="@(Model.Status == "Canceled" ? "selected" : null)">Canceled</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
         </form>
+
+        <!-- Lista de produse din coș -->
+        <h5 class="fw-bold text-center mb-4 section-title">
+            <i class="bi bi-bag"></i> Products in Cart
+        </h5>
+        <div class="table-responsive mb-5">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th style="width: 200px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Cart.CartProducts?.Any() == true)
+                    {
+                        foreach (var cartProduct in Model.Cart.CartProducts)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@cartProduct.Product.Title</td>
+                                <td>@cartProduct.Quantity</td>
+                                <td>@cartProduct.Product.Stock</td>
+                                <td>@($"${cartProduct.Product.Price:F2}")</td>
+                                <td>@($"${(cartProduct.Quantity * cartProduct.Product.Price):F2}")</td>
+                                <td>
+                                    <form method="post" asp-action="UpdateProductQuantity" asp-controller="Orders" class="d-flex justify-content-center align-items-center">
+                                        <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                        <input type="hidden" name="productId" value="@cartProduct.ProductId" />
+                                        <input type="number" name="newQuantity" class="form-control me-2" min="0" style="width:80px;" value="@cartProduct.Quantity" />
+                                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-arrow-up-square"></i> Update
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-muted">No products in this order.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Formular pentru a adauga un produs nou -->
+        <h5 class="fw-bold text-center mb-4 section-title">
+            <i class="bi bi-plus-square"></i> Add a New Product
+        </h5>
+        <form method="post" asp-controller="Orders" asp-action="AddProductToOrder" class="p-3 border rounded-3 bg-light">
+            <input type="hidden" name="orderId" value="@Model.OrderId" />
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6 same-size-inputs">
+                    <div class="input-group">
+                        <span class="input-group-text input-group-text-custom"><i class="bi bi-upc-scan"></i></span>
+                        <input type="number" name="productId" class="form-control" placeholder="Enter Product ID" required />
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex justify-content-end same-size-inputs">
+                    <div class="input-group me-2">
+                        <span class="input-group-text input-group-text-custom"><i class="bi bi-cart"></i></span>
+                        <input type="number" name="quantity" class="form-control" placeholder="Enter Quantity" required />
+                    </div>
+                    <button type="submit" class="btn btn-add-product d-flex align-items-center justify-content-center px-4" style="white-space: nowrap;">
+                        <i class="bi bi-cart-plus me-2"></i>Add Product
+                    </button>
+
+                </div>
+            </div>
+        </form>
+
+        <!-- Buton Save Changes la final -->
+        <div class="d-grid mt-4">
+            <button form="EditOrderForm" type="submit" class="btn btn-save-changes">
+                <i class="bi bi-save"></i> Save Changes
+            </button>
+        </div>
     </div>
 </div>

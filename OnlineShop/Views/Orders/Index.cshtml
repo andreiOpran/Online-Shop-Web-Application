@@ -23,18 +23,7 @@
                         <p><i class="bi bi-key"></i> <strong>User ID:</strong> @order.Cart.User.Id</p>
                     }
 
-                    <form method="post" asp-controller="Orders" asp-action="UpdateStatus">
-                        <input type="hidden" name="OrderId" value="@order.OrderId" />
-                        <div class="form-group">
-                            <label for="Status" style="font-weight: bold">Status</label>
-                            <select class="form-control" name="Status" style="color: black;" onchange="this.form.submit();">
-                                <option value="Pending" style="color: orange;" selected="@(order.Status == "Pending")">Pending</option>
-                                <option value="Shipped" style="color: blue;" selected="@(order.Status == "Shipped")">Shipped</option>
-                                <option value="Delivered" style="color: green;" selected="@(order.Status == "Delivered")">Delivered</option>
-                                <option value="Canceled" style="color: red;" selected="@(order.Status == "Canceled")">Canceled</option>
-                            </select>
-                        </div>
-                    </form>
+                   
                     <p class="bi bi-check-circle";class="mt-3" style="font-weight: bold;">
                         Status:
                         <span style="color:
@@ -73,7 +62,7 @@
                         <p>No products in this order.</p>
                     }
 
-                    <!-- View Order Details Button -->
+
                     <div class="mt-3">
                         <a asp-controller="Orders" asp-action="Show" asp-route-orderId="@order.OrderId"
                            class="btn btn-sm w-100 mt-auto"
