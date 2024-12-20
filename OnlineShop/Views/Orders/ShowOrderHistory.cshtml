@@ -7,7 +7,7 @@
     </div>
 }
 
-<h2 class="text-center mb-4" style="color: #5ba4ff;">Order History</h2>
+<h2 class="text-center mb-4" style="color:black;">Order History</h2>
 
 <div class="container">
     @foreach (var order in Model)
@@ -22,12 +22,10 @@
         };
 
         <div class="card mb-4 shadow-sm" style="max-width: 700px; margin: auto;">
-            <!-- Card Header -->
-            <div class="card-header bg-primary text-white text-center">
+            <div class="card-header text-white text-center" style="background-color: rgba(37, 117, 252, 0.9);">
                 <h5 class="mb-0">Order ID: @order.OrderId</h5>
             </div>
 
-            <!-- Card Body -->
             <div class="card-body">
                 <p><i class="bi bi-calendar"></i> <strong>Order Date:</strong> @order.OrderDate</p>
                 <p>

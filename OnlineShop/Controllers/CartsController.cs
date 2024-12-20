@@ -124,7 +124,6 @@ namespace OnlineShop.Controllers
             // Returnam cosul catre un alt view, numit "ShowById"
             return View("ShowById", cart);
         }
-
         [HttpPost]
         [Route("Carts/IncreaseQuantityShowById/{cartId}")]
         [Authorize(Roles = "Admin")]
@@ -132,7 +131,7 @@ namespace OnlineShop.Controllers
         {
             decimal totalPrice;
 
-            // Gasim cosul activ prin ID si includem utilizatorul
+            // Gasim cosul prin ID si includem utilizatorul
             var cart = db.Carts
                          .Include(c => c.CartProducts)
                              .ThenInclude(cp => cp.Product)
@@ -146,16 +145,17 @@ namespace OnlineShop.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Calculam totalul pretului
+            totalPrice = cart.CartProducts
+                             .Where(cp => cp.Product != null)
+                             .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
+
+            ViewBag.TotalPrice = totalPrice.ToString("F2");
+
             // Verificam daca cosul este activ
             if (!cart.IsActive)
             {
-                totalPrice = cart.CartProducts
-                                   .Where(cp => cp.Product != null)
-                                   .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
-
-                ViewBag.TotalPrice = totalPrice.ToString("F2");
-
-                TempData["message"] = "This cart is not active. You cannot modify its products.";
+                TempData["message"] = "This cart is associated with an order. To modify it, the order must be canceled or updated.";
                 TempData["messageType"] = "alert-danger";
                 return View("ShowById", cart);
             }
@@ -184,10 +184,10 @@ namespace OnlineShop.Controllers
             // Salvam modificarile
             db.SaveChanges();
 
-            // Calculam totalul pretului
+            // Recalculam totalul pretului dupa modificare
             totalPrice = cart.CartProducts
-                                     .Where(cp => cp.Product != null)
-                                     .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
+                             .Where(cp => cp.Product != null)
+                             .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
 
             ViewBag.TotalPrice = totalPrice.ToString("F2");
 
@@ -197,14 +197,14 @@ namespace OnlineShop.Controllers
             return View("ShowById", cart);
         }
 
-
         [HttpPost]
         [Route("Carts/DecreaseQuantityShowById/{cartId}")]
         [Authorize(Roles = "Admin")]
         public IActionResult DecreaseQuantityShowById(int productId, int cartId)
         {
             decimal totalPrice;
-            // Gasim cosul activ prin ID si includem utilizatorul
+
+            // Gasim cosul prin ID si includem utilizatorul
             var cart = db.Carts
                          .Include(c => c.CartProducts)
                              .ThenInclude(cp => cp.Product)
@@ -218,16 +218,17 @@ namespace OnlineShop.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Calculam totalul pretului
+            totalPrice = cart.CartProducts
+                             .Where(cp => cp.Product != null)
+                             .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
+
+            ViewBag.TotalPrice = totalPrice.ToString("F2");
+
             // Verificam daca cosul este activ
             if (!cart.IsActive)
             {
-                totalPrice = cart.CartProducts
-                                   .Where(cp => cp.Product != null)
-                                   .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
-
-                ViewBag.TotalPrice = totalPrice.ToString("F2");
-
-                TempData["message"] = "This cart is not active. You cannot modify its products.";
+                TempData["message"] = "This cart is associated with an order. To modify it, the order must be canceled or updated.";
                 TempData["messageType"] = "alert-danger";
                 return View("ShowById", cart);
             }
@@ -259,22 +260,15 @@ namespace OnlineShop.Controllers
             // Salvam modificarile
             db.SaveChanges();
 
-            // Calculam totalul pretului
+            // Recalculam totalul pretului dupa modificare
             totalPrice = cart.CartProducts
-                                     .Where(cp => cp.Product != null)
-                                     .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
+                             .Where(cp => cp.Product != null)
+                             .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
 
             ViewBag.TotalPrice = totalPrice.ToString("F2");
 
             return View("ShowById", cart);
         }
-
-
-
-
-
-
-
 
         [HttpPost]
         [Authorize(Roles = "Admin,Editor,User")]
@@ -288,6 +282,12 @@ namespace OnlineShop.Controllers
                              .ThenInclude(cp => cp.Product)
                          .Include(c => c.User)
                          .FirstOrDefault(c => c.UserId == userId && c.IsActive);
+
+            // Calculam Total Price chiar daca apar erori
+            decimal totalPrice = cart?.CartProducts
+                                    .Where(cp => cp.Product != null)
+                                    .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity) ?? 0;
+            ViewBag.TotalPrice = totalPrice.ToString("F2");
 
             if (cart == null)
             {
@@ -305,7 +305,7 @@ namespace OnlineShop.Controllers
                 return View("ShowByUser", cart);
             }
 
-            // Verificam daca exista suficiente produse in stoc
+            // Verificam stocul
             var product = db.Products.FirstOrDefault(p => p.ProductId == productId);
             if (product == null || product.Stock < cartProduct.Quantity + 1)
             {
@@ -314,28 +314,21 @@ namespace OnlineShop.Controllers
                 return View("ShowByUser", cart);
             }
 
-            // Crestem cantitatea produsului in cos
+            // Crestem cantitatea
             cartProduct.Quantity++;
-
-            // Salvam modificarile in baza de date
             db.SaveChanges();
 
-            // Recalculam totalul pretului pentru produsele din cos
-            decimal totalPrice = cart.CartProducts
-                                     .Where(cp => cp.Product != null)
-                                     .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
-
-            // Setam totalul in ViewBag cu format
+            // Recalculam totalul
+            totalPrice = cart.CartProducts
+                             .Where(cp => cp.Product != null)
+                             .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
             ViewBag.TotalPrice = totalPrice.ToString("F2");
 
             TempData["message"] = "Product quantity increased in cart.";
             TempData["messageType"] = "alert-success";
 
-            // Returnam aceleasi date pentru view-ul `ShowByUser`
             return View("ShowByUser", cart);
         }
-
-
 
 
         [HttpPost]
@@ -351,6 +344,12 @@ namespace OnlineShop.Controllers
                          .Include(c => c.User)
                          .FirstOrDefault(c => c.UserId == userId && c.IsActive);
 
+            // Calculam Total Price chiar daca apar erori
+            decimal totalPrice = cart?.CartProducts
+                                    .Where(cp => cp.Product != null)
+                                    .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity) ?? 0;
+            ViewBag.TotalPrice = totalPrice.ToString("F2");
+
             if (cart == null)
             {
                 TempData["message"] = "No active cart found.";
@@ -367,10 +366,9 @@ namespace OnlineShop.Controllers
                 return View("ShowByUser", cart);
             }
 
-            // Reducem cantitatea produsului in cos
+            // Reducem cantitatea
             cartProduct.Quantity--;
 
-            // Daca cantitatea ajunge la 0, eliminam produsul din cos
             if (cartProduct.Quantity <= 0)
             {
                 db.CartProducts.Remove(cartProduct);
@@ -383,20 +381,18 @@ namespace OnlineShop.Controllers
                 TempData["messageType"] = "alert-success";
             }
 
-            // Salvam modificarile in baza de date
             db.SaveChanges();
 
-            // Recalculam totalul pretului pentru produsele ramase in coș
-            decimal totalPrice = cart.CartProducts
-                                     .Where(cp => cp.Product != null)
-                                     .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
-
-            // Setam totalul în ViewBag cu format
+            // Recalculam totalul
+            totalPrice = cart.CartProducts
+                             .Where(cp => cp.Product != null)
+                             .Sum(cp => (cp.Product.Price ?? 0) * cp.Quantity);
             ViewBag.TotalPrice = totalPrice.ToString("F2");
 
-            // Returnam aceleași date pentru view-ul `ShowByUser`
             return View("ShowByUser", cart);
         }
+
+
 
         [HttpPost]
         [Authorize(Roles = "Admin")]

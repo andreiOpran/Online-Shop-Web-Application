@@ -13,6 +13,7 @@ using static NuGet.Packaging.PackagingConstants;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
+using static OnlineShop.Models.CartProducts;
 namespace OnlineShop.Controllers
 
 {
@@ -351,98 +352,6 @@ namespace OnlineShop.Controllers
             return RedirectToAction("Index", "Orders");
         }
 
-
-
-
-        [HttpGet]
-        [Route("Orders/Edit/{orderId}")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Edit(int orderId)
-        {
-            var sanitizer = new HtmlSanitizer(); // Inițializăm sanitizer-ul
-
-            // Gasim comanda dupa ID
-            var order = db.Orders.FirstOrDefault(o => o.OrderId == orderId);
-
-            if (order == null)
-            {
-                TempData["message"] = "Order not found.";
-                TempData["messageType"] = "alert-danger";
-                return RedirectToAction("Index");
-            }
-
-            // Curățăm datele din baza de date înainte de a le trimite în View
-            order.PaymentMethod = sanitizer.Sanitize(order.PaymentMethod);
-            order.ShippingAddress = sanitizer.Sanitize(order.ShippingAddress);
-
-            // Returnam comanda catre view
-            return View(order);
-        }
-
-        [HttpPost]
-        [Route("Orders/Edit/{orderId}")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Edit(Order updatedOrder)
-        {
-            var sanitizer = new HtmlSanitizer(); // Inițializăm sanitizer-ul
-
-            // Sanitizam input-urile care vin din formular
-            updatedOrder.PaymentMethod = sanitizer.Sanitize(updatedOrder.PaymentMethod);
-            updatedOrder.ShippingAddress = sanitizer.Sanitize(updatedOrder.ShippingAddress);
-
-            // Verificam daca modelul este valid
-            if (!ModelState.IsValid)
-            {
-                TempData["message"] = "Please correct the errors in the form.";
-                TempData["messageType"] = "alert-danger";
-                return View(updatedOrder); // Returnam formularul cu datele introduse
-            }
-
-            // Gasim comanda existenta
-            var order = db.Orders.FirstOrDefault(o => o.OrderId == updatedOrder.OrderId);
-
-            if (order == null)
-            {
-                TempData["message"] = "Order not found.";
-                TempData["messageType"] = "alert-danger";
-                return RedirectToAction("Index");
-            }
-
-            // Actualizam doar campurile editabile
-            order.PaymentMethod = updatedOrder.PaymentMethod;
-            order.ShippingAddress = updatedOrder.ShippingAddress;
-
-            // Salvam modificarile
-            db.SaveChanges();
-
-            TempData["message"] = "Order updated successfully.";
-            TempData["messageType"] = "alert-success";
-
-            // Redirectionam catre pagina de detalii
-            return RedirectToAction("Show", new { orderId = order.OrderId });
-        }
-
-
-        [HttpPost]
-        [Route("Orders/UpdateStatus")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult UpdateStatus(int OrderId, string Status)
-        {
-            var order = db.Orders.FirstOrDefault(o => o.OrderId == OrderId);
-            if (order == null)
-            {
-                TempData["message"] = "Order not found.";
-                TempData["messageType"] = "alert-danger";
-                return RedirectToAction("Index");
-            }
-            order.Status = Status;
-            db.SaveChanges();
-            TempData["message"] = $"Order status updated to '{Status}'.";
-            TempData["messageType"] = "alert-success";
-            return RedirectToAction("Index");
-        }
-
-
         [HttpGet]
         [Authorize(Roles = "Admin,Editor,User")]
         public IActionResult ShowOrderHistory()
@@ -477,5 +386,260 @@ namespace OnlineShop.Controllers
 
             return View("ShowOrderHistory", orders);
         }
+
+
+        [HttpGet]
+        [Route("Orders/Edit/{orderId}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int orderId)
+        {
+            var order = db.Orders
+                          .Include(o => o.Cart)
+                              .ThenInclude(c => c.CartProducts)
+                                  .ThenInclude(cp => cp.Product)
+                          .FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                TempData["message"] = "Order not found.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index", "Orders");
+            }
+
+            return View(order); // Trimitem comanda în View pentru editare
+        }
+
+
+        [HttpPost]
+        [Route("Orders/Edit/{orderId}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(Order order)
+        {
+            var sanitizer = new HtmlSanitizer();
+            order.PaymentMethod = sanitizer.Sanitize(order.PaymentMethod);
+            order.ShippingAddress = sanitizer.Sanitize(order.ShippingAddress);
+
+            if (!ModelState.IsValid)
+            {
+                // Reincarci din baza de date pentru a avea Cart si CartProducts
+                var fullOrder = db.Orders
+                                  .Include(o => o.Cart)
+                                      .ThenInclude(c => c.CartProducts)
+                                          .ThenInclude(cp => cp.Product)
+                                  .FirstOrDefault(o => o.OrderId == order.OrderId);
+
+                if (fullOrder == null)
+                {
+                    TempData["message"] = "Order not found.";
+                    TempData["messageType"] = "alert-danger";
+                    return RedirectToAction("Index", "Orders");
+                }
+
+                // Suprascrii campurile editabile cu cele trimise din formular
+                fullOrder.PaymentMethod = order.PaymentMethod;
+                fullOrder.ShippingAddress = order.ShippingAddress;
+                fullOrder.Status = order.Status; // Actualizare și a câmpului Status
+
+                // Returnezi acest fullOrder către View
+                return View(fullOrder);
+            }
+
+            var existingOrder = db.Orders.FirstOrDefault(o => o.OrderId == order.OrderId);
+            if (existingOrder == null)
+            {
+                TempData["message"] = "Order not found.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index", "Orders");
+            }
+
+            existingOrder.PaymentMethod = order.PaymentMethod;
+            existingOrder.ShippingAddress = order.ShippingAddress;
+            existingOrder.Status = order.Status; // Actualizare și a câmpului Status
+
+            db.SaveChanges();
+
+            TempData["message"] = "Order updated successfully!";
+            TempData["messageType"] = "alert-success";
+            return RedirectToAction("Show", "Orders", new { orderId = order.OrderId });
+        }
+
+
+        [HttpPost]
+        [Route("Orders/UpdateProductQuantity")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult UpdateProductQuantity([FromForm] int orderId, [FromForm] int productId)
+        {
+
+            // Incercare de a analiza noua valoare introdusa pentru cantitate
+            string newQuantityString = Request.Form["newQuantity"];
+            if (!int.TryParse(newQuantityString, out int newQuantity))
+            {
+                // Non-numeric input
+                TempData["message"] = "Invalid quantity. Please enter a numeric value.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+
+            // Preia comanda si produsele asociate
+            var order = db.Orders
+                          .Include(o => o.Cart)
+                              .ThenInclude(c => c.CartProducts)
+                                  .ThenInclude(cp => cp.Product)
+                          .FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                TempData["message"] = "Order not found.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            var cartProduct = order.Cart?.CartProducts?.FirstOrDefault(cp => cp.ProductId == productId);
+            if (cartProduct == null)
+            {
+                TempData["message"] = "Product not found in cart.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            int oldQuantity = cartProduct.Quantity;
+            int difference = newQuantity - oldQuantity;
+
+
+            // Daca noua cantitate este 0, elimina produsul si restabileste stocul acestuia
+            if (newQuantity == 0)
+            {
+                if (oldQuantity > 0 && cartProduct.Product?.Stock != null)
+                {
+                    cartProduct.Product.Stock += oldQuantity;
+                }
+
+                db.Remove(cartProduct);
+                db.SaveChanges();
+
+                TempData["message"] = "The product has been removed from the order.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            // Daca noua cantitate este mai mare decat cea veche, scade stocul
+            if (difference > 0)
+            {
+                if (cartProduct.Product?.Stock == null || cartProduct.Product.Stock < difference)
+                {
+                    TempData["message"] = $"Not enough stock for product {cartProduct.Product?.Title}. Available: {cartProduct.Product?.Stock}.";
+                    TempData["messageType"] = "alert-danger";
+                    return RedirectToAction("Edit", new { orderId });
+                }
+
+                cartProduct.Product.Stock -= difference;
+                cartProduct.Quantity = newQuantity;
+            }
+            else if (difference < 0)
+            {
+                // Noua cantitate este mai mica, creste stocul
+                int restoreAmount = Math.Abs(difference);
+                if (cartProduct.Product?.Stock != null)
+                {
+                    cartProduct.Product.Stock += restoreAmount;
+                }
+                cartProduct.Quantity = newQuantity;
+            }
+            else
+            {
+                // difference == 0 inseamna ca nu exista nicio modificare
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            db.SaveChanges();
+
+            TempData["message"] = "Product quantity updated successfully!";
+            TempData["messageType"] = "alert-success";
+
+            return RedirectToAction("Edit", new { orderId });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("Orders/AddProductToOrder")]
+        public IActionResult AddProductToOrder(int orderId, int productId, int quantity)
+        {
+            if (quantity <= 0)
+            {
+                TempData["message"] = "Quantity must be greater than zero.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            if (productId <= 0)
+            {
+                TempData["message"] = "Product id must be greater than zero.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            var order = db.Orders
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.CartProducts)
+                .FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                TempData["message"] = "Order not found.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            var product = db.Products.FirstOrDefault(p => p.ProductId == productId);
+            if (product == null)
+            {
+                TempData["message"] = "Product not found.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            if (product.Stock == null || product.Stock < quantity)
+            {
+                TempData["message"] = $"Not enough stock for product {product.Title}.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Edit", new { orderId });
+            }
+
+            // Verificam daca produsul exista deja in lista
+            var existingCartProduct = order.Cart.CartProducts
+                .FirstOrDefault(cp => cp.ProductId == productId);
+
+            if (existingCartProduct != null)
+            {
+                // Produsul exista deja, marim doar cantitatea
+                existingCartProduct.Quantity += quantity;
+                product.Stock -= quantity; // scadem stocul cu cantitatea nou adaugata
+            }
+            else
+            {
+                // Cream un nou CartProduct
+                var newCartProduct = new CartProducts.CartProduct
+                {
+                    CartId = order.Cart.CartId,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+
+                product.Stock -= quantity; // scadem stocul
+                db.CartProducts.Add(newCartProduct);
+            }
+
+            db.SaveChanges();
+
+            TempData["message"] = "Product added successfully!";
+            TempData["messageType"] = "alert-success";
+            return RedirectToAction("Edit", new { orderId });
+        }
+
+
+
+
+
     }
 }

@@ -1,17 +1,14 @@
 ﻿@model OnlineShop.Models.Order
 
 <div class="card border-primary shadow-sm mt-4" style="max-width: 600px; margin: auto;">
-    <!-- Card Header -->
-    <div class="card-header bg-primary text-white text-center">
+    <div class="card-header text-white text-center" style="background-color: rgba(37, 117, 252, 0.9);">
         <h4 class="mb-0">Place Order</h4>
     </div>
 
-    <!-- Card Body -->
     <div class="card-body">
         <form asp-controller="Orders" asp-action="PlaceOrder" method="post">
             <input type="hidden" asp-for="CartId" />
 
-            <!-- Payment Method -->
             <div class="form-group mt-3">
                 <label asp-for="PaymentMethod" class="fw-bold">
                     <i class="bi bi-wallet2"></i> Payment Method
@@ -24,7 +21,6 @@
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
 
-            <!-- Shipping Address -->
             <div class="form-group mt-3">
                 <label asp-for="ShippingAddress" class="fw-bold">
                     <i class="bi bi-house"></i> Shipping Address
@@ -34,7 +30,6 @@
                 <span asp-validation-for="ShippingAddress" class="text-danger"></span>
             </div>
 
-            <!-- Submit Button -->
             <div class="d-grid mt-4">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-box-arrow-in-right"></i> Place Order
