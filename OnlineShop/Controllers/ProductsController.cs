@@ -29,8 +29,6 @@ namespace OnlineShop.Controllers
 
         // se afiseaza lista de produse impreuna cu categoria
         // [HttpGet] implicit
-        // TODO
-        // [Authorize(Roles = "")]
         public IActionResult Index()
         {
             IQueryable<Product> products = db.Products.Include(p => p.Category)
@@ -58,7 +56,6 @@ namespace OnlineShop.Controllers
                                        p => p.Title.Contains(search) || p.Description.Contains(search)
                                        ).Select(p => p.ProductId).ToList();
 
-                // TODO - nu aduce toate rezultatele cand cauti numele categoriei
                 // cautare in categorii (CategoryName)
                 List<int> categoryIds = db.Categories.Where(
                       c => c.CategoryName.Contains(search)
@@ -142,7 +139,6 @@ namespace OnlineShop.Controllers
 
         // afisare un singur produs in functie de id imprepuna cu categoria
         // se preiau si review-urile produsului
-        //[Authorize(Roles = "Admin")]
         public IActionResult Show(int id)
         {
             Product product = db.Products.Include("Category")
@@ -156,6 +152,11 @@ namespace OnlineShop.Controllers
             {
                 return NotFound();
             }
+
+            
+            var isAdmin = User.IsInRole("Admin");
+            var isEditor = User.IsInRole("Editor");
+            ViewBag.ShowProductUserDetails = isAdmin || isEditor;
 
 
             if (TempData.ContainsKey("message"))
@@ -176,8 +177,7 @@ namespace OnlineShop.Controllers
 
             ViewBag.ReviewsCount = product.Reviews.Count();
 
-            // TODO - implementarea functiei SetAcessRights() 
-            // SetAccessRights();
+            SetAccessRights();
 
             return View(product);
         }
@@ -185,10 +185,17 @@ namespace OnlineShop.Controllers
 
         // adaugare review in DB
         [HttpPost]
-        // TODO
-        // [Authorize(Roles = "")]
         public IActionResult Show([FromForm] Review review)
         {
+
+            // Verificam daca utilizatorul este logat
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["message"] = "You need to log in or register to add a review.";
+                TempData["messageType"] = "alert-warning";
+                return Redirect("/Identity/Account/Register"); 
+            }
+
             review.CreatedDate = DateTime.Now;
 
             review.UserId = _userManager.GetUserId(User);
@@ -223,8 +230,7 @@ namespace OnlineShop.Controllers
                                              .Where(p => p.ProductId == review.ProductId)
                                              .First();
 
-                // TODO - implementarea functiei SetAcessRights()
-                // SetAccessRights();
+                SetAccessRights();
 
                 return View(product);
             }
@@ -233,8 +239,7 @@ namespace OnlineShop.Controllers
 
         // formular pentru adaugare produs + selectare categorie
         // [HttpGet] implicit
-        // TODO
-        // [Authorize(Roles = "")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult New()
         {
             Product product = new Product();
@@ -246,9 +251,8 @@ namespace OnlineShop.Controllers
         }
 
         // salvare produs in baza de date
-        // TODO
-        // [Authorize(Roles = "")]
         [HttpPost]
+        [Authorize(Roles = "Editor,Admin")]
         public async Task<IActionResult> New(Product product, IFormFile Image)
         {
             var sanitizer = new HtmlSanitizer();
@@ -289,8 +293,7 @@ namespace OnlineShop.Controllers
         // edit articol impreuna cu categoria sa (categoria se selecteaza din dropdown)
         // datele existente ale produsului se incarca in fromular
         // [HttpGet] implicit
-        // TODO
-        // [Authorize(Roles = "")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Edit(int id)
         {
             Product product = db.Products.Include("Category")
@@ -299,72 +302,72 @@ namespace OnlineShop.Controllers
 
             product.Categories = GetAllCategories();
 
-            // TODO
-            //if( /*User-ul are drepturi de editare*/)
-            //{
+            var userId = _userManager.GetUserId(User);
+            var isAdmin = User.IsInRole("Admin");
+
+            if(product.UserId != userId && !isAdmin)
+            {
+                TempData["message"] = "You do not have the rights to edit this product.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
             return View(product);
-            //}
-            //else
-            //{
-            //    TempData["message"] = "You do not have the rights to edit this product.";
-            //    TempData["messageType"] = "alert-danger";
-            //    return RedirectToAction("Index");
-            //}                       
+                
         }
 
         // salvare produs modificat in baza de date
         [HttpPost]
-        // TODO
-        // [Authorize(Roles = "")]
+        [Authorize(Roles = "Editor,Admin")]
         public async Task<IActionResult> Edit(int id, Product requestProduct, IFormFile? Image)
         {
             var sanitizer = new HtmlSanitizer();
 
             Product product = db.Products.Find(id);
 
+            var userId = _userManager.GetUserId(User);
+            var isAdmin = User.IsInRole("Admin");
+
             if (ModelState.IsValid)
             {
-                //if( /*User-ul are drepturi de editare*/ )
-                //{
-                product.Title = requestProduct.Title;
-
-                requestProduct.Description = sanitizer.Sanitize(requestProduct.Description);
-                product.Description = requestProduct.Description;
-
-                product.Price = requestProduct.Price;
-
-                product.Stock = requestProduct.Stock;
-
-                product.CategoryId = requestProduct.CategoryId;
-                // product.Category = requestProduct.Category; // TODO - de verificat
-
-                product.SalePercentage = requestProduct.SalePercentage;
-
-                if (Image != null && Image.Length > 0)
+                if (product.UserId != userId && !isAdmin)
                 {
-                    var fileName = Path.GetFileName(Image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                    product.Title = requestProduct.Title;
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    requestProduct.Description = sanitizer.Sanitize(requestProduct.Description);
+                    product.Description = requestProduct.Description;
+
+                    product.Price = requestProduct.Price;
+
+                    product.Stock = requestProduct.Stock;
+
+                    product.CategoryId = requestProduct.CategoryId;
+                    product.Category = requestProduct.Category;
+
+                    product.SalePercentage = requestProduct.SalePercentage;
+
+                    if (Image != null && Image.Length > 0)
                     {
-                        await Image.CopyToAsync(stream);
+                        var fileName = Path.GetFileName(Image.FileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await Image.CopyToAsync(stream);
+                        }
+
+                        product.ImagePath = "/images/" + fileName;
                     }
 
-                    product.ImagePath = "/images/" + fileName;
-                }               
+                    db.SaveChanges();
 
-                db.SaveChanges();
+                    TempData["message"] = "The product has been modified successfully.";
+                    TempData["messageType"] = "alert-success";
+                    return RedirectToAction("Index");
+                }
 
-                TempData["message"] = "The product has been modified successfully.";
-                TempData["messageType"] = "alert-success";
+                TempData["message"] = "You do not have the rights to edit this product.";
+                TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Index");
-                //}
-                //else
-                //{
-                //    TempData["message"] = "You do not have the rights to edit this product.";
-                //    TempData["messageType"] = "alert-danger";
-                //    return RedirectToAction("Index");
-                //}
 
             }
             else
@@ -376,40 +379,45 @@ namespace OnlineShop.Controllers
 
         // stergere produs        
         [HttpPost]
-        // TODO
-        // [Authorize(Roles = "")]
+        [Authorize(Roles = "Editor,Admin")]
         public ActionResult Delete(int id)
         {
             Product product = db.Products.Include("Reviews")
                                          .Where(p => p.ProductId == id)
                                          .First();
 
-            // TODO
-            //if( /*User-ul are drepturi de stergere*/ )
-            //{
+            var userId = _userManager.GetUserId(User);
+            var isAdmin = User.IsInRole("Admin");
+
+            if (product.UserId != userId && !isAdmin)
+            {
+                TempData["message"] = "You do not have the rights to delete this product.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+
+            }
             db.Products.Remove(product);
             db.SaveChanges();
             TempData["message"] = "The product has been deleted successfully.";
             TempData["messageType"] = "alert-success";
             return RedirectToAction("Index");
-            //}
-            //else
-            //{
-            //    TempData["message"] = "You do not have the rights to delete this product.";
-            //    TempData["messageType"] = "alert-danger";
-            //    return RedirectToAction("Index");
-            //}
-
-
 
         }
 
-        // TODO
         // Conditiile de afisare pentru butoanele de editare si stergere
-        //private void SetAccessRights()
-        //{
+        private void SetAccessRights()
+        {
+            ViewBag.AfisareButoane = false;
 
-        //}
+            if (User.IsInRole("Editor"))
+            {
+                ViewBag.AfisareButoane = true;
+            }
+
+            ViewBag.UserCurent = _userManager.GetUserId(User);
+
+            ViewBag.EsteAdmin = User.IsInRole("Admin");
+        }
 
 
         [NonAction]
@@ -512,9 +520,6 @@ namespace OnlineShop.Controllers
 
             return RedirectToAction("Index");
         }
-
-
-
 
     }
 
