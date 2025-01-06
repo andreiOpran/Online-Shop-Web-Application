@@ -38,15 +38,18 @@
                         <div class="card-text">@Html.Raw(Model.Description)</div>
 
                         <div class="mt-auto">
-                            <div class="card-header mt-3">
-                                <div class="d-flex justify-content-between flex-row mt-3">
-                                    <div><i class="bi bi-calendar"></i> Date: @Model.CreatedDate</div>
-                                </div>
+                            @if (ViewBag.ShowProductUserDetails == true)
+                            {
+                                <div class="card-header mt-3">
+                                    <div class="d-flex justify-content-between flex-row mt-3">
+                                        <div><i class="bi bi-calendar"></i> Date: @Model.CreatedDate</div>
+                                    </div>
 
-                                <div class="d-flex justify-content-between flex-row mt-3">
-                                    <div><i class="bi bi-person-circle"></i></> User: @Model.User.UserName</div>
+                                    <div class="d-flex justify-content-between flex-row mt-3">
+                                        <div><i class="bi bi-person-circle"></i> User: @Model.User.UserName</div>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -75,16 +78,19 @@
                     </div>
                 </div>
                 <div class="mt-auto">
-                    <div class="d-flex flex-row justify-content-between mb-3 mt-3">
-                        <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId">
-                            <i class="bi bi-pencil-square"></i> Edit Product
-                        </a>
-                        <form method="post" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.ProductId">
-                            <button class="btn btn-outline-danger" type="submit">
-                                <i class="bi bi-trash"></i> Delete Product
-                            </button>
-                        </form>
-                    </div>
+                    @if ((ViewBag.AfisareButoane == true && Model.UserId == ViewBag.UserCurent) || ViewBag.EsteAdmin == true)
+                    {
+                        <div class="d-flex flex-row justify-content-between mb-3 mt-3">
+                            <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId">
+                                <i class="bi bi-pencil-square"></i> Edit Product
+                            </a>
+                            <form method="post" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.ProductId">
+                                <button class="btn btn-outline-danger" type="submit">
+                                    <i class="bi bi-trash"></i> Delete Product
+                                </button>
+                            </form>
+                        </div>
+                    }
                     <form asp-controller="Products" asp-action="AddToCart" method="post" class="mt-4">
                         <input type="hidden" name="productId" value="@Model.ProductId" />
                         <button type="submit" class="btn btn-primary w-100" @(Model.Stock > 0 ? "" : "disabled")>
@@ -207,6 +213,3 @@
         </div>
     </div>
 </div>
-
-
-
