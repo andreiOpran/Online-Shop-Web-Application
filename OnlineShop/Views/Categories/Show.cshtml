@@ -17,13 +17,22 @@
 <br />
 
 @* Motorul de cautare *@
-<form method="GET" asp-controller="Products" asp-action="Index">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search"
-               value="@ViewBag.SearchString">
+<form method="GET" asp-controller="Products" asp-action="Index" class="d-flex justify-content-between mb-3">
+    <div class="input-group me-3">
+        <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search" value="@ViewBag.SearchString">
         <button class="btn btn-outline-primary" type="submit">Search</button>
     </div>
+    <div class="col-2">
+        <select name="sortOrder" class="form-select w-100" onchange="this.form.submit()">
+            <option value="ProductIdAscending" selected="@(ViewBag.CurrentSort == "ProductIdAscending")">Sort by Relevance</option>
+            <option value="PriceAscending" selected="@(ViewBag.CurrentSort == "PriceAscending")">Price: Low to High</option>
+            <option value="PriceDescending" selected="@(ViewBag.CurrentSort == "PriceDescending")">Price: High to Low</option>
+            <option value="RatingAscending" selected="@(ViewBag.CurrentSort == "RatingAscending")">Rating: Low to High</option>
+            <option value="RatingDescending" selected="@(ViewBag.CurrentSort == "RatingDescending")">Rating: High to Low</option>
+        </select>
+    </div>
 </form>
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var product in ViewBag.Products)
