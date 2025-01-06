@@ -138,23 +138,28 @@
                                     <h5 class="card-title">No Rating</h5>
                                 }
                                 <h6 class="card-subtitle mb-2 text-muted"> @review.CreatedDate</h6>
-                                <p><i class="bi bi-person"> @review.User.FirstName @review.User.LastName </i></p>
+                                <p><i class="bi bi-person-circle"> @review.User.FirstName @review.User.LastName </i></p>
                                 <br />
                                 <p class="card-text">@review.Content</p>
                             </div>
                             <div class="d-flex justify-content-center mb-2">
-                                <div class="mx-2">
-                                    <a class="btn btn-outline-primary" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.ReviewId">
-                                        <i class="bi bi-pencil-square"></i> Edit Review
-                                    </a>
-                                </div>
-                                <div class="mx-2">
-                                    <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.ReviewId">
-                                        <button class="btn btn-outline-danger" type="submit">
-                                            <i class="bi bi-trash"></i> Delete Review
-                                        </button>
-                                    </form>
-                                </div>
+                                
+                                @if(ViewBag.EsteAdminReview == true || ViewBag.UserCurentReview == review.UserId)
+                                {
+                                    <div class="mx-2">
+                                        <a class="btn btn-outline-primary" asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.ReviewId">
+                                            <i class="bi bi-pencil-square"></i> Edit Review
+                                        </a>
+                                    </div>
+                                    <div class="mx-2">
+                                        <form method="post" asp-controller="Reviews" asp-action="Delete" asp-route-id="@review.ReviewId">
+                                            <button class="btn btn-outline-danger" type="submit">
+                                                <i class="bi bi-trash"></i> Delete Review
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                            
                             </div>
                         </div>
                     }

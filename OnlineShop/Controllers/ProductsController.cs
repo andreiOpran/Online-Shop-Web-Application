@@ -157,6 +157,7 @@ namespace OnlineShop.Controllers
             var isAdmin = User.IsInRole("Admin");
             var isEditor = User.IsInRole("Editor");
             ViewBag.ShowProductUserDetails = isAdmin || isEditor;
+            SetAccessRightsReview();
 
 
             if (TempData.ContainsKey("message"))
@@ -419,6 +420,12 @@ namespace OnlineShop.Controllers
             ViewBag.EsteAdmin = User.IsInRole("Admin");
         }
 
+        // Conditiile de afisare pentru butoanele de editare si stergere Review
+        private void SetAccessRightsReview()
+        {
+            ViewBag.UserCurentReview = _userManager.GetUserId(User);
+            ViewBag.EsteAdminReview = User.IsInRole("Admin");
+        }
 
         [NonAction]
         public IEnumerable<SelectListItem> GetAllCategories()
