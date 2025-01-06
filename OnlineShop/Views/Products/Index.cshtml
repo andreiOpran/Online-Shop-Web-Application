@@ -1,6 +1,6 @@
 ﻿<br />
 
-<h2 class="text-center ">Products Index</h2>
+<h2 class="text-center">Explore Our Product Range</h2>
 
 <br />
 
@@ -21,7 +21,6 @@
         <button class="btn btn-outline-primary" type="submit">Search</button>
     </div>
     <div class="col-2">
-        <input type="hidden" name="search" value="@ViewBag.SearchString" />
         <select name="sortOrder" class="form-select w-100" onchange="this.form.submit()">
             <option value="ProductIdAscending" selected="@(ViewBag.CurrentSort == "ProductIdAscending")">Sort by Relevance</option>
             <option value="PriceAscending" selected="@(ViewBag.CurrentSort == "PriceAscending")">Price: Low to High</option>
@@ -122,3 +121,5 @@
         </ul>
     </nav>
 </div>
+
+
