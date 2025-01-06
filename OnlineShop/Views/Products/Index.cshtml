@@ -1,4 +1,8 @@
-﻿
+﻿<br />
+
+<h2 class="text-center ">Products Index</h2>
+
+<br />
 
 @if (ViewBag.Message != null)
 {
@@ -11,11 +15,20 @@
 
 @* Motorul de cautare *@
 
-<form method="GET">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search products" name="search"
-               value="@ViewBag.SearchString">
+<form method="GET" class="d-flex justify-content-between mb-3">
+    <div class="input-group me-3">
+        <input type="text" class="form-control" placeholder="Search products" name="search" value="@ViewBag.SearchString">
         <button class="btn btn-outline-primary" type="submit">Search</button>
+    </div>
+    <div class="col-2">
+        <input type="hidden" name="search" value="@ViewBag.SearchString" />
+        <select name="sortOrder" class="form-select w-100" onchange="this.form.submit()">
+            <option value="ProductIdAscending" selected="@(ViewBag.CurrentSort == "ProductIdAscending")">Sort by Relevance</option>
+            <option value="PriceAscending" selected="@(ViewBag.CurrentSort == "PriceAscending")">Price: Low to High</option>
+            <option value="PriceDescending" selected="@(ViewBag.CurrentSort == "PriceDescending")">Price: High to Low</option>
+            <option value="RatingAscending" selected="@(ViewBag.CurrentSort == "RatingAscending")">Rating: Low to High</option>
+            <option value="RatingDescending" selected="@(ViewBag.CurrentSort == "RatingDescending")">Rating: High to Low</option>
+        </select>
     </div>
 </form>
 
@@ -109,5 +122,3 @@
         </ul>
     </nav>
 </div>
-
-

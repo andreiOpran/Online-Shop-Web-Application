@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
@@ -32,10 +33,9 @@ namespace OnlineShop.Controllers
         // [Authorize(Roles = "")]
         public IActionResult Index()
         {
-
-            var products = db.Products.Include("Category")
-                                      .Include("User")
-                                      .Include("Reviews");
+            IQueryable<Product> products = db.Products.Include(p => p.Category)
+                                                      .Include(p => p.User)
+                                                      .Include(p => p.Reviews);
 
             if (TempData.ContainsKey("message"))
             {
@@ -44,7 +44,6 @@ namespace OnlineShop.Controllers
             }
 
             ViewBag.Products = products;
-
 
             // motor cautare
 
@@ -59,12 +58,6 @@ namespace OnlineShop.Controllers
                                        p => p.Title.Contains(search) || p.Description.Contains(search)
                                        ).Select(p => p.ProductId).ToList();
 
-                // probabil este irelevant si aduce prea multe rezultate (omitem deocamdata)
-                // cautare in review-uri (content)
-                //List<int> reviewIds = db.Reviews.Where(
-                //      r => r.Content != null && r.Content.Contains(search)
-                //      ).Select(r => (int)r.ProductId).ToList();
-
                 // TODO - nu aduce toate rezultatele cand cauti numele categoriei
                 // cautare in categorii (CategoryName)
                 List<int> categoryIds = db.Categories.Where(
@@ -76,12 +69,35 @@ namespace OnlineShop.Controllers
 
                 // filtrare
                 products = db.Products.Where(product => searchIds.Contains(product.ProductId))
-                                      .Include("Category")
-                                      .Include("User");
+                                      .Include(p => p.Category)
+                                      .Include(p => p.User)
+                                      .Include(p => p.Reviews);
             }
 
             ViewBag.SearchString = search;
 
+            // sortare
+            var sortOrder = HttpContext.Request.Query["sortOrder"].ToString();
+            ViewBag.CurrentSort = sortOrder;
+
+            switch (sortOrder)
+            {
+                case "PriceAscending":
+                    products = products.OrderBy(p => p.Price);
+                    break;
+                case "PriceDescending":
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+                case "RatingAscending":
+                    products = products.OrderBy(p => p.Rating);
+                    break;
+                case "RatingDescending":
+                    products = products.OrderByDescending(p => p.Rating);
+                    break;
+                case "ProductIdAscending":
+                    products = products.OrderBy(p => p.ProductId);
+                    break;
+            }
 
             // afisare paginata
 
@@ -92,7 +108,7 @@ namespace OnlineShop.Controllers
 
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
 
-            // pagina 1 -> offset = 0, pagina 2 -> offset = 2, pagina 3 -> offset = 4 ...
+            // pagina 1 -> offset = 0, pagina 2 -> offset = 12, pagina 3 -> offset = 24 ...
             var offset = 0;
             if (!currentPage.Equals(0))
             {
@@ -100,7 +116,7 @@ namespace OnlineShop.Controllers
             }
 
             // preluam produsele pentru pagina curenta
-            var paginatedProducts = products.Skip(offset).Take(perPage);
+            var paginatedProducts = products.Skip(offset).Take(perPage).ToList();
 
             // numarul ultimei pagini
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)perPage);
@@ -113,15 +129,14 @@ namespace OnlineShop.Controllers
             // search-ul ramane in url chiar daca schimbam pagina
             if (search != "")
             {
-                ViewBag.PaginationBaseUrl = "/Products/Index?search=" + search + "&page";
+                ViewBag.PaginationBaseUrl = "/Products/Index?search=" + search + "&sortOrder=" + sortOrder + "&page";
             }
             else
             {
-                ViewBag.PaginationBaseUrl = "/Products/Index/?page";
+                ViewBag.PaginationBaseUrl = "/Products/Index?sortOrder=" + sortOrder + "&page";
             }
 
             return View();
-
         }
 
 
@@ -149,9 +164,9 @@ namespace OnlineShop.Controllers
                 ViewBag.Alert = TempData["messageType"];
             }
 
-            if (product.Reviews.Count() > 0)
+            if (product.Reviews.Any(r => r.Rating.HasValue))
             {
-                product.Rating = Math.Round((decimal)product.Reviews.Average(r => r.Rating), 2);
+                product.Rating = Math.Round((decimal)product.Reviews.Where(r => r.Rating.HasValue).Average(r => r.Rating.Value), 2);
             }
             else
             {
@@ -187,7 +202,14 @@ namespace OnlineShop.Controllers
                 var product = db.Products.Include("Reviews").FirstOrDefault(p => p.ProductId == review.ProductId);
                 if (product != null)
                 {
-                    product.Rating = Math.Round((decimal)product.Reviews.Average(r => r.Rating), 2);
+                    if (product.Reviews.Any(r => r.Rating.HasValue))
+                    {
+                        product.Rating = Math.Round((decimal)product.Reviews.Where(r => r.Rating.HasValue).Average(r => r.Rating), 2);
+                    }
+                    else
+                    {
+                        product.Rating = 0;
+                    }                    
                     db.SaveChanges();
                 }
 
