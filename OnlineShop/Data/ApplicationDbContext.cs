@@ -26,6 +26,8 @@ namespace OnlineShop.Data
 
         public DbSet<Order>Orders { get; set; }
 
+        public DbSet<PendingEdit> PendingEdits { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //definirea relatiei many-to-many intre Cart si Product
@@ -43,6 +45,19 @@ namespace OnlineShop.Data
                 .HasOne(cp => cp.Product)
                 .WithMany(cp => cp.CartProducts) // Fixed line
                 .HasForeignKey(cp => cp.ProductId);
+
+            // configurare foreign key 
+            builder.Entity<PendingEdit>()
+                .HasOne(pe => pe.OriginalProduct)
+                .WithMany()
+                .HasForeignKey(pe => pe.OriginalProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<PendingEdit>()
+                .HasOne(pe => pe.EditedProduct)
+                .WithMany()
+                .HasForeignKey(pe => pe.EditedProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
