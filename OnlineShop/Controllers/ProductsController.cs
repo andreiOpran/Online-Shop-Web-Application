@@ -41,6 +41,13 @@ namespace OnlineShop.Controllers
                 ViewBag.Alert = TempData["messageType"];
             }
 
+            
+            // afisare data si user produs
+            var isAdmin = User.IsInRole("Admin");
+            var isEditor = User.IsInRole("Editor");
+            ViewBag.ShowDateUserProduct = isAdmin || isEditor;
+
+
             ViewBag.Products = products;
 
             // motor cautare

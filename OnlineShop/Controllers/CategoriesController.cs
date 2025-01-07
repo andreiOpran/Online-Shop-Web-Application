@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
@@ -20,7 +21,13 @@ namespace OnlineShop.Controllers
 
         public IActionResult Index()
         {
-            if(TempData.ContainsKey("message"))
+
+            // afisare edit, delete si add categorie
+            var isAdmin = User.IsInRole("Admin");
+            ViewBag.ShowEditDeleteAdd = isAdmin;
+
+
+            if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"].ToString();
             }
@@ -43,6 +50,11 @@ namespace OnlineShop.Controllers
                                         .Include(c => c.Products)
                                         .ThenInclude(p => p.Reviews)
                                         .FirstOrDefault(c => c.CategoryId == id);
+
+            // afisare data si user produs
+            var isAdmin = User.IsInRole("Admin");
+            var isEditor = User.IsInRole("Editor");
+            ViewBag.ShowDateUserProduct = isAdmin || isEditor;
 
             if (category == null)
             {
@@ -87,13 +99,14 @@ namespace OnlineShop.Controllers
             return View(category);
         }
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult New()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult New(Category category)
         {
             if(ModelState.IsValid)
@@ -109,6 +122,7 @@ namespace OnlineShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
@@ -116,6 +130,7 @@ namespace OnlineShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id, Category requestCategory)
         {
             Category category = db.Categories.Find(id);
@@ -135,6 +150,7 @@ namespace OnlineShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {            
             Category category = db.Categories.Include("Products")

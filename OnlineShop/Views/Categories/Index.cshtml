@@ -24,24 +24,30 @@
                     @category.CategoryName
                 </a>
             </h3>
-            <div class="ms-auto d-flex">
-                <div class="mx-2">
-                    <a class="btn btn-outline-primary" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.CategoryId">
-                        <i class="bi bi-pencil-square"></i> Edit
-                    </a>
+            @if (ViewBag.ShowEditDeleteAdd == true)
+            {
+                <div class="ms-auto d-flex">
+                    <div class="mx-2">
+                        <a class="btn btn-outline-primary" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.CategoryId">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                    </div>
+                    <div class="mx-2">
+                        <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-category-id="@category.CategoryId">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
                 </div>
-                <div class="mx-2">
-                    <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-category-id="@category.CategoryId">
-                        <i class="bi bi-trash"></i> Delete
-                    </button>
-                </div>
-            </div>
+            }
         </div>
     </div>
 }
 
 <br />
-<a class="btn btn-primary" asp-controller="Categories" asp-action="New"> <i class="bi bi-plus-circle me-2"></i>Add a category</a>
+@if (ViewBag.ShowEditDeleteAdd == true)
+{
+    <a class="btn btn-primary" asp-controller="Categories" asp-action="New"> <i class="bi bi-plus-circle me-2"></i>Add a category</a>
+}
 <br />
 <br />
 
