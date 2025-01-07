@@ -14,11 +14,8 @@ namespace OnlineShop.Models
             public virtual Product? Product { get; set; }
             public virtual Cart? Cart { get; set; }
 
-
             // Adaugă cantitatea produsului
             public int Quantity { get; set; } = 1; // Valoare implicită
-
-
         }
     }
 }

@@ -12,28 +12,10 @@ namespace OnlineShop.Models
 
         // dintr-o categorie fac parte mai multe produse
         public virtual ICollection<Product>? Products { get; set; }
-
-
-        // TODO
-        // validare pe serviciu (IValidatableObject)
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (CategoryName != null && CategoryName.Length > 256)
-            {
-                yield return new ValidationResult("Category name must be at most 256 characters long.");
-            }
-            if (CategoryName != null && CategoryName.Length < 3)
-            {
-                yield return new ValidationResult("Category name must be at least 3 characters long.");
-            }
-            yield return ValidationResult.Success!;
-
-        }
     }
 }
 
 /*
-
 
 INSERT INTO Categories (CategoryName) VALUES ('Mobile Phones');
 INSERT INTO Categories (CategoryName) VALUES ('Laptops');

@@ -100,7 +100,5 @@ namespace OnlineShop.Controllers
                 return View(requestReview);
             }
         }
-
-
     }
 }

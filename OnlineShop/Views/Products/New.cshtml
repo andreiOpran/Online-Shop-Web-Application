@@ -14,8 +14,7 @@
                     <label asp-for="Title" class="form-label">Title</label>
                     <br />
                     <input asp-for="Title" class="form-control" placeholder="Enter product title" />
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Title" class="text-danger"></span> *@
+                    <span asp-validation-for="Title" class="text-danger"></span>
                     <br />
                     <br />
                 </div>
@@ -24,27 +23,16 @@
                     <label asp-for="Description" class="form-label">Description</label>
                     <br />
                     <textarea asp-for="Description" class="form-control summernote" placeholder="Enter product description"></textarea>
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Description" class="text-danger"></span> *@
+                    <span asp-validation-for="Description" class="text-danger"></span>
                     <br />
                     <br />
                 </div>
-
-                @* TODO - needs reviewing *@
-                @* <div class="form-group">
-                    <label asp-for="Image" class="form-label">Product Image</label>
-                    <br />
-                    <input type="file" class="form-control" name="Image" />
-                    <br />
-                    <br />
-                </div> *@
 
                 <div class="form-group">
                     <label asp-for="Price" class="form-label">Price</label>
                     <br />
                     <input asp-for="Price" class="form-control" placeholder="Enter product price" />
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Price" class="text-danger"></span> *@
+                    <span asp-validation-for="Price" class="text-danger"></span>
                     <br />
                     <br />
                 </div>
@@ -53,21 +41,19 @@
                     <label asp-for="Stock" class="form-label">Stock</label>
                     <br />
                     <input asp-for="Stock" class="form-control" placeholder="Enter product stock quantity" />
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="Stock" class="text-danger"></span> *@
+                    <span asp-validation-for="Stock" class="text-danger"></span>
                     <br />
                     <br />
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="SalePercentage" class="form-label">Sale Percentage</label>
-                    <br />
-                    <input asp-for="SalePercentage" class="form-control" placeholder="Enter sale percentage (0 for no sale percentage)" />
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="SalePercentage" class="text-danger"></span> *@
-                    <br />
-                    <br />
-                </div>
+                @* <div class="form-group"> *@
+                @*     <label asp-for="SalePercentage" class="form-label">Sale Percentage</label> *@
+                @*     <br /> *@
+                @*     <input asp-for="SalePercentage" class="form-control" placeholder="Enter sale percentage (0 for no sale percentage)" /> *@
+                @*     <span asp-validation-for="SalePercentage" class="text-danger"></span> *@
+                @*     <br /> *@
+                @*     <br /> *@
+                @* </div> *@
 
                 <div class="form-group">
                     <label asp-for="CategoryId" class="form-label">Category</label>
@@ -75,8 +61,7 @@
                     <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
                         <option value="">Select Category</option>
                     </select>
-                    @* TODO - need reviewing *@
-                    @* <span asp-validation-for="CategoryId" class="text-danger"></span> *@
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
                     <br />
                     <br />
                 </div>
@@ -85,6 +70,7 @@
                     <label for="Image" class="control-label mb-2">Image</label>
                     <input type="file" name="Image" class="form-control" />
                     <input type="hidden" asp-for="ImagePath" />
+                    <span asp-validation-for="ImagePath" class="text-danger"></span>
                     <br />
                     <br />
                 </div>

@@ -6,7 +6,6 @@ namespace OnlineShop.Models
     //Pasul 1 :Extidem functionalitatea clasei IdentityUser
     public class ApplicationUser : IdentityUser
     {
-
         //un user poate avea mai multe produse
         public virtual ICollection<Product>? Products { get; set; }
 
@@ -15,7 +14,6 @@ namespace OnlineShop.Models
 
         //un user poate avea mai multe review-uri
         public virtual ICollection<Review>? Reviews { get; set; }
-
 
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

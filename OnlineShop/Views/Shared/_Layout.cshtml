@@ -34,14 +34,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @* <li class="nav-item"> *@
-                        @*     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a> *@
-                        @* </li> *@
-                        @*
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        *@
                         @if (User.IsInRole("Admin"))
                         {
                             <div class="d-flex justify-content-end align-items-center">
@@ -171,9 +163,6 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    <!-- se include Summernote.js -->
-    <script src="~/js/Summernote.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
