@@ -27,16 +27,15 @@ namespace OnlineShop.Models
         public string? ImagePath { get; set; }
 
         [Required(ErrorMessage = "Price is required. Please enter a price.")]
+        [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal? Price { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Stock must be at least 0")]
         public int? Stock { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
         public decimal? SalePercentage { get; set; } = 0;
-
-        //[NotMapped]
-        //public decimal ReducedPrice => Price.HasValue ? Price.Value - (Price.Value * (SalePercentage ?? 0) / 100) : 0;
 
         // un produs are o categorie
         // foreign key
@@ -59,7 +58,7 @@ namespace OnlineShop.Models
 
         public decimal Rating { get; set; } = 0;
 
-        public string Status { get; set; } = "Initial"; // Pending - Approved - Denied -- PendingEdit - PendingDelete
+        public string Status { get; set; } = "Pending"; // Pending - Approved - Denied -- PendingEdit - PendingDelete
 
         public bool PendingEdit { get; set; } = false; 
 
@@ -67,8 +66,6 @@ namespace OnlineShop.Models
 
         // TODO
         // validare pe serviciu (IValidatableObject)
-
-        /*
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if(Description != null && Description.Length > 1024)
@@ -95,7 +92,7 @@ namespace OnlineShop.Models
             // "!" comunica compilatorului ca nu se va returna niciodata null
             yield return ValidationResult.Success!; 
         }
-        */
+        
 
     }
 }

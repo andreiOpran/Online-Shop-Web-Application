@@ -33,8 +33,7 @@ namespace OnlineShop.Controllers
         {
             IQueryable<Product> products = db.Products.Include(p => p.Category)
                                                       .Include(p => p.User)
-                                                      .Include(p => p.Reviews)
-                                                      .Where(p => p.Status != "Initial");
+                                                      .Include(p => p.Reviews);
             
 
             if (TempData.ContainsKey("message"))
@@ -48,7 +47,6 @@ namespace OnlineShop.Controllers
             var isAdmin = User.IsInRole("Admin");
             var isEditor = User.IsInRole("Editor");
             ViewBag.ShowDateUserProduct = isAdmin || isEditor;
-
 
 
             ViewBag.Products = products;
@@ -404,6 +402,8 @@ namespace OnlineShop.Controllers
                     product.PendingEdit = true;
                     product.Status = "PendingEdit";
 
+                    requestProduct.Status = "Denied"; // ca sa nu apara in pagina principala dupa ce se editeaza produsul principal
+
                     // memorare edit-uri in tabel separat
                     var pendingEdit = new PendingEdit
                     {
@@ -421,6 +421,7 @@ namespace OnlineShop.Controllers
                     return RedirectToAction("Index");
                 }
 
+
                 product.Title = requestProduct.Title;
                 product.Description = sanitizer.Sanitize(requestProduct.Description);
                 product.Price = requestProduct.Price;
@@ -428,7 +429,7 @@ namespace OnlineShop.Controllers
                 product.CategoryId = requestProduct.CategoryId;
                 product.Category = requestProduct.Category;
                 product.SalePercentage = requestProduct.SalePercentage;
-
+                
                 if (Image != null && Image.Length > 0)
                 {
                     var fileName = Path.GetFileName(Image.FileName);
