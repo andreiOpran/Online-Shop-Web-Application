@@ -42,11 +42,11 @@
                             {
                                 <div class="card-header mt-3">
                                     <div class="d-flex justify-content-between flex-row mt-3">
-                                        <div><i class="bi bi-calendar"></i> Date: @Model.CreatedDate</div>
+                                        <div><i class="bi bi-calendar"></i> Date: @(Model.CreatedDate.HasValue ? Model.CreatedDate.Value.ToString("MM-dd-yyyy") : "Unknown")</div>
                                     </div>
 
                                     <div class="d-flex justify-content-between flex-row mt-3">
-                                        <div><i class="bi bi-person-circle"></i> User: @Model.User.UserName</div>
+                                        <div><i class="bi bi-person-circle"></i> User: @(Model.User?.UserName ?? "Unknown")</div>
                                     </div>
                                 </div>
                             }

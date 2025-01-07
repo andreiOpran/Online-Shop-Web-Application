@@ -33,7 +33,8 @@ namespace OnlineShop.Controllers
         {
             IQueryable<Product> products = db.Products.Include(p => p.Category)
                                                       .Include(p => p.User)
-                                                      .Include(p => p.Reviews);
+                                                      .Include(p => p.Reviews)
+                                                      .Where(p => p.Status != "Initial");
             
 
             if (TempData.ContainsKey("message"))
@@ -47,6 +48,7 @@ namespace OnlineShop.Controllers
             var isAdmin = User.IsInRole("Admin");
             var isEditor = User.IsInRole("Editor");
             ViewBag.ShowDateUserProduct = isAdmin || isEditor;
+
 
 
             ViewBag.Products = products;
@@ -525,7 +527,7 @@ namespace OnlineShop.Controllers
             var userId = _userManager.GetUserId(User);
             var isAdmin = User.IsInRole("Admin");
 
-            if (product.UserId != userId && !isAdmin)
+            if (product.UserId == userId && !isAdmin)
             {
                 product.PendingDelete = true;
                 product.Status = "PendingDelete";
