@@ -15,6 +15,16 @@
 
 <br />
 
+@if (Model == null || !Model.Any())
+{
+    <div class="col-12">  
+        <div class="alert alert-primary text-center">  
+            There are no products here.  
+        </div>  
+    </div>
+}
+
+
 <div class="row row-cols-1 row-cols-md-2 g-4">
     @foreach (var pendingEdit in Model)
     {
