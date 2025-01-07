@@ -34,6 +34,7 @@ namespace OnlineShop.Controllers
             IQueryable<Product> products = db.Products.Include(p => p.Category)
                                                       .Include(p => p.User)
                                                       .Include(p => p.Reviews);
+            
 
             if (TempData.ContainsKey("message"))
             {
@@ -103,6 +104,12 @@ namespace OnlineShop.Controllers
                     break;
             }
 
+            // daca nu este admin, atunci utilizatorul vede doar produsele Approved
+            if (!User.IsInRole("Admin"))
+            {
+                products = products.Where(p => p.Status == "Approved");
+            }
+
             // afisare paginata
 
             int perPage = 12;
@@ -163,6 +170,15 @@ namespace OnlineShop.Controllers
             
             var isAdmin = User.IsInRole("Admin");
             var isEditor = User.IsInRole("Editor");
+
+            // produsul pending sau denied nu poate fi vizualizat de user
+            if ((product.Status == "Pending" || product.Status == "Denied") && !isAdmin)
+            {
+                TempData["message"] = "You do not have permission to view this product.";
+                TempData["messageType"] = "alert-danger";
+                return RedirectToAction("Index");
+            }
+
             ViewBag.ShowProductUserDetails = isAdmin || isEditor;
             SetAccessRightsReview();
 
@@ -267,6 +283,15 @@ namespace OnlineShop.Controllers
             product.CreatedDate = DateTime.Now;
             product.UserId = _userManager.GetUserId(User);
 
+            if(User.IsInRole("Editor"))
+            {
+                product.Status = "Pending";
+            }
+            else if(User.IsInRole("Admin"))
+            {
+                product.Status = "Approved";
+            }
+
             if (ModelState.IsValid)
             {
                 product.Description = sanitizer.Sanitize(product.Description);
@@ -297,6 +322,41 @@ namespace OnlineShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult PendingProducts()
+        {
+            var pendingProducts = db.Products.Include(p => p.Category)
+                                             .Include(p => p.User)
+                                             .Where(p => p.Status == "Pending")
+                                             .ToList();
+            return View(pendingProducts);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ApproveProduct(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product != null)
+            {
+                product.Status = "Approved";
+                db.SaveChanges();
+            }
+            return RedirectToAction("PendingProducts");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DenyProduct(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product != null)
+            {
+                product.Status = "Denied";
+                db.SaveChanges();
+            }
+            return RedirectToAction("PendingProducts");
+        }
 
         // edit articol impreuna cu categoria sa (categoria se selecteaza din dropdown)
         // datele existente ale produsului se incarca in fromular

@@ -15,14 +15,17 @@
 }
 
 <br />
+<div class="d-flex justify-content-between mb-3">
+    @* Motorul de cautare *@
+    <form method="GET" asp-controller="Products" asp-action="Index" class="d-flex flex-grow-1 me-3">
+        <div class="input-group col-8">
+            <input type="text" class="form-control" placeholder="Search products" name="search" value="@ViewBag.SearchString">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </div>
+    </form>
 
-@* Motorul de cautare *@
-<form method="GET" asp-controller="Products" asp-action="Index" class="d-flex justify-content-between mb-3">
-    <div class="input-group me-3">
-        <input type="text" class="form-control" placeholder="Search topics or keywords in all categories" name="search" value="@ViewBag.SearchString">
-        <button class="btn btn-outline-primary" type="submit">Search</button>
-    </div>
-    <div class="col-2">
+    @* Sortare in interiorul categoriei *@
+    <form method="GET" asp-controller="Categories" asp-action="Show" asp-route-id="@Model.CategoryId" class="d-flex col-2">
         <select name="sortOrder" class="form-select w-100" onchange="this.form.submit()">
             <option value="ProductIdAscending" selected="@(ViewBag.CurrentSort == "ProductIdAscending")">Sort by Relevance</option>
             <option value="PriceAscending" selected="@(ViewBag.CurrentSort == "PriceAscending")">Price: Low to High</option>
@@ -30,8 +33,8 @@
             <option value="RatingAscending" selected="@(ViewBag.CurrentSort == "RatingAscending")">Rating: Low to High</option>
             <option value="RatingDescending" selected="@(ViewBag.CurrentSort == "RatingDescending")">Rating: High to Low</option>
         </select>
-    </div>
-</form>
+    </form>
+</div>
 
 
 <div class="row row-cols-1 row-cols-md-3 g-4">

@@ -86,6 +86,12 @@ namespace OnlineShop.Controllers
                     break;
             }
 
+            // daca nu este admin, atunci utilizatorul vede doar produsele Approved
+            if (!User.IsInRole("Admin"))
+            {
+                products = products.Where(p => p.Status == "Approved");
+            }
+
             var totalItems = products.Count();
             var paginatedProducts = products.Skip((page - 1) * perPage).Take(perPage).ToList();
 
