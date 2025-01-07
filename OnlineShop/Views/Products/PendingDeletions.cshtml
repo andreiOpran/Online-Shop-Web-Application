@@ -15,6 +15,15 @@
 
 <br />
 
+@if (Model == null || !Model.Any())
+{
+    <div class="col-12">
+        <div class="alert alert-primary text-center">
+            There are no products here.
+        </div>
+    </div>
+}
+
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var product in Model)
     {
@@ -53,10 +62,10 @@
 
                         <div class="mt-3">
                             <form method="post" asp-controller="Products" asp-action="ApproveDelete" asp-route-id="@product.ProductId" class="d-inline">
-                                <button type="submit" class="btn btn-primary w-100 mb-2">Approve</button>
+                                <button type="submit" class="btn btn-primary w-100 mb-2">Approve Deletion</button>
                             </form>
                             <form method="post" asp-controller="Products" asp-action="DenyDelete" asp-route-id="@product.ProductId" class="d-inline">
-                                <button type="submit" class="btn btn-danger w-100">Deny</button>
+                                <button type="submit" class="btn btn-danger w-100">Deny Deletion</button>
                             </form>
                         </div>
 

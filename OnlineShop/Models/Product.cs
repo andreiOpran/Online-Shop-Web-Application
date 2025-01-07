@@ -8,7 +8,6 @@ namespace OnlineShop.Models
 {
     public class Product
     {
-
         [Key]
         public int ProductId { get; set; }
 
@@ -27,16 +26,15 @@ namespace OnlineShop.Models
         public string? ImagePath { get; set; }
 
         [Required(ErrorMessage = "Price is required. Please enter a price.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
         public decimal? Price { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Stock must be at least 0.")]
         public int? Stock { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
         public decimal? SalePercentage { get; set; } = 0;
-
-        //[NotMapped]
-        //public decimal ReducedPrice => Price.HasValue ? Price.Value - (Price.Value * (SalePercentage ?? 0) / 100) : 0;
 
         // un produs are o categorie
         // foreign key
@@ -65,20 +63,11 @@ namespace OnlineShop.Models
 
         public bool PendingDelete { get; set; } = false; 
 
-        // TODO
-        // validare pe serviciu (IValidatableObject)
 
-        /*
+        // validare pe serviciu (IValidatableObject)
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if(Description != null && Description.Length > 1024)
-            {
-                yield return new ValidationResult("Description must be at most 256 characters long.");
-            }
-            if(Description != null && Description.Length < 10)
-            {
-                yield return new ValidationResult("Description must be at least 10 characters long.");
-            }
+
             if(Price.HasValue && Price < 0)
             {
                 yield return new ValidationResult("Price must be a positive number.");
@@ -87,16 +76,11 @@ namespace OnlineShop.Models
             {
                 yield return new ValidationResult("Stock must be a positive number.");
             }
-            if(SalePercentage.HasValue && (SalePercentage < 0 || SalePercentage > 100))
-            {
-                yield return new ValidationResult("Sale percentage must be between 0 and 100.");
-            }
 
             // "!" comunica compilatorului ca nu se va returna niciodata null
             yield return ValidationResult.Success!; 
         }
-        */
-
+       
     }
 }
 

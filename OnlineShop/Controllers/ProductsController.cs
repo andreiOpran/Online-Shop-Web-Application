@@ -402,6 +402,8 @@ namespace OnlineShop.Controllers
                     product.PendingEdit = true;
                     product.Status = "PendingEdit";
 
+                    requestProduct.Status = "Denied"; // ca sa nu apara in pagina principala dupa ce se editeaza produsul principal
+
                     // memorare edit-uri in tabel separat
                     var pendingEdit = new PendingEdit
                     {
@@ -419,6 +421,7 @@ namespace OnlineShop.Controllers
                     return RedirectToAction("Index");
                 }
 
+
                 product.Title = requestProduct.Title;
                 product.Description = sanitizer.Sanitize(requestProduct.Description);
                 product.Price = requestProduct.Price;
@@ -426,7 +429,7 @@ namespace OnlineShop.Controllers
                 product.CategoryId = requestProduct.CategoryId;
                 product.Category = requestProduct.Category;
                 product.SalePercentage = requestProduct.SalePercentage;
-
+                
                 if (Image != null && Image.Length > 0)
                 {
                     var fileName = Path.GetFileName(Image.FileName);
@@ -525,7 +528,7 @@ namespace OnlineShop.Controllers
             var userId = _userManager.GetUserId(User);
             var isAdmin = User.IsInRole("Admin");
 
-            if (product.UserId != userId && !isAdmin)
+            if (product.UserId == userId && !isAdmin)
             {
                 product.PendingDelete = true;
                 product.Status = "PendingDelete";
