@@ -59,7 +59,7 @@ namespace OnlineShop.Models
 
         public decimal Rating { get; set; } = 0;
 
-        public string Status { get; set; } = "Pending"; // Pending - Approved - Denied -- PendingEdit - PendingDelete
+        public string Status { get; set; } = "Initial"; // Pending - Approved - Denied -- PendingEdit - PendingDelete
 
         public bool PendingEdit { get; set; } = false; 
 
