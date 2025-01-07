@@ -397,52 +397,120 @@ namespace OnlineShop.Controllers
 
             if (ModelState.IsValid)
             {
-                if (product.UserId != userId && !isAdmin)
+                if (product.UserId == userId && !isAdmin)
                 {
-                    product.Title = requestProduct.Title;
+                    product.PendingEdit = true;
+                    product.Status = "PendingEdit";
 
-                    requestProduct.Description = sanitizer.Sanitize(requestProduct.Description);
-                    product.Description = requestProduct.Description;
-
-                    product.Price = requestProduct.Price;
-
-                    product.Stock = requestProduct.Stock;
-
-                    product.CategoryId = requestProduct.CategoryId;
-                    product.Category = requestProduct.Category;
-
-                    product.SalePercentage = requestProduct.SalePercentage;
-
-                    if (Image != null && Image.Length > 0)
+                    // memorare edit-uri in tabel separat
+                    var pendingEdit = new PendingEdit
                     {
-                        var fileName = Path.GetFileName(Image.FileName);
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                        ProductId = product.ProductId,
+                        OriginalProduct = product,
+                        EditedProduct = requestProduct,
+                        UserId = userId,
+                        CreatedDate = DateTime.Now
+                    };
+                    db.PendingEdits.Add(pendingEdit);
+                    await db.SaveChangesAsync();
 
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await Image.CopyToAsync(stream);
-                        }
-
-                        product.ImagePath = "/images/" + fileName;
-                    }
-
-                    db.SaveChanges();
-
-                    TempData["message"] = "The product has been modified successfully.";
+                    TempData["message"] = "The product edit request has been submitted for approval.";
                     TempData["messageType"] = "alert-success";
                     return RedirectToAction("Index");
                 }
 
-                TempData["message"] = "You do not have the rights to edit this product.";
-                TempData["messageType"] = "alert-danger";
-                return RedirectToAction("Index");
+                product.Title = requestProduct.Title;
+                product.Description = sanitizer.Sanitize(requestProduct.Description);
+                product.Price = requestProduct.Price;
+                product.Stock = requestProduct.Stock;
+                product.CategoryId = requestProduct.CategoryId;
+                product.Category = requestProduct.Category;
+                product.SalePercentage = requestProduct.SalePercentage;
 
+                if (Image != null && Image.Length > 0)
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(stream);
+                    }
+
+                    product.ImagePath = "/images/" + fileName;
+                }
+
+                db.SaveChanges();
+
+                TempData["message"] = "The product has been modified successfully.";
+                TempData["messageType"] = "alert-success";
+                return RedirectToAction("Index");
             }
             else
             {
                 requestProduct.Categories = GetAllCategories();
                 return View(requestProduct);
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult PendingEdits()
+        {
+            var pendingEdits = db.PendingEdits.Include(pe => pe.OriginalProduct)
+                                              .ThenInclude(p => p.Category)
+                                              .Include(pe => pe.EditedProduct)
+                                              .ThenInclude(p => p.Category)
+                                              .Include(pe => pe.User)
+                                              .ToList();
+            return View(pendingEdits);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ApproveEdit(int id)
+        {
+            var pendingEdit = db.PendingEdits.Include(pe => pe.EditedProduct)
+                                             .FirstOrDefault(pe => pe.ProductId == id);
+            if (pendingEdit != null)
+            {
+                var product = db.Products.Find(id);
+                if (product != null)
+                {
+                    product.Title = pendingEdit.EditedProduct.Title;
+                    product.Description = pendingEdit.EditedProduct.Description;
+                    product.Price = pendingEdit.EditedProduct.Price;
+                    product.Stock = pendingEdit.EditedProduct.Stock;
+                    product.CategoryId = pendingEdit.EditedProduct.CategoryId;
+                    product.Category = pendingEdit.EditedProduct.Category;
+                    product.SalePercentage = pendingEdit.EditedProduct.SalePercentage;
+                    product.ImagePath = pendingEdit.EditedProduct.ImagePath;
+                    product.PendingEdit = false;
+                    product.Status = "Approved";
+                    db.PendingEdits.Remove(pendingEdit);
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("PendingEdits");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DenyEdit(int id)
+        {
+            var pendingEdit = db.PendingEdits.Include(pe => pe.EditedProduct)
+                                             .FirstOrDefault(pe => pe.ProductId == id);
+            if (pendingEdit != null)
+            {
+                var product = db.Products.Find(id);
+                if (product != null)
+                {
+                    product.PendingEdit = false;
+                    product.Status = "Approved";
+                    db.PendingEdits.Remove(pendingEdit);
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("PendingEdits");
         }
 
         // stergere produs        
@@ -459,6 +527,17 @@ namespace OnlineShop.Controllers
 
             if (product.UserId != userId && !isAdmin)
             {
+                product.PendingDelete = true;
+                product.Status = "PendingDelete";
+                db.SaveChanges();
+
+                TempData["message"] = "The product delete request has been submitted for approval.";
+                TempData["messageType"] = "alert-success";
+                return RedirectToAction("Index");
+            }
+
+            if (product.UserId != userId && !isAdmin)
+            {
                 TempData["message"] = "You do not have the rights to delete this product.";
                 TempData["messageType"] = "alert-danger";
                 return RedirectToAction("Index");
@@ -470,6 +549,43 @@ namespace OnlineShop.Controllers
             TempData["messageType"] = "alert-success";
             return RedirectToAction("Index");
 
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult PendingDeletions()
+        {
+            var pendingDeletions = db.Products.Include(p => p.Category)
+                                              .Include(p => p.User)
+                                              .Where(p => p.PendingDelete)
+                                              .ToList();
+            return View(pendingDeletions);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ApproveDelete(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product != null)
+            {
+                db.Products.Remove(product);
+                db.SaveChanges();
+            }
+            return RedirectToAction("PendingDeletions");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DenyDelete(int id)
+        {
+            var product = db.Products.Find(id);
+            if (product != null)
+            {
+                product.PendingDelete = false;
+                product.Status = "Approved";
+                db.SaveChanges();
+            }
+            return RedirectToAction("PendingDeletions");
         }
 
         // Conditiile de afisare pentru butoanele de editare si stergere
