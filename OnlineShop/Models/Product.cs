@@ -59,6 +59,8 @@ namespace OnlineShop.Models
 
         public decimal Rating { get; set; } = 0;
 
+        public string Status { get; set; } = "Pending"; // Pending - Approved - Denied
+
     // TODO
     // validare pe serviciu (IValidatableObject)
 
