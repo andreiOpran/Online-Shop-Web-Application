@@ -48,32 +48,74 @@ namespace OnlineShop.Models
                     new ApplicationUser
                     {
                         Id = "e50b44eb-1fe1-4194-ae7c-9066a6c829c0",
-                        UserName = "admin@test.com",
+                        UserName = "admin1@test.com",
                         EmailConfirmed = true,
-                        NormalizedEmail = "ADMIN@TEST.COM",
-                        Email = "admin@test.com",
-                        NormalizedUserName = "ADMIN@TEST.COM",
+                        NormalizedEmail = "ADMIN1@TEST.COM",
+                        Email = "admin1@test.com",
+                        NormalizedUserName = "ADMIN1@TEST.COM",
+                        FirstName = "Admin1First",
+                        LastName = "Admin1Last",
                         PasswordHash = hasher.HashPassword(null, "Admin1!")
                     },
                     new ApplicationUser
                     {
                         Id = "e50b44eb-1fe1-4194-ae7c-9066a6c829c1",
-                        UserName = "editor@test.com",
+                        UserName = "editor1@test.com",
                         EmailConfirmed = true,
-                        NormalizedEmail = "EDITOR@TEST.COM",
-                        Email = "editor@test.com",
-                        NormalizedUserName = "EDITOR@TEST.COM",
+                        NormalizedEmail = "EDITOR1@TEST.COM",
+                        Email = "editor1@test.com",
+                        NormalizedUserName = "EDITOR1@TEST.COM",
+                        FirstName = "Editor1First",
+                        LastName = "Editor1Last",
                         PasswordHash = hasher.HashPassword(null, "Editor1!")
                     },
                     new ApplicationUser
                     {
                         Id = "e50b44eb-1fe1-4194-ae7c-9066a6c829c2",
-                        UserName = "user@test.com",
+                        UserName = "user1@test.com",
                         EmailConfirmed = true,
-                        NormalizedEmail = "USER@TEST.COM",
-                        Email = "user@test.com",
-                        NormalizedUserName = "USER@TEST.COM",
+                        NormalizedEmail = "USER1@TEST.COM",
+                        Email = "user1@test.com",
+                        NormalizedUserName = "USER1@TEST.COM",
+                        FirstName = "User1First",
+                        LastName = "User1Last",
                         PasswordHash = hasher.HashPassword(null, "User1!")
+                    },
+                    new ApplicationUser
+                    {
+                        Id = "e50b44eb-1fe1-4194-ae7c-9066a6c829c3",
+                        UserName = "admin2@test.com",
+                        EmailConfirmed = true,
+                        NormalizedEmail = "ADMIN2@TEST.COM",
+                        Email = "admin2@test.com",
+                        NormalizedUserName = "ADMIN2@TEST.COM",
+                        FirstName = "Admin2First",
+                        LastName = "Admin2Last",
+                        PasswordHash = hasher.HashPassword(null, "Admin2!")
+                    },
+                    new ApplicationUser
+                    {
+                        Id = "e50b44eb-1fe1-4194-ae7c-9066a6c829c4",
+                        UserName = "editor2@test.com",
+                        EmailConfirmed = true,
+                        NormalizedEmail = "EDITOR2@TEST.COM",
+                        Email = "editor2@test.com",
+                        NormalizedUserName = "EDITOR2@TEST.COM",
+                        FirstName = "Editor2First",
+                        LastName = "Editor2Last",
+                        PasswordHash = hasher.HashPassword(null, "Editor2!")
+                    },
+                    new ApplicationUser
+                    {
+                        Id = "e50b44eb-1fe1-4194-ae7c-9066a6c829c5",
+                        UserName = "user2@test.com",
+                        EmailConfirmed = true,
+                        NormalizedEmail = "USER2@TEST.COM",
+                        Email = "user2@test.com",
+                        NormalizedUserName = "USER2@TEST.COM",
+                        FirstName = "User2First",
+                        LastName = "User2Last",
+                        PasswordHash = hasher.HashPassword(null, "User2!")
                     }
                 );
 
@@ -93,6 +135,21 @@ namespace OnlineShop.Models
                     {
                         RoleId = "7b336cf4-a47b-4581-9294-f636b0aa7ee2",
                         UserId = "e50b44eb-1fe1-4194-ae7c-9066a6c829c2"
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = "7b336cf4-a47b-4581-9294-f636b0aa7ee0",
+                        UserId = "e50b44eb-1fe1-4194-ae7c-9066a6c829c3"
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = "7b336cf4-a47b-4581-9294-f636b0aa7ee1",
+                        UserId = "e50b44eb-1fe1-4194-ae7c-9066a6c829c4"
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = "7b336cf4-a47b-4581-9294-f636b0aa7ee2",
+                        UserId = "e50b44eb-1fe1-4194-ae7c-9066a6c829c5"
                     }
                 );
 
@@ -117,7 +174,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Apple iPhone 16 Pro Max, 256GB",
                             Description = "The iPhone 16 Pro features a grade 5 titanium design with a refined new finish.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/iphone16promax.jpg",
                             Price = 959.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -128,7 +185,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Samsung Galaxy S24 Ultra, 512GB",
                             Description = "Welcome to the new era of AI. With the Galaxy S24 Ultra, you can explore a new world of creativity and productivity.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/samsunggalaxys24ultra.jpg",
                             Price = 849.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -139,7 +196,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Apple iPhone 15, 128GB",
                             Description = "Dynamic Island displays alerts and live activities so you won’t miss anything while multitasking.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/iphone15.jpg",
                             Price = 399.99m,
                             Stock = 30,
                             CreatedDate = DateTime.Now,
@@ -150,7 +207,7 @@ namespace OnlineShop.Models
                         {
                             Title = "OnePlus 12 Pro, 256GB",
                             Description = "Speed and performance redefined with the Snapdragon 8 Gen 3.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/oneplus12.jpg",
                             Price = 599.99m,
                             Stock = 25,
                             CreatedDate = DateTime.Now,
@@ -161,7 +218,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Google Pixel 9 Pro, 128GB",
                             Description = "AI-enhanced photography and cutting-edge Android.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/googlepixel9.jpg",
                             Price = 649.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -172,7 +229,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Xiaomi 13 Pro, 256GB",
                             Description = "High-quality camera and efficient performance in a sleek design.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/xiaomi13.jpg",
                             Price = 699.99m,
                             Stock = 30,
                             CreatedDate = DateTime.Now,
@@ -183,7 +240,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Sony Xperia 1 V, 256GB",
                             Description = "Perfect for content creators with advanced video capabilities.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/sonyxperia1v.jpg",
                             Price = 799.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
@@ -194,7 +251,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Oppo Find X6 Pro, 512GB",
                             Description = "Experience innovation with advanced AI features.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/oppofind.jpg",
                             Price = 799.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -205,7 +262,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Realme GT 5, 512GB",
                             Description = "Unmatched speed and design at an incredible value.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/realmegt5.jpg",
                             Price = 499.99m,
                             Stock = 25,
                             CreatedDate = DateTime.Now,
@@ -216,7 +273,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Motorola Edge 40 Pro, 256GB",
                             Description = "Cutting-edge technology and an immersive display.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/motorolaedge40.jpg",
                             Price = 629.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -228,7 +285,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Apple MacBook Pro 14, M2 Pro, 512GB SSD",
                             Description = "Unparalleled performance with the M2 Pro chip and a stunning Retina display.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/applemacbookpro14.jpg",
                             Price = 1299.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
@@ -239,7 +296,7 @@ namespace OnlineShop.Models
                         {
                             Title = "ASUS ROG Strix G16, Intel i7, 16GB RAM",
                             Description = "Built for gamers and creators, offering extreme performance.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/asusrogstrixg16.jpg",
                             Price = 749.99m,
                             Stock = 25,
                             CreatedDate = DateTime.Now,
@@ -250,7 +307,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Lenovo ThinkPad X1 Carbon Gen 11",
                             Description = "Slim, lightweight, and durable, ideal for business.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/thinkpadx1.jpg",
                             Price = 1099.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -261,7 +318,7 @@ namespace OnlineShop.Models
                         {
                             Title = "HP Pavilion 15, AMD Ryzen 7, 512GB SSD",
                             Description = "Excellent performance in a compact design.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/hppavilion15.jpg",
                             Price = 459.99m,
                             Stock = 30,
                             CreatedDate = DateTime.Now,
@@ -272,7 +329,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Dell XPS 15, Intel i9, 1TB SSD",
                             Description = "High performance in a sleek, lightweight body.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/dellxps15.jpg",
                             Price = 1399.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -283,7 +340,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Razer Blade 15, RTX 4080, 1TB SSD",
                             Description = "Powerful gaming laptop with a stunning display.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/razerblade15.jpg",
                             Price = 2199.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -339,7 +396,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Apple iPad Pro 12.9, M2, 128GB",
                             Description = "The iPad Pro redefines the boundaries of productivity.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/ipadpro12.jpg",
                             Price = 599.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
@@ -350,7 +407,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Samsung Galaxy Tab S9, 256GB",
                             Description = "Power and portability with a stunning AMOLED display.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/galaxytabs9.jpg",
                             Price = 449.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -361,7 +418,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Lenovo Tab P11 Pro, 128GB",
                             Description = "Perfect for entertainment and multitasking.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/lenovotabp11.jpg",
                             Price = 199.99m,
                             Stock = 25,
                             CreatedDate = DateTime.Now,
@@ -372,7 +429,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Microsoft Surface Pro 9, Intel i5",
                             Description = "A laptop and tablet in one device.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/microsoftsurfacepro9.jpg",
                             Price = 699.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -383,7 +440,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Apple iPad Air 5, M1, 256GB",
                             Description = "Incredible power in a lightweight design.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/ipadair5.jpg",
                             Price = 399.99m,
                             Stock = 25,
                             CreatedDate = DateTime.Now,
@@ -394,7 +451,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Huawei MatePad Pro 11, 128GB",
                             Description = "Sleek and professional tablet with HarmonyOS.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/huwaerimatepad.jpg",
                             Price = 499.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
@@ -450,7 +507,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Samsung QLED 4K 65Q80C",
                             Description = "Breathtaking image quality and vibrant colors with QLED technology.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/samsungqled.jpg",
                             Price = 649.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
@@ -461,7 +518,7 @@ namespace OnlineShop.Models
                         {
                             Title = "LG OLED 4K 55C3",
                             Description = "Premium cinematic experience with OLED technology.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/lgoled.jpg",
                             Price = 739.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -472,7 +529,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Sony BRAVIA XR 75X95J",
                             Description = "Natural image quality and immersive sound.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/sonybravia.jpg",
                             Price = 999.99m,
                             Stock = 5,
                             CreatedDate = DateTime.Now,
@@ -483,7 +540,7 @@ namespace OnlineShop.Models
                         {
                             Title = "TCL Mini-LED 4K 65C935",
                             Description = "Next-generation Mini-LED technology for superior contrast.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/tclminiled.jpg",
                             Price = 499.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -494,7 +551,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Sony BRAVIA A90J OLED 65\"",
                             Description = "True-to-life colors and cinematic sound.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/soybravia65.jpg",
                             Price = 1149.99m,
                             Stock = 8,
                             CreatedDate = DateTime.Now,
@@ -561,7 +618,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Dyson V15 Detect Vacuum Cleaner",
                             Description = "Cordless, lightweight vacuum cleaner with laser dust detection.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/dysonv15.jpg",
                             Price = 649.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
@@ -572,7 +629,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Philips Air Fryer XXL",
                             Description = "Healthier cooking with rapid air technology and family-size capacity.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/philipsairfyrer.jpg",
                             Price = 229.99m,
                             Stock = 25,
                             CreatedDate = DateTime.Now,
@@ -583,7 +640,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Bosch Serie 6 Washing Machine",
                             Description = "Eco-friendly washing with energy-saving technology.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/boschseries6.jpg",
                             Price = 699.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -594,7 +651,7 @@ namespace OnlineShop.Models
                         {
                             Title = "LG NeoChef Smart Microwave",
                             Description = "Smart inverter technology for even cooking and reheating.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/lgleochef.jpg",
                             Price = 279.99m,
                             Stock = 20,
                             CreatedDate = DateTime.Now,
@@ -605,7 +662,7 @@ namespace OnlineShop.Models
                         {
                             Title = "Breville Barista Express Espresso Machine",
                             Description = "Professional coffee making at home with built-in grinder.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/brevillebarista.jpg",
                             Price = 599.99m,
                             Stock = 10,
                             CreatedDate = DateTime.Now,
@@ -616,7 +673,7 @@ namespace OnlineShop.Models
                         {
                             Title = "KitchenAid Artisan Stand Mixer",
                             Description = "Iconic design and unmatched versatility for home baking.",
-                            ImagePath = "/images/DefaultImage.jpg",
+                            ImagePath = "/images/kitchenaidartisan.jpg",
                             Price = 349.99m,
                             Stock = 15,
                             CreatedDate = DateTime.Now,
