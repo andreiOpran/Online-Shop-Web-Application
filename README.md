@@ -92,7 +92,7 @@ docker run -p 80:80 online-shop
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Author
+## Authors
 [ForceOfNature13](https://github.com/ForceOfNature13)  
 [andreiOpran](https://github.com/andreiOpran)
 
