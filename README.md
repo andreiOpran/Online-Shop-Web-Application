@@ -103,4 +103,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 [ForceOfNature13](https://github.com/ForceOfNature13)  
 [andreiOpran](https://github.com/andreiOpran)
 
-_Last Updated: 13-01-2025_
+_Last Updated: 15-01-2025_
