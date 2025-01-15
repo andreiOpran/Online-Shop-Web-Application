@@ -89,6 +89,12 @@ docker run -p 80:80 online-shop
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Agile Development
+We used agile development practices and managed our tasks via a Trello board. You can view our Trello board [here](OnlineShop - TechSense - Trello Board.png).
+
+## Documentation
+We have a PDF documentation where we detailed the tasks assigned to each person. You can find it [here](OnlineShop - TechSense - Tasks management documentation.pdf).
+
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
