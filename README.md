@@ -90,10 +90,11 @@ docker run -p 80:80 online-shop
 5. Open a Pull Request
 
 ## Agile Development
-We used agile development practices and managed our tasks via a Trello board. You can view our Trello board [here](OnlineShop - TechSense - Trello Board.png).
+We used agile development practices and managed our tasks via a Trello board. You can view our Trello board [here](./OnlineShop%20-%20TechSense%20-%20Trello%20Board.png).
 
 ## Documentation
-We have a PDF documentation where we detailed the tasks assigned to each person. You can find it [here](OnlineShop - TechSense - Tasks management documentation.pdf).
+We have a PDF documentation where we detailed the tasks assigned to each person. You can find it [here](./OnlineShop%20-%20TechSense%20-%20Tasks%20management%20documentation.pdf).
+
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
