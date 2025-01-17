@@ -95,7 +95,6 @@ We used agile development practices and managed our tasks via a Trello board. Yo
 ## Documentation
 We have a PDF documentation where we detailed the tasks assigned to each person. You can find it [here](./OnlineShop%20-%20TechSense%20-%20Tasks%20management%20documentation.pdf).
 
-
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
