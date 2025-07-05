@@ -13,17 +13,22 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     
+    @Query("SELECT p FROM Product p WHERE p.status = :status")
     List<Product> findByStatus(String status);
     
+    @Query("SELECT p FROM Product p WHERE p.category.categoryId = :categoryId")
     List<Product> findByCategoryId(Long categoryId);
     
+    @Query("SELECT p FROM Product p WHERE p.user.userId = :userId")
     List<Product> findByUserId(Long userId);
     
+    @Query("SELECT p FROM Product p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :title, '%'))")
     List<Product> findByTitleContainingIgnoreCase(String title);
     
+    @Query("SELECT p FROM Product p WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :description, '%'))")
     List<Product> findByDescriptionContainingIgnoreCase(String description);
     
-    @Query("SELECT p FROM Product p WHERE p.title LIKE %:keyword% OR p.description LIKE %:keyword%")
+    @Query("SELECT p FROM Product p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Product> searchByKeyword(@Param("keyword") String keyword);
     
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.category LEFT JOIN FETCH p.user LEFT JOIN FETCH p.reviews WHERE p.productId = :productId")

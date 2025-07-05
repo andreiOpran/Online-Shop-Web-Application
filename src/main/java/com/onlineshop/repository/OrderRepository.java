@@ -10,8 +10,10 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     
+    @Query("SELECT o FROM Order o WHERE o.status = :status")
     List<Order> findByStatus(String status);
     
+    @Query("SELECT o FROM Order o WHERE o.cart.user.userId = :userId")
     List<Order> findByCartUserId(Long userId);
     
     @Query("SELECT o FROM Order o LEFT JOIN FETCH o.cart c LEFT JOIN FETCH c.user WHERE o.orderId = :orderId")

@@ -9,8 +9,10 @@ import java.util.List;
 @Repository
 public interface PendingEditRepository extends JpaRepository<PendingEdit, Long> {
     
+    @Query("SELECT pe FROM PendingEdit pe WHERE pe.productId = :productId")
     List<PendingEdit> findByProductId(Long productId);
     
+    @Query("SELECT pe FROM PendingEdit pe WHERE pe.user.userId = :userId")
     List<PendingEdit> findByUserId(Long userId);
     
     @Query("SELECT pe FROM PendingEdit pe LEFT JOIN FETCH pe.originalProduct LEFT JOIN FETCH pe.editedProduct LEFT JOIN FETCH pe.user ORDER BY pe.createdDate DESC")

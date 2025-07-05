@@ -7,16 +7,15 @@ import jakarta.validation.constraints.Min;
 @Table(name = "cart_products")
 public class CartProduct {
     
-    @EmbeddedId
-    private CartProductId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("cartId")
     @JoinColumn(name = "cart_id")
     private Cart cart;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;
     
@@ -31,15 +30,14 @@ public class CartProduct {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;
-        this.id = new CartProductId(cart.getCartId(), product.getProductId());
     }
     
     // Getters and Setters
-    public CartProductId getId() {
+    public Long getId() {
         return id;
     }
     
-    public void setId(CartProductId id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
